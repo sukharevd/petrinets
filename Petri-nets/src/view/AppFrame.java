@@ -131,7 +131,7 @@ public class AppFrame extends JFrame {
         int fontsize = 12;
         file.setFont(new Font("Lucida", 1, fontsize));
         edit.setFont(new Font("Lucida", 1, fontsize));
-        help.setFont(new Font("Lucida", 2, fontsize));
+        help.setFont(new Font("Lucida", 1, fontsize));
 
         // -------------------------------------
         // ---------> File Menu <---------------
