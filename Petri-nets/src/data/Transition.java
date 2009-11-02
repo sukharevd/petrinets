@@ -1,0 +1,128 @@
+package data;
+
+import java.util.ArrayList;
+
+/**
+ * Contains features of the transition of petri-net, Provides methods for
+ * setting and getting this features.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
+ * 
+ */
+public class Transition extends Element {
+    private static int curIndex = 0;
+
+    private double lyambda;
+
+    private double g;
+
+    private Generator law;
+
+    public Transition(double lyambda, double g, Generator law, int no, int x,
+            int y) {
+        setNo(no);
+        setX(x);
+        setY(y);
+        setType("T");
+        setInputArcs(new ArrayList<Arc>());
+        setOutputArcs(new ArrayList<Arc>());
+
+        this.lyambda = lyambda;
+        this.g = g;
+        this.law = law;
+
+        curIndex++;
+    }
+
+    /**
+     * @return the lyambda
+     */
+    public final double getLyambda() {
+        return lyambda;
+    }
+
+    /**
+     * @param lyambda
+     *            the lyambda to set
+     */
+    public final void setLyambda(double lyambda) {
+        this.lyambda = lyambda;
+    }
+
+    /**
+     * @return the g
+     */
+    public final double getG() {
+        return g;
+    }
+
+    /**
+     * @param g
+     *            the g to set
+     */
+    public final void setG(double g) {
+        this.g = g;
+    }
+
+    /**
+     * @return the law
+     */
+    public final Generator getLaw() {
+        return law;
+    }
+
+    /**
+     * @param law
+     *            the law to set
+     */
+    public final void setLaw(Generator law) {
+        this.law = law;
+    }
+
+    // public void draw() {
+    // throw new UnsupportedOperationException();
+    // }
+
+    /**
+     * @return the curIndex
+     */
+    public static int getCurIndex() {
+        return curIndex;
+    }
+
+    /**
+     * @param curIndex
+     *            the curIndex to set
+     */
+    public static void setCurIndex(int curIndex) {
+        Transition.curIndex = curIndex;
+    }
+
+    public Object clone() {
+        return new Transition(lyambda, g, law, Transition.curIndex, getX() + 2,
+                getY() + 2);
+    }
+
+    public java.lang.String toString() {
+        StringBuilder sb = new StringBuilder("    <Transition no=\"");
+        sb.append(getNo());
+        sb.append("\" x=\"");
+        sb.append(getX());
+        sb.append("\" y=\"");
+        sb.append(getY());
+        sb.append("\" lyambda=\"");
+        sb.append(lyambda);
+        sb.append("\" g=\"");
+        sb.append(g);
+        sb.append("\" >\n");
+
+        for (int i = 0; i < getOutputArcs().size(); i++) {
+            sb.append(getOutputArcs().get(i).toString());
+            sb.append("\n");
+        }
+
+        sb.append("    </Transition>\n");
+
+        return sb.toString();
+    }
+}

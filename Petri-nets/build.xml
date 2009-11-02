@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="Diagram" default="entry" basedir=".">
+
+<!-- ...................... PROPERTIES ............................. -->
+	<property name="project.name" value="petri_nets" />
+    <!--<property name="jdk.path" value=
+                       "D:\Program Files\Java\jdk1.6.0_13\bin" />    -->
+
+	<property name="app.author" value="Ecuna, Jacky, H.D.F" />
+	<property name="app.company" value="IO-71" />
+
+	<property name="sourceDir" value="src" />
+	<property name="outputDir" value="bin" />
+	<property name="distDir"   value="dist" />
+	<property name="resDir"   value="${outputDir}/view/res" />
+	<property name="helpfile.path"   value="doc/UserGuide.htm" />
+	
+
+	<property name="jar.fullname" value="${project.name}.jar" />
+	<property name="jar.mainClass" value="${project.name}.Main" />
+
+	<property name="jar.keyalias" value="tempAlias" />
+	<property name="jar.aliaspw" value="012345" />
+	<property name="jar.keystore" value="${basedir}/bin/tempKey.store" />
+	<property name="jar.storepw" value="123456" />
+
+<!-- ...................... TARGETS ................................ -->
+
+<!-- ...................... Clearing project folder ................ -->
+	<target name="clear">
+		<delete dir="${outputDir}" />
+		<delete dir="${distDir}" />
+	</target>
+
+<!-- ...................... Creating project folders ............... -->
+	<target name="create" depends="clear">
+		<mkdir dir="${outputDir}"/>
+		<mkdir dir="${distDir}"/>
+		
+		<copy todir="${resDir}">
+		    <fileset dir="./res" />
+		</copy>
+		<copy file="${helpfile.path}" todir="${distDir}"/>
+	</target>
+
+<!-- ...................... Compiling project from sources ......... -->
+	<target name="compile" depends="create">
+		<javac srcdir="${sourceDir}" 
+			   destdir="${outputDir}"
+        debug="true"
+        deprecation="false"
+        optimize="true"
+        target="1.5"
+        source="1.5"/>
+	</target>
+
+<!-- ...................... Creating JAR-file from .classes......... -->
+	<target name="creatingJAR" depends="compile">
+		<jar destfile="${distDir}/${jar.fullname}" basedir="${outputDir}">
+			<manifest>
+				<attribute name="Created-By" value="${app.author}"/>
+				<attribute name="Company" value="${app.company}"/>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Main-Class" value="${jar.mainClass}"/>
+			</manifest>
+		</jar>
+	</target>
+
+<!-- ...................... Generating Key for JARsinger ........... -->
+	<target name="generatingKey"
+           depends="creatingJAR">
+      <delete failonerror="false" file="${jar.keystore}" />
+      <genkey keystore="${jar.keystore}"
+      	      alias="${jar.keyalias}"
+              storepass="${jar.storepw}"
+              validity="720"
+      	      keyalg="RSA">
+        <dname>
+          <param name="CN" value="${app.company}"/>
+          <param name="OU" value="${project.name}"/>
+          <param name="O"  value="${app.company}"/>
+        </dname>
+      </genkey>     
+    </target>
+
+<!-- ...................... JAR Signer Target ...................... -->
+    <target name="JARsigner" 
+            depends="generatingKey">       <!--${jdk.path}/-->
+        <exec dir="${outputDir}" executable="jarsigner">
+          <arg line="-keystore ${jar.keystore} -storepass ${jar.storepw}
+               ${basedir}/${distDir}/${jar.fullname} ${jar.keyalias}"/>
+        </exec>
+        <delete file="${jar.keystore}" />
+    </target>
+
+<!-- .................... Verifying JAR signum ..................... -->     
+    <target name="verifyJAR" 
+            depends="JARsigner">
+    <exec dir="${basedir}" executable="jarsigner"> <!--${jdk.path}/-->
+      <arg line=" -verify ${basedir}/${distDir}/${jar.fullname}" />
+    </exec>
+    </target>
+
+<!-- ...................... Executing JAR-file ..................... -->
+	<target name="execute" depends="verifyJAR">
+		<java jar="${distDir}/${jar.fullname}" fork="true"/>
+	</target>
+
+	<target name="entry" depends="execute"/>
+</project>
