@@ -23,14 +23,14 @@ import data.Transition;
  * 
  */
 public class ElementDrawer extends JPanel {
-    
+
     /**
      * JDK 1.1 serialVersionUID.
      */
     private static final long serialVersionUID = 7300244067147210807L;
 
     private Data data;
-    
+
     private Color elementsColor = Color.black;
 
     private Color activeElementsColor = Color.blue;

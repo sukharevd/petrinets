@@ -7,12 +7,11 @@ package commands;
 import data.Data;
 import data.Element;
 
-
 /**
  * Class provides Undo/Redo operations for adding new Element.
- *
+ * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
- *
+ * 
  */
 public class AddElementCommand implements Command {
 

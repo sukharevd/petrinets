@@ -2,7 +2,6 @@ package data;
 
 import java.util.ArrayList;
 
-
 /**
  * Contains features of the arc of petri-net, Provides methods for setting and
  * getting this features.
@@ -11,18 +10,19 @@ import java.util.ArrayList;
  * 
  */
 public class Arc extends Element {
-    
+
     private ArrayList<Integer> xsequence;
 
     private ArrayList<Integer> ysequence;
 
     // TODO: are to, from necessary? toElement?
     // private Element fromZ;
-    private int to;    
+    private int to;
 
     private String toType;
 
-    public Arc(ArrayList<Integer> xseq, ArrayList<Integer> yseq, int to, String toType) {
+    public Arc(ArrayList<Integer> xseq, ArrayList<Integer> yseq, int to,
+            String toType) {
         setNo(0);
         setType("A");
 
@@ -35,17 +35,17 @@ public class Arc extends Element {
         setY(0);
     }
 
-//    public Arc(ArrayList<Integer> xseq, ArrayList<Integer> yseq, int to) {
-//        setNo(0);
-//        setType("A");
-//
-//        this.xsequence = xseq;
-//        this.ysequence = yseq;
-//        this.to = to;
-//
-//        setX(0);
-//        setY(0);
-//    }
+    // public Arc(ArrayList<Integer> xseq, ArrayList<Integer> yseq, int to) {
+    // setNo(0);
+    // setType("A");
+    //
+    // this.xsequence = xseq;
+    // this.ysequence = yseq;
+    // this.to = to;
+    //
+    // setX(0);
+    // setY(0);
+    // }
 
     /**
      * @return the xsequence
@@ -100,12 +100,13 @@ public class Arc extends Element {
     }
 
     /**
-     * @param toType the toType to set
+     * @param toType
+     *            the toType to set
      */
     public final void setToType(String toType) {
         this.toType = toType;
     }
-    
+
     public final void AddConnectedPoint(final int x, final int y) {
         xsequence.add(x);
         ysequence.add(y);
@@ -125,7 +126,7 @@ public class Arc extends Element {
         ArrayList<Integer> xst = new ArrayList<Integer>();
         ArrayList<Integer> yst = new ArrayList<Integer>();
         String toType = new String(this.toType);
-        
+
         if (xsequence.size() != ysequence.size()) {
             System.err.println("Error: Arc X.size not equal Y.size.");
         }

@@ -55,7 +55,7 @@ public class AppFrame extends JFrame {
     private Data data;
 
     private ElementDrawer elementDrawer;
-    
+
     /**
      * Start width of the frame.
      */
@@ -107,15 +107,16 @@ public class AppFrame extends JFrame {
     /**
      * @return the elementDrawer
      */
-    public /*synchronized*/ final ElementDrawer getElementDrawer() {
+    public/* synchronized */final ElementDrawer getElementDrawer() {
         return elementDrawer;
     }
+
     // TODO: remove synchronized
     /**
      * @param drawer
      *            the elementDrawer to set
      */
-    public /*synchronized*/ final void setElementDrawer(ElementDrawer drawer) {
+    public/* synchronized */final void setElementDrawer(ElementDrawer drawer) {
         elementDrawer = drawer;
     }
 
@@ -124,7 +125,7 @@ public class AppFrame extends JFrame {
         JMenuBar bar;
 
         JMenu file = new JMenu("File");
-//        JMenu mode = new JMenu("Mode");
+        // JMenu mode = new JMenu("Mode");
         JMenu edit = new JMenu("Edit");
         JMenu help = new JMenu("Help");
 
@@ -231,28 +232,28 @@ public class AppFrame extends JFrame {
         // ---------> Mode Menu <---------------
         // -------------------------------------
 
-//        JMenuItem editor = new JMenuItem();
-//        // JMenuItem deleter = new JMenuItem();
-//        JMenuItem tree = new JMenuItem();
-//        JMenuItem emul = new JMenuItem();
-//
-//        editor.setAction(new ModelEditorAction());
-//        editor.setText("Editor");
-//        editor.setMnemonic(KeyEvent.VK_E);
-//        editor.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
-//                ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-//
-//        tree.setAction(new ModelTreeAction(data));
-//        tree.setText("Tree");
-//        tree.setMnemonic(KeyEvent.VK_T);
-//        tree.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
-//                ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-//
-//        emul.setAction(new ModelEmulationAction());
-//        emul.setText("Emulate");
-//        emul.setMnemonic(KeyEvent.VK_M);
-//        emul.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-//                ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        // JMenuItem editor = new JMenuItem();
+        // // JMenuItem deleter = new JMenuItem();
+        // JMenuItem tree = new JMenuItem();
+        // JMenuItem emul = new JMenuItem();
+        //
+        // editor.setAction(new ModelEditorAction());
+        // editor.setText("Editor");
+        // editor.setMnemonic(KeyEvent.VK_E);
+        // editor.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
+        // ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        //
+        // tree.setAction(new ModelTreeAction(data));
+        // tree.setText("Tree");
+        // tree.setMnemonic(KeyEvent.VK_T);
+        // tree.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
+        // ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        //
+        // emul.setAction(new ModelEmulationAction());
+        // emul.setText("Emulate");
+        // emul.setMnemonic(KeyEvent.VK_M);
+        // emul.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
+        // ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
 
         // -------------------------------------
         // ---------> Help Menu <---------------
@@ -290,9 +291,9 @@ public class AppFrame extends JFrame {
         edit.add(addITransition);
         edit.add(addArc);
 
-//        mode.add(editor);
-//        mode.add(tree);
-//        mode.add(emul);
+        // mode.add(editor);
+        // mode.add(tree);
+        // mode.add(emul);
 
         help.add(chelp);
         help.add(about);
@@ -300,7 +301,7 @@ public class AppFrame extends JFrame {
         bar = new JMenuBar();
         bar.add(file);
         bar.add(edit);
-//        bar.add(mode);
+        // bar.add(mode);
         bar.add(help);
 
         setJMenuBar(bar);
@@ -405,20 +406,20 @@ public class AppFrame extends JFrame {
 
         initializeMenuBar();
         initializeToolBar();
-        
+
         // organization of tab pane:
         JPanel tablePanel = new JPanel();
         JPanel drawingPanel = new JPanel(new BorderLayout());
         JPanel treePanel = new TreeDrawer(data);
-        //drawingPanel.setOpaque(true);
-        
+        // drawingPanel.setOpaque(true);
+
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.add("Drawing", drawingPanel);
         tabPane.add("Tables", tablePanel);
         tabPane.add("Graph", treePanel);
-        
+
         this.getContentPane().add(tabPane);
-        
+
         // organization of scroll pane for dawingPanel:
         elementDrawer = new ElementDrawer(data, this);
         JScrollPane scroller = new JScrollPane(elementDrawer);

@@ -9,16 +9,14 @@ import javax.swing.JOptionPane;
 
 import commands.CommandStack;
 
-
 import exceptions.arcConnectionException;
-
 
 /**
  * Main data storage of the application, It contains all visible Elements,
  * active Element, added Element, commandStack and flag of chaning.
- *
+ * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
- *
+ * 
  */
 public class Data {
 
@@ -33,7 +31,7 @@ public class Data {
     private Element addingModeElement = null;
 
     private Element activeElement = null;
-    
+
     private CommandStack commandStack = null;
 
     public Data(ArrayList<Element> elements) {
@@ -102,7 +100,8 @@ public class Data {
     }
 
     /**
-     * @param commandStack the commandStack to set
+     * @param commandStack
+     *            the commandStack to set
      */
     public void setCommandStack(CommandStack commandStack) {
         this.commandStack = commandStack;

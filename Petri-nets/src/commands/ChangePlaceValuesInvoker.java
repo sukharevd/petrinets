@@ -8,7 +8,7 @@ import data.Place;
 
 /**
  * Provides executing of Undo/Redo operations for changing of Place.
- *
+ * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * 
  */

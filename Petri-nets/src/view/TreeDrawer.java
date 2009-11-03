@@ -16,7 +16,7 @@ import data.TreeofPetriNet;
 
 /**
  * @author <a href="mailto:jacky@gmail.com">Dzyuban Yuriy</a>
- *
+ * 
  */
 public class TreeDrawer extends JPanel {
 
@@ -24,42 +24,56 @@ public class TreeDrawer extends JPanel {
      * 
      */
     private static final long serialVersionUID = 7897141005109233931L;
-    
-    //private TreeConnection[] Z;
 
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    // private TreeConnection[] Z;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    
+
     private Data data;
-    
+
     public TreeDrawer(Data data) {
         this.data = data;
 
-    	TableManagment myTable= new TableManagment(this.data);
-    	int[] typecrossing = new int[myTable.getAllT().size()];
-    	for (int i = 0; i < typecrossing.length; i++) {
-    		typecrossing[i]=0;
-    		if (myTable.getAllT().get(i).getLyambda()== 0){
-    			typecrossing[i]=1;
-    		}
-		}
-    	
-    	TreeofPetriNet mytree= new TreeofPetriNet(myTable.getAllP().size(), myTable.getAllT().size(),myTable.getMatrixDi(), myTable.getMatrixDq(), myTable.getMarkirovka(),typecrossing);
-        
-    	Z=mytree.WriteResult();
+        TableManagment myTable = new TableManagment(this.data);
+        int[] typecrossing = new int[myTable.getAllT().size()];
+        for (int i = 0; i < typecrossing.length; i++) {
+            typecrossing[i] = 0;
+            if (myTable.getAllT().get(i).getLyambda() == 0) {
+                typecrossing[i] = 1;
+            }
+        }
+
+        TreeofPetriNet mytree = new TreeofPetriNet(myTable.getAllP().size(),
+                myTable.getAllT().size(), myTable.getMatrixDi(), myTable
+                        .getMatrixDq(), myTable.getMarkirovka(), typecrossing);
+
+        Z = mytree.WriteResult();
     }
-    
+
     int WIDTH = 550;
+
     int HEIGTH = 550;
+
     int CenterX = WIDTH / 2;
+
     int CenterY = HEIGTH / 2;
+
     int Dist = WIDTH / 3;
+
     int d = 40;
+
     int r = d / 2;
+
     int L = d / 3;
+
     int LA = 20;
-    //int N;
+
+    // int N;
     static TreeConnection[] Z;
 
     public void paint(Graphics g) {

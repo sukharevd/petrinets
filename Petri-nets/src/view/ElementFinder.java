@@ -11,17 +11,18 @@ import data.Transition;
 
 /**
  * Finds elements of drawing area by coordinates.
- *
+ * 
  * @author <a href="mailto:jacky@gmail.com">Dzyuban Yuriy</a>
- *
+ * 
  */
 public class ElementFinder {
-    
-    public static Element findElement(final int pixX, final int pixY, final Data data) {
+
+    public static Element findElement(final int pixX, final int pixY,
+            final Data data) {
         int transitionWidth = FrameSettings.transitionWidth();
         int elementHeight = FrameSettings.elementHeight();
         int arcFindingDistance = FrameSettings.arcFindingDistance();
-        
+
         Element res;
         for (int i = 0; i < data.getElements().size(); i++) {
             if (data.getElements().get(i).getType() == "P") {
@@ -34,8 +35,7 @@ public class ElementFinder {
                     return res;
                 }
             } else if (data.getElements().get(i).getType() == "T") {
-                Transition current = (Transition) data.getElements()
-                        .get(i);
+                Transition current = (Transition) data.getElements().get(i);
                 int y = current.getY();
                 int x = current.getX();
                 if ((Math.abs(x - pixX) < (transitionWidth / 2))

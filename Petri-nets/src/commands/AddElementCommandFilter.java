@@ -37,7 +37,7 @@ public class AddElementCommandFilter implements CommandFilter {
         this.mouseY = mouseY;
     }
 
-    //protected Command filtrate 
+    // protected Command filtrate
     public Command filtrate(Command command) {
         Element addedElement = data.getAddingModeElement();
         if (addedElement != null) {
@@ -48,8 +48,7 @@ public class AddElementCommandFilter implements CommandFilter {
                 if ((selectedEl != null) && (selectedEl.getType() != "A")) {
                     JOptionPane.showMessageDialog(null,
                             "You cann't add element over other element.",
-                            "Error of drawing",
-                            JOptionPane.WARNING_MESSAGE);
+                            "Error of drawing", JOptionPane.WARNING_MESSAGE);
                     return null;
                 }
                 // TODO: wrong place/transition adding filter;
@@ -57,11 +56,12 @@ public class AddElementCommandFilter implements CommandFilter {
                 if (addedElement.getType() == "A") {
                     Arc addedArc = (Arc) addedElement;
 
-                    Element selectedEl = ElementFinder.findElement(mouseX, mouseY,
-                            data);
+                    Element selectedEl = ElementFinder.findElement(mouseX,
+                            mouseY, data);
 
                     if (addedArc.getXsequence().size() > 0) {
-                        if ((selectedEl != null) && (selectedEl.getType() != "A")) {
+                        if ((selectedEl != null)
+                                && (selectedEl.getType() != "A")) {
                             int x1 = addedArc.getXsequence().get(0);
                             int y1 = addedArc.getYsequence().get(0);
                             String s1 = ElementFinder.findElement(x1, y1, data)
@@ -77,7 +77,8 @@ public class AddElementCommandFilter implements CommandFilter {
                             }
                         }
                     } else {
-                        if ((selectedEl == null) || (selectedEl.getType() == "A")) {
+                        if ((selectedEl == null)
+                                || (selectedEl.getType() == "A")) {
                             return null;
                         }
                     }

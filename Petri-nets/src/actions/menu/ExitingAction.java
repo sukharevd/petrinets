@@ -1,6 +1,5 @@
 package actions.menu;
 
-
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -9,13 +8,12 @@ import javax.swing.JOptionPane;
 
 import data.Data;
 
-
 /**
- * Action, which is occurred when user clicks "Exit" component,
- * it saves current chart if user wants and terminates the application.
- *
+ * Action, which is occurred when user clicks "Exit" component, it saves current
+ * chart if user wants and terminates the application.
+ * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
- *
+ * 
  */
 public class ExitingAction extends AbstractAction {
 
@@ -23,11 +21,11 @@ public class ExitingAction extends AbstractAction {
      * JDK 1.1 serialVersionUID.
      */
     private static final long serialVersionUID = -3159018596429482640L;
-    
+
     private Data data;
+
     private JFrame mainFrame;
-    
-    
+
     /**
      * @param data
      * @param mainFrame
@@ -68,6 +66,5 @@ public class ExitingAction extends AbstractAction {
             System.exit(0);
         }
     }
-
 
 }

@@ -24,8 +24,7 @@ public class AddingTimeTransitionAction extends AbstractAction {
     private static final long serialVersionUID = 7058590731835321668L;
 
     private Data data;
-    
-    
+
     /**
      * @param data
      */
@@ -34,10 +33,9 @@ public class AddingTimeTransitionAction extends AbstractAction {
         this.data = data;
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+
         Element addedEl = data.getAddingModeElement();
         if (addedEl != null) {
             if (addedEl.getType() == "P") {
@@ -46,11 +44,10 @@ public class AddingTimeTransitionAction extends AbstractAction {
                 if (addedEl.getType() == "T") {
                     Transition.setCurIndex(Transition.getCurIndex() - 1);
                 }
-            }                        
+            }
         }
-        
-        data.setAddingModeElement(
-                new Transition(1.0, 0.0, null, -1, -1, -1));
+
+        data.setAddingModeElement(new Transition(1.0, 0.0, null, -1, -1, -1));
 
     }
 

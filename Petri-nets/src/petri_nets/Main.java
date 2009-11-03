@@ -7,7 +7,6 @@ import view.AppFrame;
 import data.Data;
 import data.Element;
 
-
 /**
  * Entry point of application.
  * 
@@ -15,7 +14,7 @@ import data.Element;
  * @author <a href="mailto:jacky@gmail.com">Dzyuban Yuriy</a>
  * @author <a href="mailto:h_d_f@mail.ru">Voitova Anastasiia</a>
  * @author <a href="mailto:lave14@mail.ru">Kustch Kristina</a>
- *
+ * 
  */
 public final class Main {
 
@@ -28,7 +27,7 @@ public final class Main {
      * Frame of the application.
      */
     private static AppFrame appFrame = new AppFrame(data);
-    
+
     /**
      * Starts GUI shell.
      * 

@@ -10,7 +10,7 @@ package view;
  * 
  */
 public class FrameSettings {
-    
+
     public static int elementHeight() {
         return 32;
     }
