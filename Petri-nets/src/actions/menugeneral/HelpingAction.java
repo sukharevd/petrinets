@@ -1,4 +1,4 @@
-package actions.menu;
+package actions.menugeneral;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;

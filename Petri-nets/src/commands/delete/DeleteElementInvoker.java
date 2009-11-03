@@ -54,7 +54,6 @@ public class DeleteElementInvoker {
     }
 
     protected void deleteElementWithArcs() {
-
         for (int i = 0; i < deletedElement.getInputArcs().size(); i++) {
             for (int j = 0; j < data.getElements().size(); j++) {
                 data.getElements().get(j).getOutputArcs().remove(
@@ -88,9 +87,11 @@ public class DeleteElementInvoker {
         } else {
             deleteElementWithArcs();
         }
+        data.setActiveElement(null);
     }
 
     public void undoDeleteElement() {
+        data.setActiveElement(deletedElement);
         if (deletedElement.getType() == "A") {
             recoverOneArc();
         } else {

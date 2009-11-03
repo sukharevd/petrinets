@@ -1,4 +1,4 @@
-package actions.menu;
+package actions.menugeneral;
 
 import java.awt.event.ActionEvent;
 import java.io.File;

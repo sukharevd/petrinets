@@ -8,10 +8,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-import commands.delete.DeleteElementCommand;
-
 import data.Data;
-import data.Element;
 
 /**
  * This class listens the keys press, if key is DEL it deletes active element.
@@ -21,17 +18,14 @@ import data.Element;
  */
 public final class DrawerKeyListener implements KeyListener {
 
-    private Data data;
-
-    private JFrame mainFrame;
+    private ListenersInvoker invoker;
 
     /**
      * @param data
      */
     public DrawerKeyListener(final Data data, final JFrame mainFrame) {
         super();
-        this.data = data;
-        this.mainFrame = mainFrame;
+        invoker = new ListenersInvoker(data, mainFrame, null);
     }
 
     /*
@@ -41,19 +35,9 @@ public final class DrawerKeyListener implements KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        // System.out.println("delete");
+
         if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-
-            Element activeElement = data.getActiveElement();
-
-            if (activeElement != null) {
-
-                DeleteElementCommand command = new DeleteElementCommand(
-                        activeElement, data);
-                data.getCommandStack().add(command);
-                command.execute();
-                mainFrame.repaint();
-            }
+            invoker.activateSelectElementDeleting();
         }
 
     }
