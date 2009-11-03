@@ -1,35 +1,33 @@
-package actions;
+package actions.menuadd;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 
+import data.Arc;
 import data.Data;
 import data.Element;
 import data.Place;
 import data.Transition;
 
 /**
- * Action, which is occurred when user clicks "Add Immediate Transition"
- * component, it adds new Immediate Transition to the graph.
+ * Action, which is occurred when user clicks "Add Arc" component, it adds new
+ * arc to the graph.
  * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * 
  */
-public class AddingImmediateTransitionAction extends AbstractAction {
+public class AddingArcAction extends AbstractAction {
 
     /**
      * JDK 1.1 serialVersionUID.
      */
-    private static final long serialVersionUID = 7920607374315919224L;
+    private static final long serialVersionUID = 1311208811561183876L;
 
     private Data data;
 
-    /**
-     * @param data
-     */
-    public AddingImmediateTransitionAction(Data data) {
-        super();
+    public AddingArcAction(final Data data) {
         this.data = data;
     }
 
@@ -44,9 +42,21 @@ public class AddingImmediateTransitionAction extends AbstractAction {
                     Transition.setCurIndex(Transition.getCurIndex() - 1);
                 }
             }
+
         }
 
-        data.setAddingModeElement(new Transition(0.0, 0.0, null, -1, -1, -1));
+        data.setAddingModeElement(new Arc(new ArrayList<Integer>(),
+                new ArrayList<Integer>(), -1, null));
+
+        // String imageName = "arc24";
+        //        
+        // String imgLocationPng = "res/" + imageName + ".png";
+        // URL imageURL = AppFrame.class.getResource(imgLocationPng);
+        //
+        // if (imageURL != null) { // image found
+        // button.setIcon(new ImageIcon(imageURL, "Add New Arc"));
+        // }
+
     }
 
 }

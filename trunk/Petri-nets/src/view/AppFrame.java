@@ -25,20 +25,20 @@ import javax.swing.KeyStroke;
 
 import data.Data;
 
-import actions.AddingArcAction;
-import actions.AddingImmediateTransitionAction;
-import actions.AddingPlaceAction;
-import actions.AddingTimeTransitionAction;
-import actions.RedoAction;
-import actions.UndoAction;
 import actions.listeners.DrawerAdjustmentListener;
-import actions.menu.AboutingAction;
-import actions.menu.CreatingAction;
-import actions.menu.ExitingAction;
-import actions.menu.ExportingAction;
-import actions.menu.HelpingAction;
-import actions.menu.OpeningAction;
-import actions.menu.SavingAction;
+import actions.menuadd.AddingArcAction;
+import actions.menuadd.AddingImmediateTransitionAction;
+import actions.menuadd.AddingPlaceAction;
+import actions.menuadd.AddingTimeTransitionAction;
+import actions.menugeneral.AboutingAction;
+import actions.menugeneral.CreatingAction;
+import actions.menugeneral.ExitingAction;
+import actions.menugeneral.ExportingAction;
+import actions.menugeneral.HelpingAction;
+import actions.menugeneral.OpeningAction;
+import actions.menugeneral.SavingAction;
+import actions.menuundo.RedoAction;
+import actions.menuundo.UndoAction;
 
 /**
  * Main frame of application, Creates and shows GUI.
