@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-import commands.DeleteElementCommand;
+import commands.delete.DeleteElementCommand;
 
 import data.Data;
 import data.Element;

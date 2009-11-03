@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import commands.AddElementCommand;
-import commands.AddElementCommandFilter;
-import commands.ChangePlaceValuesCommand;
-import commands.ChangeTransitionValuesCommand;
 import commands.Command;
 import commands.CommandFilter;
+import commands.add.AddElementCommand;
+import commands.add.AddElementCommandFilter;
+import commands.change.ChangePlaceValuesCommand;
+import commands.change.ChangeTransitionValuesCommand;
+import commands.move.MoveElementCommand;
+import commands.move.MoveElementCommandFilter;
 
 import data.Arc;
 import data.Data;
@@ -56,20 +58,6 @@ public class DrawerMouseListener implements MouseListener, MouseMotionListener {
         this.elementDrawer = elementDrawer;
     }
 
-    protected void selectElement(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-
-        Element selElement = ElementFinder.findElement(x, y, data);
-
-        if (selElement != null) {
-            data.setActiveElement(selElement);
-        } else {
-            data.setActiveElement(null);
-        }
-        mainFrame.repaint();
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -98,47 +86,24 @@ public class DrawerMouseListener implements MouseListener, MouseMotionListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    protected void changeInternalElementValues(final Element element) {
-        String title;
-        String message;
-        String initialSelectionValue;
-        String resStr;
-        if (element.getType() == "P") {
-            int res;
-            while (true) {
-                try {
-                    title = "Changing place values";
-                    message = "Number of token:";
-                    initialSelectionValue = ((Integer) ((Place) element)
-                            .getNumTokens()).toString();
-                    resStr = (String) JOptionPane.showInputDialog(mainFrame,
-                            message, title, JOptionPane.PLAIN_MESSAGE, null,
-                            null, initialSelectionValue);
-                    if (resStr == null) {
-                        break;
-                    }
-                    res = Integer.valueOf(resStr);
-                    ChangePlaceValuesCommand command = new ChangePlaceValuesCommand(
-                            (Place) element, res);
-                    data.getCommandStack().add(command);
-                    command.execute();
-                    break;
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(mainFrame,
-                            "Wrong number. Repeat please.",
-                            "Error of inputting", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        } else {
-            if (element.getType() == "T") {
-                double lyambda;
-                double g;
+    protected void changeValuesOfElementAt(final int x, final int y) {
+        Element element = ElementFinder.findElement(x, y, data);
+
+        if ((element != null) && (element.getType() != "A")) {
+            
+            // TODO: refactor with arrays:
+            String title;
+            String message;
+            String initialSelectionValue;
+            String resStr;
+            if (element.getType() == "P") {
+                int res;
                 while (true) {
                     try {
-                        title = "Changing transition values";
-                        message = "Lyambda:";
-                        initialSelectionValue = ((Double) ((Transition) element)
-                                .getLyambda()).toString();
+                        title = "Changing place values";
+                        message = "Number of token:";
+                        initialSelectionValue = ((Integer) ((Place) element)
+                                .getNumTokens()).toString();
                         resStr = (String) JOptionPane.showInputDialog(
                                 mainFrame, message, title,
                                 JOptionPane.PLAIN_MESSAGE, null, null,
@@ -146,22 +111,9 @@ public class DrawerMouseListener implements MouseListener, MouseMotionListener {
                         if (resStr == null) {
                             break;
                         }
-                        lyambda = Double.valueOf(resStr);
-
-                        message = "g:";
-                        initialSelectionValue = ((Double) ((Transition) element)
-                                .getG()).toString();
-                        resStr = (String) JOptionPane.showInputDialog(
-                                mainFrame, message, title,
-                                JOptionPane.PLAIN_MESSAGE, null, null,
-                                initialSelectionValue);
-                        if (resStr == null) {
-                            break;
-                        }
-                        g = Double.valueOf(resStr);
-
-                        ChangeTransitionValuesCommand command = new ChangeTransitionValuesCommand(
-                                (Transition) element, lyambda, g);
+                        res = Integer.valueOf(resStr);
+                        ChangePlaceValuesCommand command = new ChangePlaceValuesCommand(
+                                (Place) element, res);
                         data.getCommandStack().add(command);
                         command.execute();
                         break;
@@ -172,38 +124,86 @@ public class DrawerMouseListener implements MouseListener, MouseMotionListener {
                                 JOptionPane.WARNING_MESSAGE);
                     }
                 }
+            } else {
+                if (element.getType() == "T") {
+                    double lyambda;
+                    double g;
+                    while (true) {
+                        try {
+                            title = "Changing transition values";
+                            message = "Lyambda:";
+                            initialSelectionValue = ((Double) ((Transition) element)
+                                    .getLyambda()).toString();
+                            resStr = (String) JOptionPane.showInputDialog(
+                                    mainFrame, message, title,
+                                    JOptionPane.PLAIN_MESSAGE, null, null,
+                                    initialSelectionValue);
+                            if (resStr == null) {
+                                break;
+                            }
+                            lyambda = Double.valueOf(resStr);
 
+                            message = "g:";
+                            initialSelectionValue = ((Double) ((Transition) element)
+                                    .getG()).toString();
+                            resStr = (String) JOptionPane.showInputDialog(
+                                    mainFrame, message, title,
+                                    JOptionPane.PLAIN_MESSAGE, null, null,
+                                    initialSelectionValue);
+                            if (resStr == null) {
+                                break;
+                            }
+                            g = Double.valueOf(resStr);
+
+                            ChangeTransitionValuesCommand command = new ChangeTransitionValuesCommand(
+                                    (Transition) element, lyambda, g);
+                            data.getCommandStack().add(command);
+                            command.execute();
+                            break;
+                        } catch (NumberFormatException e) {
+                            JOptionPane.showMessageDialog(mainFrame,
+                                    "Wrong number. Repeat please.",
+                                    "Error of inputting",
+                                    JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+
+                }
             }
-        }
-        mainFrame.repaint();
-        // String s = (String) JOptionPane.showInputDialog(mainFrame,
-        // "Complete the sentence:\n" + "\"Green eggs and...\"",
-        // "Customized Dialog", JOptionPane.PLAIN_MESSAGE, null, null,
-        // "ham");
+            mainFrame.repaint();
 
+        }
     }
 
-    protected void addNewElement(MouseEvent e, Element addedElement) {
+    protected void activateNewElementAddingTo(Element addedElement, int x, int y) {
         if (addedElement == null) {
             return;
         }
 
-        Command addCommand = new AddElementCommand(e.getX(), e.getY(),
-                addedElement, data);
+        Command addCommand;
+        addCommand = new AddElementCommand(x, y, addedElement, data);
 
-        CommandFilter filter = new AddElementCommandFilter(data, e.getX(), e
-                .getY());
+        CommandFilter filter = new AddElementCommandFilter(data, x, y);
         Command filtratedCommand = filter.filtrate(addCommand);
 
         if (filtratedCommand != null) {
-
             addCommand.execute();
-
             data.getCommandStack().add(addCommand);
 
             changeMaxDrawingAreaSize();
             mainFrame.repaint();
         }
+    }
+
+    protected void selectElementAt(final int x, final int y) {
+        Element selElement = ElementFinder.findElement(x, y, data);
+
+        if (selElement != null) {
+            data.setActiveElement(selElement);
+        } else {
+            data.setActiveElement(null);
+        }
+        mainFrame.repaint();
     }
 
     /*
@@ -218,30 +218,48 @@ public class DrawerMouseListener implements MouseListener, MouseMotionListener {
 
         if (e.getButton() == MouseEvent.BUTTON2) {
             // Undo
-            if (data.getCommandStack().getCurIndex() > -1) {
-                data.getCommandStack().undoCur();
-                mainFrame.repaint();
-            }
+            data.getCommandStack().undoCur();
+            mainFrame.repaint();
         } else {
             if (addedElement != null) {
-                // Adds new element.
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    addNewElement(e, addedElement);
-                }
+                // Add new element:
+                activateNewElementAddingTo(addedElement, e.getX(), e.getY());
             } else {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    selectElement(e);
+                    // Select Element:
+                    selectElementAt(e.getX(), e.getY());
                 } else {
-                    Element element = ElementFinder.findElement(e.getX(), e
-                            .getY(), data);
-                    if ((e.getButton() == MouseEvent.BUTTON3)
-                            && (element != null) && (element.getType() != "A")) {
-                        changeInternalElementValues(element);
+                    // Change values of Element:
+                    if (e.getButton() == MouseEvent.BUTTON3) {
+                        changeValuesOfElementAt(e.getX(), e.getY());
                     }
                 }
             }
         }
         elementDrawer.requestFocusInWindow();
+    }
+
+    protected void activateElementMovingTo(final Element selElement,
+            final int x, final int y) {
+
+        if (selElement == null) {
+            return;
+        }
+
+        Command command;
+        command = new MoveElementCommand(x, y, selElement);
+
+        CommandFilter filter;
+        filter = new MoveElementCommandFilter(data, x, y);
+
+        if (filter.filtrate(command) != null) {
+            command.execute();
+            data.getCommandStack().add(command);
+
+            changeMaxDrawingAreaSize();
+            data.setChanged(true);
+            mainFrame.repaint();
+        }
     }
 
     protected void changeMaxDrawingAreaSize() {
@@ -278,7 +296,6 @@ public class DrawerMouseListener implements MouseListener, MouseMotionListener {
 
         elementDrawer.setPreferredSize(new Dimension(maxX, maxY));
         elementDrawer.revalidate();
-
     }
 
     /*
@@ -289,47 +306,11 @@ public class DrawerMouseListener implements MouseListener, MouseMotionListener {
      */
     @Override
     public void mouseReleased(MouseEvent e) {
+        Element selElement = data.getActiveElement();
 
-        Element addedElement = data.getAddingModeElement();
+        activateElementMovingTo(selElement, e.getX(), e.getY());
 
-        if (addedElement == null) {
-            Element active = data.getActiveElement();
-            Element atRelease = ElementFinder.findElement(e.getX(), e.getY(),
-                    data);
-
-            if ((active != null)
-                    && (active.getType() != "A")
-                    && (e.getX() > 0)
-                    && (e.getY() > 0)
-                    && ((atRelease == null) || (atRelease == active))
-                    && ((Math.abs(active.getX() - e.getX()) > 1) || (Math
-                            .abs(active.getY() - e.getY())) > 1)) {
-
-                active.setPosition(e.getX(), e.getY());
-                for (int i = 0; i < active.getInputArcs().size(); i++) {
-                    active.getInputArcs().get(i).getXsequence()
-                            .set(
-                                    active.getInputArcs().get(i).getXsequence()
-                                            .size() - 1, e.getX());
-                    active.getInputArcs().get(i).getYsequence()
-                            .set(
-                                    active.getInputArcs().get(i).getXsequence()
-                                            .size() - 1, e.getY());
-                }
-                for (int i = 0; i < active.getOutputArcs().size(); i++) {
-                    active.getOutputArcs().get(i).getXsequence().set(0,
-                            e.getX());
-                    active.getOutputArcs().get(i).getYsequence().set(0,
-                            e.getY());
-                }
-                changeMaxDrawingAreaSize();
-                data.setChanged(true);
-                mainFrame.repaint();
-            }
-
-        }
         elementDrawer.requestFocusInWindow();
-
     }
 
     @Override
