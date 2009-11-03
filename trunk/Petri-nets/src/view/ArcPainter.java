@@ -54,7 +54,7 @@ public class ArcPainter implements Painter {
             g2.drawLine(x1, y1, x2, y2);
             // }
         }
-        
+
         if (arc.getToType() != null) {
             int size = xseq.size();
             x1 = xseq.get(size - 2);

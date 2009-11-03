@@ -1,6 +1,5 @@
 package actions.menu;
 
-
 import java.awt.event.ActionEvent;
 import java.io.File;
 
@@ -12,13 +11,12 @@ import javax.swing.filechooser.FileFilter;
 
 import data.Data;
 
-
 /**
- * Action, which is occurred when user clicks "Save as..." component,
- * it saves the current chart as xml-file to a disk.
- *
+ * Action, which is occurred when user clicks "Save as..." component, it saves
+ * the current chart as xml-file to a disk.
+ * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
- *
+ * 
  */
 public class SavingAction extends AbstractAction {
 
@@ -26,10 +24,10 @@ public class SavingAction extends AbstractAction {
      * JDK 1.1 serialVersionUID.
      */
     private static final long serialVersionUID = 8048312361973227507L;
-    
+
     private Data data = null;
+
     private JFrame mainFrame = null;
-    
 
     /**
      * @param data
@@ -62,16 +60,16 @@ public class SavingAction extends AbstractAction {
         JFileChooser fc = new JFileChooser();
         fc.setFileFilter(new FileFilter() {
 
-                @Override
-                public boolean accept(final File f) {
-                    return f.getName().toLowerCase().endsWith(".xml")
-                           || f.isDirectory();
-                }
+            @Override
+            public boolean accept(final File f) {
+                return f.getName().toLowerCase().endsWith(".xml")
+                        || f.isDirectory();
+            }
 
-                @Override
-                public String getDescription() {
-                    return "XML-files (*.xml)";
-                }
+            @Override
+            public String getDescription() {
+                return "XML-files (*.xml)";
+            }
         });
         fc.setCurrentDirectory(new File("."));
 
@@ -85,7 +83,7 @@ public class SavingAction extends AbstractAction {
             if (!path.endsWith(".xml")) {
                 path += ".xml";
             }
-            
+
             data.save(path);
         }
     }

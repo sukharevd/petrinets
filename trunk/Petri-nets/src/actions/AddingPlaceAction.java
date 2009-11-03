@@ -24,8 +24,7 @@ public class AddingPlaceAction extends AbstractAction {
     private static final long serialVersionUID = -3838500188334807889L;
 
     private Data data;
-    
-    
+
     /**
      * @param data
      */
@@ -33,7 +32,6 @@ public class AddingPlaceAction extends AbstractAction {
         super();
         this.data = data;
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -46,11 +44,10 @@ public class AddingPlaceAction extends AbstractAction {
                     Transition.setCurIndex(Transition.getCurIndex() - 1);
                 }
             }
-                        
+
         }
-        
-        data.setAddingModeElement(
-                new Place(0, -1, -1, -1));
+
+        data.setAddingModeElement(new Place(0, -1, -1, -1));
     }
 
 }

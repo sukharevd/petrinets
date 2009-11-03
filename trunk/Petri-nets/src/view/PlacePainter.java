@@ -15,25 +15,25 @@ import data.Place;
 public class PlacePainter implements Painter {
 
     private Place place;
+
     private Color color;
 
     public PlacePainter(final Place place, final Color color) {
         this.place = place;
         this.color = color;
     }
-    
 
     @Override
     public void paint(Graphics g) {
 
         int r = FrameSettings.elementHeight() / 2;
-        int offset = FrameSettings.placeTokensTextOffset();        
-        
+        int offset = FrameSettings.placeTokensTextOffset();
+
         int x = place.getX() - r;
         int y = place.getY() - r;
         int width = 2 * r;
         int height = 2 * r;
-        
+
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(g2.getBackground());
         g2.fillOval(x, y, width, height);

@@ -8,11 +8,11 @@ import javax.swing.JFrame;
 public class DrawerAdjustmentListener implements AdjustmentListener {
 
     private JFrame frame;
-    
+
     public DrawerAdjustmentListener(JFrame frame) {
         this.frame = frame;
     }
-    
+
     @Override
     public void adjustmentValueChanged(AdjustmentEvent e) {
         frame.repaint();

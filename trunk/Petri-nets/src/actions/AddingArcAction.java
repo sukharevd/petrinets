@@ -12,11 +12,11 @@ import data.Place;
 import data.Transition;
 
 /**
- * Action, which is occurred when user clicks "Add Arc" component,
- * it adds new arc to the graph.
- *
+ * Action, which is occurred when user clicks "Add Arc" component, it adds new
+ * arc to the graph.
+ * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
- *
+ * 
  */
 public class AddingArcAction extends AbstractAction {
 
@@ -42,9 +42,9 @@ public class AddingArcAction extends AbstractAction {
                     Transition.setCurIndex(Transition.getCurIndex() - 1);
                 }
             }
-                        
+
         }
-        
+
         data.setAddingModeElement(new Arc(new ArrayList<Integer>(),
                 new ArrayList<Integer>(), -1, null));
 

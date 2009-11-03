@@ -1,7 +1,6 @@
 package data;
+
 import java.util.ArrayList;
-
-
 
 /**
  * Abstract class for all Elements of petri-net, It provides all base and
@@ -11,21 +10,26 @@ import java.util.ArrayList;
  * 
  */
 public abstract class Element implements Cloneable, XmlCompatible {
-	private int no;
-	private int x;
-	private int y;
-	private ArrayList<Arc> inputArcs;
-	private ArrayList<Arc> outputArcs;
-	private String type;
+    private int no;
 
-	//private BuiltElement parent;
+    private int x;
 
-	public Element() {
-	    inputArcs = null;
-	    outputArcs = null;
-	}
+    private int y;
 
-	/**
+    private ArrayList<Arc> inputArcs;
+
+    private ArrayList<Arc> outputArcs;
+
+    private String type;
+
+    // private BuiltElement parent;
+
+    public Element() {
+        inputArcs = null;
+        outputArcs = null;
+    }
+
+    /**
      * @return the no
      */
     public final int getNo() {
@@ -33,7 +37,8 @@ public abstract class Element implements Cloneable, XmlCompatible {
     }
 
     /**
-     * @param no the no to set
+     * @param no
+     *            the no to set
      */
     public final void setNo(int no) {
         this.no = no;
@@ -47,7 +52,8 @@ public abstract class Element implements Cloneable, XmlCompatible {
     }
 
     /**
-     * @param x the x to set
+     * @param x
+     *            the x to set
      */
     public final void setX(int x) {
         this.x = x;
@@ -61,7 +67,8 @@ public abstract class Element implements Cloneable, XmlCompatible {
     }
 
     /**
-     * @param y the y to set
+     * @param y
+     *            the y to set
      */
     public final void setY(int y) {
         this.y = y;
@@ -75,7 +82,8 @@ public abstract class Element implements Cloneable, XmlCompatible {
     }
 
     /**
-     * @param inputArcs the inputArcs to set
+     * @param inputArcs
+     *            the inputArcs to set
      */
     public final void setInputArcs(final ArrayList<Arc> inputArcs) {
         this.inputArcs = inputArcs;
@@ -89,31 +97,32 @@ public abstract class Element implements Cloneable, XmlCompatible {
     }
 
     /**
-     * @param outputArcs the outputArcs to set
+     * @param outputArcs
+     *            the outputArcs to set
      */
     public final void setOutputArcs(final ArrayList<Arc> outputArcs) {
         this.outputArcs = outputArcs;
     }
-    
-//    public final void synchronizeInputAndOutputArcs() {
-//        String type = this.type;
-//        for (int i = 0; i < outputArcs.size(); i++) {
-//            int to = outputArcs.get(i).getTo();
-//            
-////            try {
-////                checkArc(outputArcs.get(i));                
-////            } catch (arcConnectionException e) {
-////                System.err.println("Wrong arc to" + to + " connection.");
-////            }
-//            
-//            for (int j = 0; j < Main.getData().getElements().size(); j++) {
-//                Element el = Main.getData().getElements().get(j);
-//                if ((el.getType() != type) && (el.getNo() == to)) {
-//                    el.getInputArcs().add(outputArcs.get(i));
-//                }
-//            }
-//        }
-//    }
+
+    // public final void synchronizeInputAndOutputArcs() {
+    // String type = this.type;
+    // for (int i = 0; i < outputArcs.size(); i++) {
+    // int to = outputArcs.get(i).getTo();
+    //            
+    // // try {
+    // // checkArc(outputArcs.get(i));
+    // // } catch (arcConnectionException e) {
+    // // System.err.println("Wrong arc to" + to + " connection.");
+    // // }
+    //            
+    // for (int j = 0; j < Main.getData().getElements().size(); j++) {
+    // Element el = Main.getData().getElements().get(j);
+    // if ((el.getType() != type) && (el.getNo() == to)) {
+    // el.getInputArcs().add(outputArcs.get(i));
+    // }
+    // }
+    // }
+    // }
 
     /**
      * @return the type
@@ -123,7 +132,8 @@ public abstract class Element implements Cloneable, XmlCompatible {
     }
 
     /**
-     * @param type the type to set
+     * @param type
+     *            the type to set
      */
     public final void setType(String type) {
         this.type = type;
@@ -132,20 +142,20 @@ public abstract class Element implements Cloneable, XmlCompatible {
     public final void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
-	}
+    }
 
-	public String getTitle() {
-		return type + no;
-	}
+    public String getTitle() {
+        return type + no;
+    }
 
-//	public abstract void draw();
+    // public abstract void draw();
 
-	public abstract Object clone();
+    public abstract Object clone();
 
-	public String toXml() {
-		return this.toString();
-	}
+    public String toXml() {
+        return this.toString();
+    }
 
-	public abstract String toString();
+    public abstract String toString();
 
 }

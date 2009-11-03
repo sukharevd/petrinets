@@ -66,20 +66,21 @@ public class AddElementInvoker {
 
         int x1 = addedArc.getXsequence().get(0);
         int y1 = addedArc.getYsequence().get(0);
-        String s1 = ElementFinder.findElement(x1, y1, data).getType();   // for testing
-        String s2 = toElement.getType();                                 //
+        String s1 = ElementFinder.findElement(x1, y1, data).getType(); // for
+                                                                       // testing
+        String s2 = toElement.getType(); //
 
         if (s1 != s2) { //
-        addedArc.setTo(toElement.getNo());
-        addedArc.setToType(toElement.getType());
-        addedArc.AddConnectedPoint(toElement.getX(), toElement.getY());
-        Element fromElem = ElementFinder.findElement(x1, y1, data);
-        fromElem.getOutputArcs().add(addedArc);
-        toElement.getInputArcs().add(addedArc);
-        data.setChanged(true);
-        } else {                                                        //
-            throw new RuntimeException();                               //
-        }                                                               //
+            addedArc.setTo(toElement.getNo());
+            addedArc.setToType(toElement.getType());
+            addedArc.AddConnectedPoint(toElement.getX(), toElement.getY());
+            Element fromElem = ElementFinder.findElement(x1, y1, data);
+            fromElem.getOutputArcs().add(addedArc);
+            toElement.getInputArcs().add(addedArc);
+            data.setChanged(true);
+        } else { //
+            throw new RuntimeException(); //
+        } //
         // else {
         // JOptionPane.showMessageDialog(null,
         // "You cann't link equal elements.", "Error of drawing",
@@ -118,7 +119,7 @@ public class AddElementInvoker {
         addedArc.getXsequence().remove(addedArc.getXsequence().size() - 1);
         addedArc.getYsequence().remove(addedArc.getYsequence().size() - 1);
     }
-    
+
     protected void deleteFirstArcPoint() {
         Arc addedArc = (Arc) addedElement;
 

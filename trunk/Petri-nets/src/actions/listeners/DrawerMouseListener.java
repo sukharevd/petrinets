@@ -187,7 +187,7 @@ public class DrawerMouseListener implements MouseListener, MouseMotionListener {
         if (addedElement == null) {
             return;
         }
-         
+
         Command addCommand = new AddElementCommand(e.getX(), e.getY(),
                 addedElement, data);
 
@@ -230,7 +230,7 @@ public class DrawerMouseListener implements MouseListener, MouseMotionListener {
                 }
             } else {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    selectElement(e);                    
+                    selectElement(e);
                 } else {
                     Element element = ElementFinder.findElement(e.getX(), e
                             .getY(), data);
@@ -278,7 +278,7 @@ public class DrawerMouseListener implements MouseListener, MouseMotionListener {
 
         elementDrawer.setPreferredSize(new Dimension(maxX, maxY));
         elementDrawer.revalidate();
-        
+
     }
 
     /*

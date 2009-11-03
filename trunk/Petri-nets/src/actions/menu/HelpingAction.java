@@ -8,13 +8,12 @@ import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-
 /**
- * Action, which is occurred when user clicks "Context help..." component,
- * it tries to open help-file in the browser.
- *
+ * Action, which is occurred when user clicks "Context help..." component, it
+ * tries to open help-file in the browser.
+ * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
- *
+ * 
  */
 public class HelpingAction extends AbstractAction {
 
@@ -24,7 +23,7 @@ public class HelpingAction extends AbstractAction {
     private static final long serialVersionUID = 2960508224617600516L;
 
     private JFrame mainFrame;
-    
+
     /**
      * @param mainFrame
      */
@@ -40,8 +39,9 @@ public class HelpingAction extends AbstractAction {
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();
 
-//          File file1 = null;
-//          file1 = new File(getClass().getResource("UserGuide.htm").getFile());
+            // File file1 = null;
+            // file1 = new
+            // File(getClass().getResource("UserGuide.htm").getFile());
 
             File file = new File("UserGuide.htm");
 

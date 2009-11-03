@@ -8,7 +8,7 @@ package data;
  */
 public class Generator {
 
-	public void INSERT_YOUR_GENERATOR_IN_PROJECT() {
-		throw new UnsupportedOperationException();
-	}
+    public void INSERT_YOUR_GENERATOR_IN_PROJECT() {
+        throw new UnsupportedOperationException();
+    }
 }

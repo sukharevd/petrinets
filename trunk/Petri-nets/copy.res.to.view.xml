@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="Diagram" default="create" basedir=".">
+
+	<property name="project.name" value="petri_nets" />
+
+	<property name="outputDir" value="bin" />
+	<property name="resDir"   value="${outputDir}/view/res" />
+	
+
+<!-- ...................... Clearing project folder ................
+	<target name="clear">
+		<delete dir="${outputDir}" />
+	</target> -->
+
+<!-- ...................... Creating project folders ............... -->
+	<target name="create">
+		<mkdir dir="${outputDir}"/>
+		
+		<copy todir="${resDir}">
+		    <fileset dir="./res" />
+		</copy>
+	</target>
+
+</project>

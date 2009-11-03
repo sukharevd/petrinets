@@ -5,7 +5,6 @@ import java.util.Properties;
 
 import org.xml.sax.Attributes;
 
-
 import exceptions.WrongQNameException;
 import exceptions.XmlArgumentException;
 import exceptions.arcXYSizeException;
@@ -25,7 +24,8 @@ public class ElementSimpleFactory {
 
     public Element createElement(java.lang.String localName,
             java.lang.String qName, Attributes attrs, Element prevElement)
-            throws XmlArgumentException, arcXYSizeException, WrongQNameException {
+            throws XmlArgumentException, arcXYSizeException,
+            WrongQNameException {
 
         Properties pr = new java.util.Properties();
         pr.setProperty("name", qName);

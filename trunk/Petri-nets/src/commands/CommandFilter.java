@@ -5,7 +5,7 @@ package commands;
 
 /**
  * @author Admin
- *
+ * 
  */
 // TODO: javadocs
 public interface CommandFilter {
