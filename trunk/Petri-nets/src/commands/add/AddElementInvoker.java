@@ -42,10 +42,18 @@ public class AddElementInvoker {
     protected void addPlaceOrTransition() {
         addedElement.setX(x);
         addedElement.setY(y);
-        int no = (addedElement.getType() == "P") ? Place.getCurIndex()
-                : Transition.getCurIndex();
-
-        addedElement.setNo(no);
+        
+        if (addedElement.getNo() == -1) {
+            int no = 0;
+            
+            if (addedElement.getType() == "P") {
+                no = Place.getCurIndex();
+            } else {
+                no = Transition.getCurIndex();
+            }
+            addedElement.setNo(no);
+        }
+        
         data.add(addedElement);
 
         data.setAddingModeElement(null);
