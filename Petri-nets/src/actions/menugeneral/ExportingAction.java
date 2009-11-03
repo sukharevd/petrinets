@@ -220,9 +220,11 @@ public class ExportingAction extends AbstractAction {
             // making Position line
             outf.write("<tr> \n");
             for (int j = 0; j < tm.getAllP().size(); j++) {
-                if (j == 0)
+                if (j == 0){
                     outf.write("<td> \t </td>");
-                outf.write("<td bgcolor=\"ffffcc\"> \n " + "<bold> P" + (j + 1)
+                } 
+                outf.write("<td bgcolor=\"ffffcc\"> \n " + "<bold> " 
+                		+ tm.getAllP().get(j).getTitle()
                         + " </bold>\n" + "</td> \n");
             }
             outf.write("</tr> \n");
@@ -230,8 +232,9 @@ public class ExportingAction extends AbstractAction {
             // writting matrix
             for (int i = 0; i < tm.getAllT().size(); i++) {
                 outf.write("<tr> \n");
-                outf.write("<td bgcolor=\"ffffcc\"> \n " + "<bold> t "
-                        + (i + 1) + "</bold> \n " + "</td> \n");
+                outf.write("<td bgcolor=\"ffffcc\"> \n " + "<bold> "
+                        + tm.getAllT().get(i).getTitle()
+                        + "</bold> \n " + "</td> \n");
                 for (int j = 0; j < tm.getAllP().size(); j++) {
                     outf.write("<td> \n");
                     outf.write(matr[i][j] + "\t");
