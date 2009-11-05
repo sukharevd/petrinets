@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -16,11 +17,21 @@ public class TransitionPainter implements Painter {
 
     private Transition transition;
 
-    private Color color;
+    private Color maincolor;
+    private Color grcolor1;
+    private Color grcolor2;
+    
+    //private Color momentarygrcolor1 = new Color(8,64,149);
+    private Color momentarygrcolor1 = Color.gray;
+    private Color momentarygrcolor2 = Color.black;
 
-    public TransitionPainter(final Transition transition, final Color color) {
+    public TransitionPainter(final Transition transition,  final Color maincolor,
+    		final Color grcolor1, 
+    		final Color grcolor2) {
         this.transition = transition;
-        this.color = color;
+        this.grcolor1 = grcolor1;
+        this.grcolor2 = grcolor2;
+        this.maincolor = maincolor;
     }
 
     @Override
@@ -35,11 +46,19 @@ public class TransitionPainter implements Painter {
         Graphics2D g2 = (Graphics2D) g;
 
         g2.setColor(g2.getBackground());
+        GradientPaint gradient = new GradientPaint(x,y,grcolor1,
+        		x+width,y+height,grcolor2);
+        g2.setPaint(gradient);
         g2.fillRect(x, y, width, height);
-
-        g2.setColor(color);
+        
+        g.setColor(maincolor);
         if (transition.getLyambda() == 0) {
+            GradientPaint gradient2 = new GradientPaint(x,y,momentarygrcolor1,
+            		x+width,y+height,momentarygrcolor2);
+            g2.setPaint(gradient2);
             g2.fillRect(x, y, width, height);
+            g.setColor(maincolor);
+        	g2.drawRect(x, y, width, height);
         } else {
             g2.drawRect(x, y, width, height);
         }

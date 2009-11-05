@@ -18,10 +18,18 @@ public class PlacePainter implements Painter {
     private Place place;
 
     private Color color;
+    
+    private Color gradcolor1;
+    
+    private Color gradcolor2;
+    
 
-    public PlacePainter(final Place place, final Color color) {
+    public PlacePainter(final Place place, final Color color, final Color gradcolor1,
+    		final Color gradcolor2) {
         this.place = place;
         this.color = color;
+        this.gradcolor1 = gradcolor1;
+        this.gradcolor2 = gradcolor2;
     }
 
     @Override
@@ -37,10 +45,10 @@ public class PlacePainter implements Painter {
 
         Graphics2D g2 = (Graphics2D) g;
         //g2.setColor(g2.getBackground());
-        Color lightyellow = new Color(255,255,153);
-        Color lightred = new Color(255,78,0);
-        GradientPaint gradient = new GradientPaint(x,y,lightyellow,
-        		x+width,y+height,lightred);
+        //gradcolor1 = new Color(255,255,153);
+        //gradcolor2 = new Color(255,78,0);
+        GradientPaint gradient = new GradientPaint(x,y,gradcolor1,
+        		x+width,y+height,gradcolor2);
         g2.setPaint(gradient);
         g2.fillOval(x, y, width, height);
 

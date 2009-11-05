@@ -20,7 +20,12 @@ public class ArcPainter implements Painter {
     private String fromType;
 
     private Color color;
-
+    
+    //darkred
+    private Color roundcolor = new Color(154,9,9);
+    //greeny
+    //----------private Color roundcolor = new Color(0,204,153);
+    
     public ArcPainter(final Arc arc, final String fromType, final Color color) {
         this.arc = arc;
         this.fromType = fromType;
@@ -94,8 +99,7 @@ public class ArcPainter implements Painter {
             }
             double yi = y2 + r * Math.sin(fi);
             // System.out.println(", xi = " + xi + " yi = " + yi);
-            Color darkred = new Color(154,9,9);
-            g2.setColor(darkred);
+            g2.setColor(roundcolor);
             g2.fillOval((int) xi - 5, (int) yi - 5, 10, 10);
         }
 
