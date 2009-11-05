@@ -39,20 +39,7 @@ public class TreeDrawer extends JPanel {
     public TreeDrawer(Data data) {
         this.data = data;
 
-        TableManagment myTable = new TableManagment(this.data);
-        int[] typecrossing = new int[myTable.getAllT().size()];
-        for (int i = 0; i < typecrossing.length; i++) {
-            typecrossing[i] = 0;
-            if (myTable.getAllT().get(i).getLyambda() == 0) {
-                typecrossing[i] = 1;
-            }
-        }
-
-        TreeofPetriNet mytree = new TreeofPetriNet(myTable.getAllP().size(),
-                myTable.getAllT().size(), myTable.getMatrixDi(), myTable
-                        .getMatrixDq(), myTable.getMarkirovka(), typecrossing);
-
-        Z = mytree.WriteResult();
+        
     }
 
     int WIDTH = 550;
@@ -77,6 +64,22 @@ public class TreeDrawer extends JPanel {
     static TreeConnection[] Z;
 
     public void paint(Graphics g) {
+        TableManagment myTable = new TableManagment(this.data);
+        int[] typecrossing = new int[myTable.getAllT().size()];
+        for (int i = 0; i < typecrossing.length; i++) {
+            typecrossing[i] = 0;
+            if (myTable.getAllT().get(i).getLyambda() == 0) {
+                typecrossing[i] = 1;
+            }
+        }
+
+        TreeofPetriNet mytree = new TreeofPetriNet(myTable.getAllP().size(),
+                myTable.getAllT().size(), myTable.getMatrixDi(), myTable
+                        .getMatrixDq(), myTable.getMarkirovka(), typecrossing);
+
+        Z = mytree.WriteResult();
+        
+        
         int i, count, j;
         int Angle = 0;
         int dAngle;
