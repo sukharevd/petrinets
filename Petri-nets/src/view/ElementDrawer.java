@@ -35,7 +35,8 @@ public class ElementDrawer extends JPanel {
 
     private Color activeElementsColor = Color.blue;
 
-    private Color inputArcsColor = Color.getHSBColor(0.5f, 1f, 0.6f);
+    //private Color inputArcsColor = Color.getHSBColor(0.5f, 1f, 0.6f);
+    private Color inputArcsColor = new Color(255,102,0);
 
     private Color gridColor = Color.getHSBColor(0f, 0f, 0.85f);
 

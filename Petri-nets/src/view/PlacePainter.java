@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -35,7 +36,12 @@ public class PlacePainter implements Painter {
         int height = 2 * r;
 
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(g2.getBackground());
+        //g2.setColor(g2.getBackground());
+        Color lightyellow = new Color(255,255,153);
+        Color lightred = new Color(255,78,0);
+        GradientPaint gradient = new GradientPaint(x,y,lightyellow,
+        		x+width,y+height,lightred);
+        g2.setPaint(gradient);
         g2.fillOval(x, y, width, height);
 
         g2.setColor(color);

@@ -94,7 +94,8 @@ public class ArcPainter implements Painter {
             }
             double yi = y2 + r * Math.sin(fi);
             // System.out.println(", xi = " + xi + " yi = " + yi);
-            g2.setColor(Color.gray);
+            Color darkred = new Color(154,9,9);
+            g2.setColor(darkred);
             g2.fillOval((int) xi - 5, (int) yi - 5, 10, 10);
         }
 
