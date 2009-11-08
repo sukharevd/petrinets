@@ -18,7 +18,7 @@ import data.TreeofPetriNet;
  * @author <a href="mailto:jacky@gmail.com">Dzyuban Yuriy</a>
  * 
  */
-public class TreeDrawer extends JPanel {
+public class ReachabilityGraphDrawer extends JPanel {
 
     /**
      * 
@@ -36,7 +36,7 @@ public class TreeDrawer extends JPanel {
 
     private Data data;
 
-    public TreeDrawer(Data data) {
+    public ReachabilityGraphDrawer(Data data) {
         this.data = data;
 
         
