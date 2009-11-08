@@ -410,13 +410,15 @@ public class AppFrame extends JFrame {
         // organization of tab pane:
         JPanel tablePanel = new JPanel();
         JPanel drawingPanel = new JPanel(new BorderLayout());
-        JPanel treePanel = new TreeDrawer(data);
+        JPanel markovGraphPanel = new MarkovGraphDrawer(data);
+        JPanel reachabiblityGraphPanel = new ReachabilityGraphDrawer(data);
         // drawingPanel.setOpaque(true);
 
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.add("Drawing", drawingPanel);
         tabPane.add("Tables", tablePanel);
-        tabPane.add("Graph", treePanel);
+        tabPane.add("Markov Graph", markovGraphPanel);
+        tabPane.add("Reachabiblity Graph", reachabiblityGraphPanel);
 
         this.getContentPane().add(tabPane);
 
