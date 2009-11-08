@@ -25,7 +25,6 @@ public class ReachabilityGraphDrawer extends JPanel {
      */
     private static final long serialVersionUID = 7897141005109233931L;
 
-    // private TreeConnection[] Z;
 
     /*
      * (non-Javadoc)
@@ -37,9 +36,7 @@ public class ReachabilityGraphDrawer extends JPanel {
     private Data data;
 
     public ReachabilityGraphDrawer(Data data) {
-        this.data = data;
-
-        
+        this.data = data;    
     }
 
     int WIDTH = 550;
@@ -60,9 +57,11 @@ public class ReachabilityGraphDrawer extends JPanel {
 
     int LA = 20;
 
-    // int N;
-    static TreeConnection[] Z;
-
+    TreeConnection[] Z;
+    TreeConnection[] ZZ;
+    /**
+     * Build tree of destination
+     */
     public void paint(Graphics g) {
         TableManagment myTable = new TableManagment(this.data);
         int[] typecrossing = new int[myTable.getAllT().size()];
@@ -76,25 +75,26 @@ public class ReachabilityGraphDrawer extends JPanel {
         TreeofPetriNet mytree = new TreeofPetriNet(myTable.getAllP().size(),
                 myTable.getAllT().size(), myTable.getMatrixDi(), myTable
                         .getMatrixDq(), myTable.getMarkirovka(), typecrossing);
-
-        Z = mytree.WriteResult();
+        Z = mytree.WriteResult(1);
         
         
-        int i, count, j;
+        int i, count;
         int Angle = 0;
         int dAngle;
         double DegToRad = Math.PI / 180;
         double RadToDeg = 180.0 / Math.PI;
 
         super.paint(g);
-        count = TreeofPetriNet.RepeatCount;
+        count =TreeofPetriNet.Number-1;
         dAngle = 360 / count;
         for (i = 0; i < count; i++) {
-            g.setColor(Color.red);
+        	Color color1 = new Color(255,153,0);
+        	g.setColor(color1);
+            
             g.fillOval(CenterX + (int) (Dist * Math.cos(Angle * DegToRad)),
                     CenterY + (int) (Dist * Math.sin(Angle * DegToRad)), d, d);
             g.setColor(Color.white);
-            g.drawString(Integer.toString(i), CenterX
+            g.drawString(Integer.toString(Z[i].getNameVhod()), CenterX
                     + (int) (Dist * Math.cos(Angle * DegToRad)) + r - 5,
                     CenterY + (int) (Dist * Math.sin(Angle * DegToRad)) + r);
             Angle = Angle + dAngle;
@@ -104,9 +104,8 @@ public class ReachabilityGraphDrawer extends JPanel {
         int x1, x2, y1, y2, cx, cy, lx1, ly1, lx2, ly2;
         double k;
         for (i = 0; i < count; i++) {
-            for (j = 0; j < Z[i].getColVhod(); j++) {
-                A2 = dAngle * Z[i].getElementVuhod(j); // konec
-                A1 = dAngle * Z[i].getElementVhod(j); // na4alo
+                A2 = dAngle * Z[i].getElementVuhod(0); // konec
+                A1 = dAngle * Z[i].getElementVhod(0); // na4alo
 
                 dx1 = (int) (r * Math.cos(A1 * DegToRad));
                 dy1 = (int) (r * Math.sin(A1 * DegToRad));
@@ -146,6 +145,5 @@ public class ReachabilityGraphDrawer extends JPanel {
                 }
             }
         }
-    }
 
 }
