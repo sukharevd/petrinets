@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <Place no="1" x="174" y="91" numTokens="1" >
+        <Arc to="1" x1="174" y1="91" x2="221" y2="90" />
+    </Place>
+
+    <Place no="2" x="267" y="94" numTokens="0" >
+        <Arc to="2" x1="267" y1="94" x2="311" y2="94" />
+    </Place>
+
+    <Place no="3" x="351" y="93" numTokens="0" >
+        <Arc to="4" x1="351" y1="93" x2="386" y2="98" />
+    </Place>
+
+    <Transition no="1" x="221" y="90" lyambda="0.0" g="0.0" >
+        <Arc to="2" x1="221" y1="90" x2="267" y2="94" />
+    </Transition>
+
+    <Transition no="2" x="311" y="94" lyambda="1.0" g="0.0" >
+        <Arc to="3" x1="311" y1="94" x2="351" y2="93" />
+    </Transition>
+
+    <Place no="4" x="411" y="97" numTokens="0" >
+        <Arc to="3" x1="411" y1="97" x2="449" y2="99" />
+    </Place>
+
+    <Place no="5" x="487" y="99" numTokens="0" >
+    </Place>
+
+    <Transition no="3" x="449" y="99" lyambda="0.0" g="0.0" >
+        <Arc to="5" x1="449" y1="99" x2="487" y2="99" />
+    </Transition>
+
+    <Transition no="4" x="386" y="98" lyambda="1.0" g="0.0" >
+        <Arc to="4" x1="386" y1="98" x2="411" y2="97" />
+    </Transition>
+
+</project>

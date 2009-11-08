@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <Place no="1" x="184" y="55" numTokens="1" >
+        <Arc to="1" x1="184" y1="55" x2="254" y2="57" />
+    </Place>
+
+    <Place no="2" x="332" y="56" numTokens="0" >
+    </Place>
+
+    <Transition no="1" x="254" y="57" lyambda="1.0" g="0.0" >
+        <Arc to="2" x1="254" y1="57" x2="332" y2="56" />
+    </Transition>
+
+</project>

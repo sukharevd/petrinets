@@ -77,7 +77,7 @@ public class MarkovGraphDrawer extends JPanel {
                 myTable.getAllT().size(), myTable.getMatrixDi(), myTable
                         .getMatrixDq(), myTable.getMarkirovka(), typecrossing);
 
-        Z = mytree.WriteResult();
+        Z=mytree.WriteResult(0);
         
         
         int i, count, j;
@@ -87,7 +87,7 @@ public class MarkovGraphDrawer extends JPanel {
         double RadToDeg = 180.0 / Math.PI;
 
         super.paint(g);
-        count = TreeofPetriNet.RepeatCount;
+        count =TreeofPetriNet.RepeatCount;
         dAngle = 360 / count;
         for (i = 0; i < count; i++) {
             g.setColor(Color.red);

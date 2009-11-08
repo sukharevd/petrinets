@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <Place no="1" x="159" y="76" numTokens="1" >
+        <Arc to="1" x1="159" y1="76" x2="210" y2="76" />
+    </Place>
+
+    <Place no="2" x="255" y="81" numTokens="0" >
+        <Arc to="2" x1="255" y1="81" x2="311" y2="81" />
+    </Place>
+
+    <Place no="3" x="366" y="77" numTokens="0" >
+    </Place>
+
+    <Transition no="1" x="210" y="76" lyambda="1.0" g="0.0" >
+        <Arc to="2" x1="210" y1="76" x2="255" y2="81" />
+    </Transition>
+
+    <Transition no="2" x="311" y="81" lyambda="0.0" g="0.0" >
+        <Arc to="3" x1="311" y1="81" x2="366" y2="77" />
+    </Transition>
+
+</project>
