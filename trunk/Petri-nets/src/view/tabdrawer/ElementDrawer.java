@@ -1,4 +1,4 @@
-package view;
+package view.tabdrawer;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import view.FrameSettings;
+import view.elementpainters.ArcPainter;
+import view.elementpainters.PlacePainter;
+import view.elementpainters.TransitionPainter;
 
 import actions.listeners.DrawerKeyListener;
 import actions.listeners.DrawerMouseListener;

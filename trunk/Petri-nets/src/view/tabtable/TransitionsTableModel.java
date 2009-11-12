@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view;
+package view.tabtable;
 
 import javax.swing.table.DefaultTableModel;
 

@@ -13,8 +13,8 @@ import javax.swing.JFrame;
 import data.Data;
 import data.Element;
 
-import view.ElementDrawer;
 import view.ElementFinder;
+import view.tabdrawer.ElementDrawer;
 
 /**
  * This class listens the mouse click, it performs adding, deleting, replacing

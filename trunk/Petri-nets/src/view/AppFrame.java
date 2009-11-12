@@ -21,6 +21,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import view.tabdrawer.ElementDrawer;
+import view.tabgraphs.MarkovGraphDrawer;
+import view.tabgraphs.ReachabilityGraphDrawer;
+import view.tabtable.TransitionsTableDrawer;
+
 import data.Data;
 
 import actions.listeners.AppWindowListener;

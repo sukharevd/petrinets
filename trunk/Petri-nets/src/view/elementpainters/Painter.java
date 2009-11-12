@@ -1,4 +1,4 @@
-package view;
+package view.elementpainters;
 
 import java.awt.Graphics;
 
