@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view;
+package view.tabgraphs;
 
 import java.awt.Color;
 import java.awt.Graphics;

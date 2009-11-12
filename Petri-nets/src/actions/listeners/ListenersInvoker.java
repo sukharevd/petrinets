@@ -19,9 +19,9 @@ import commands.delete.DeleteElementCommand;
 import commands.move.MoveElementCommand;
 import commands.move.MoveElementCommandFilter;
 
-import view.ElementDrawer;
 import view.ElementFinder;
 import view.FrameSettings;
+import view.tabdrawer.ElementDrawer;
 import data.Arc;
 import data.Data;
 import data.Element;
