@@ -6,8 +6,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.net.URL;
 
 import javax.swing.AbstractAction;
@@ -25,6 +23,7 @@ import javax.swing.KeyStroke;
 
 import data.Data;
 
+import actions.listeners.AppWindowListener;
 import actions.listeners.DrawerAdjustmentListener;
 import actions.menuadd.AddingArcAction;
 import actions.menuadd.AddingImmediateTransitionAction;
@@ -107,20 +106,19 @@ public class AppFrame extends JFrame {
     /**
      * @return the elementDrawer
      */
-    public/* synchronized */final ElementDrawer getElementDrawer() {
+    public final ElementDrawer getElementDrawer() {
         return elementDrawer;
     }
 
-    // TODO: remove synchronized
     /**
      * @param drawer
      *            the elementDrawer to set
      */
-    public/* synchronized */final void setElementDrawer(ElementDrawer drawer) {
+    public final void setElementDrawer(ElementDrawer drawer) {
         elementDrawer = drawer;
     }
 
-    public void initializeMenuBar() {
+    protected void initializeMenuBar() {
 
         JMenuBar bar;
 
@@ -227,33 +225,6 @@ public class AppFrame extends JFrame {
         addArc.setMnemonic(KeyEvent.VK_A);
         addArc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
                 ActionEvent.CTRL_MASK));
-
-        // -------------------------------------
-        // ---------> Mode Menu <---------------
-        // -------------------------------------
-
-        // JMenuItem editor = new JMenuItem();
-        // // JMenuItem deleter = new JMenuItem();
-        // JMenuItem tree = new JMenuItem();
-        // JMenuItem emul = new JMenuItem();
-        //
-        // editor.setAction(new ModelEditorAction());
-        // editor.setText("Editor");
-        // editor.setMnemonic(KeyEvent.VK_E);
-        // editor.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
-        // ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-        //
-        // tree.setAction(new ModelTreeAction(data));
-        // tree.setText("Tree");
-        // tree.setMnemonic(KeyEvent.VK_T);
-        // tree.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
-        // ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-        //
-        // emul.setAction(new ModelEmulationAction());
-        // emul.setText("Emulate");
-        // emul.setMnemonic(KeyEvent.VK_M);
-        // emul.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-        // ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
 
         // -------------------------------------
         // ---------> Help Menu <---------------
@@ -399,6 +370,34 @@ public class AppFrame extends JFrame {
 
     }
 
+    protected void panelToPanelWithScroll(JPanel inPanel, JPanel outPanel) {
+        JScrollPane scroller = new JScrollPane(inPanel);
+        AdjustmentListener listener = new DrawerAdjustmentListener(this);
+        scroller.getHorizontalScrollBar().addAdjustmentListener(listener);
+        scroller.getVerticalScrollBar().addAdjustmentListener(listener);
+        outPanel.add(scroller, BorderLayout.CENTER);
+    }
+    
+    protected void initializeTabs() {
+        JPanel drawingPanel = new JPanel(new BorderLayout());
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        JPanel markovGraphPanel = new MarkovGraphDrawer(data);
+        JPanel reachabiblityGraphPanel = new ReachabilityGraphDrawer(data);
+
+        elementDrawer = new ElementDrawer(data, this);
+        TransitionsTableDrawer transtable = new TransitionsTableDrawer(this);
+        panelToPanelWithScroll(elementDrawer, drawingPanel);
+        panelToPanelWithScroll(transtable, tablePanel);
+        
+        JTabbedPane tabPane = new JTabbedPane();
+        tabPane.add("Drawing", drawingPanel);
+        tabPane.add("Transitions Table", tablePanel);
+        tabPane.add("Markov Graph", markovGraphPanel);
+        tabPane.add("Reachabiblity Graph", reachabiblityGraphPanel);
+
+        this.getContentPane().add(tabPane);
+    }
+
     public void createAndShowGUI() {
         setTitle("Petri nets Builder");
         setSize(fWidth, fHeight);
@@ -406,38 +405,11 @@ public class AppFrame extends JFrame {
 
         initializeMenuBar();
         initializeToolBar();
-
-        // organization of tab pane:
-        JPanel tablePanel = new JPanel();
-        JPanel drawingPanel = new JPanel(new BorderLayout());
-        JPanel markovGraphPanel = new MarkovGraphDrawer(data);
-        JPanel reachabiblityGraphPanel = new ReachabilityGraphDrawer(data);
-        // drawingPanel.setOpaque(true);
-
-        JTabbedPane tabPane = new JTabbedPane();
-        tabPane.add("Drawing", drawingPanel);
-        tabPane.add("Tables", tablePanel);
-        tabPane.add("Markov Graph", markovGraphPanel);
-        tabPane.add("Reachabiblity Graph", reachabiblityGraphPanel);
-
-        this.getContentPane().add(tabPane);
-
-        // organization of scroll pane for dawingPanel:
-        elementDrawer = new ElementDrawer(data, this);
-        JScrollPane scroller = new JScrollPane(elementDrawer);
-        AdjustmentListener listener = new DrawerAdjustmentListener(this);
-        scroller.getHorizontalScrollBar().addAdjustmentListener(listener);
-        scroller.getVerticalScrollBar().addAdjustmentListener(listener);
-        drawingPanel.add(scroller, BorderLayout.CENTER);
+        initializeTabs();        
 
         setVisible(true);
 
-        final JFrame thisFrame = this;
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(final WindowEvent we) {
-                ExitingAction.exit(data, thisFrame);
-            }
-        });
+        addWindowListener(new AppWindowListener(data, this));
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 }

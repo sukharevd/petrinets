@@ -23,9 +23,9 @@ import data.TableManagment;
 /**
  * Action, which is occurred when user clicks "Export..." component, it saves
  * current chart as image file to a disk.
- * 
- * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
- * 
+ *
+ * @author <a href="mailto:vixentael@gmail.com">Voitova Anastasiia</a>
+ *
  */
 public class ExportingAction extends AbstractAction {
 

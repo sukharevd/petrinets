@@ -11,8 +11,8 @@ import data.Element;
  * Entry point of application.
  * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
- * @author <a href="mailto:jacky@gmail.com">Dzyuban Yuriy</a>
- * @author <a href="mailto:h_d_f@mail.ru">Voitova Anastasiia</a>
+ * @author <a href="mailto:ydzyuban@gmail.com">Dzyuban Yuriy</a>
+ * @author <a href="mailto:vixentael@gmail.com">Voitova Anastasiia</a>
  * @author <a href="mailto:lave14@mail.ru">Kustch Kristina</a>
  * 
  */
