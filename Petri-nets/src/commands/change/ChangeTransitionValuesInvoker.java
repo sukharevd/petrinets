@@ -23,22 +23,30 @@ public class ChangeTransitionValuesInvoker {
     private double g1;
 
     private double g2;
+    
+    private double r1;
 
-    public ChangeTransitionValuesInvoker(Transition t, double lyambda, double g) {
+    private double r2;
+
+    public ChangeTransitionValuesInvoker(Transition t, double lyambda, double g, double r) {
         this.transition = t;
         this.g1 = t.getG();
+        this.r1 = t.getR();
         this.lyambda1 = t.getLyambda();
         this.g2 = g;
+        this.r2 = r;
         this.lyambda2 = lyambda;
     }
 
     public void changeTransitionValues() {
         transition.setG(g2);
+        transition.setR(r2);
         transition.setLyambda(lyambda2);
     }
 
     public void undoChangeTransitionValues() {
         transition.setG(g1);
+        transition.setR(r1);
         transition.setLyambda(lyambda1);
     }
 

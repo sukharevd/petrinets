@@ -4,10 +4,11 @@
 package commands;
 
 /**
- * @author Admin
+ * Interface for Undo/Redo filters.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * 
  */
-// TODO: javadocs
 public interface CommandFilter {
     public Command filtrate(Command command);
 }

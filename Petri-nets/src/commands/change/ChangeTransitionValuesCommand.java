@@ -17,9 +17,10 @@ import data.Transition;
 public class ChangeTransitionValuesCommand implements Command {
 
     private ChangeTransitionValuesInvoker invoker;
-
-    public ChangeTransitionValuesCommand(Transition t, double lyambda, double g) {
-        this.invoker = new ChangeTransitionValuesInvoker(t, lyambda, g);
+    
+    // TODO: somevar
+    public ChangeTransitionValuesCommand(Transition t, double lyambda, double g, double r) {
+        this.invoker = new ChangeTransitionValuesInvoker(t, lyambda, g, r);
     }
 
     /*

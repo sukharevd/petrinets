@@ -15,10 +15,17 @@ public class Transition extends Element {
     private double lyambda;
 
     private double g;
+    
+    private double r;
 
+    // TODO: somevar
+    // TODO: getters/setters
+    // private double somevar; 
+    
     private Generator law;
 
-    public Transition(double lyambda, double g, Generator law, int no, int x,
+    // TODO: somevar
+    public Transition(double lyambda, double g, double r, /*double somevar,*/ Generator law, int no, int x,
             int y) {
         setNo(no);
         setX(x);
@@ -29,6 +36,9 @@ public class Transition extends Element {
 
         this.lyambda = lyambda;
         this.g = g;
+        this.r = r;
+        // TODO: somevar
+        // this.somevar = somevar;
         this.law = law;
 
         curIndex++;
@@ -62,6 +72,20 @@ public class Transition extends Element {
      */
     public final void setG(double g) {
         this.g = g;
+    }
+
+    /**
+     * @return the r
+     */
+    public final double getR() {
+        return r;
+    }
+
+    /**
+     * @param r the r to set
+     */
+    public final void setR(double r) {
+        this.r = r;
     }
 
     /**
@@ -99,7 +123,7 @@ public class Transition extends Element {
     }
 
     public Object clone() {
-        return new Transition(lyambda, g, law, Transition.curIndex, getX() + 2,
+        return new Transition(lyambda, g, r, law, Transition.curIndex, getX() + 2,
                 getY() + 2);
     }
 
@@ -114,6 +138,12 @@ public class Transition extends Element {
         sb.append(lyambda);
         sb.append("\" g=\"");
         sb.append(g);
+        sb.append("\" r=\"");
+        sb.append(r);
+        // TODO: somevar
+        // TODO: low
+        // sb.append("\" somevar=\"");
+        // sb.append(somevar);
         sb.append("\" >\n");
 
         for (int i = 0; i < getOutputArcs().size(); i++) {

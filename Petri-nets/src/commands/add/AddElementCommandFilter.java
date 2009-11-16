@@ -39,50 +39,67 @@ public class AddElementCommandFilter implements CommandFilter {
         this.mouseY = mouseY;
     }
 
-    // protected Command filtrate
+    protected boolean isFiltratedPlaceTransition() {
+        Element selectedEl = ElementFinder.findElement(mouseX, mouseY, data);
+
+        if ((selectedEl != null) && (selectedEl.getType() != "A")) {
+
+            String message = "You cann't add element over other element.";
+            String title = "Error of drawing";
+            JOptionPane.showMessageDialog(null, message, title,
+                    JOptionPane.WARNING_MESSAGE);
+            return true;
+        }
+
+        return false;
+    }
+    
+    protected boolean isFiltratedArc() {
+        Arc addedArc = (Arc) data.getAddingModeElement();
+
+        Element selectedEl = ElementFinder.findElement(mouseX,
+                mouseY, data);
+
+        if (addedArc.getXsequence().size() > 0) {
+            if ((selectedEl != null)
+                    && (selectedEl.getType() != "A")) {
+                int x1 = addedArc.getXsequence().get(0);
+                int y1 = addedArc.getYsequence().get(0);
+                String s1 = ElementFinder.findElement(x1, y1, data)
+                        .getType();
+                String s2 = selectedEl.getType();
+
+                if (s1 == s2) {
+                    JOptionPane.showMessageDialog(null,
+                            "You cann't link equal elements.",
+                            "Error of drawing",
+                            JOptionPane.WARNING_MESSAGE);
+                    return true;
+                }
+            }
+        } else {
+            if ((selectedEl == null)
+                    || (selectedEl.getType() == "A")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public Command filtrate(Command command) {
         Element addedElement = data.getAddingModeElement();
         if (addedElement != null) {
+
             if ((addedElement.getType() == "P")
                     || (addedElement.getType() == "T")) {
-                Element selectedEl = ElementFinder.findElement(mouseX, mouseY,
-                        data);
-                if ((selectedEl != null) && (selectedEl.getType() != "A")) {
-                    JOptionPane.showMessageDialog(null,
-                            "You cann't add element over other element.",
-                            "Error of drawing", JOptionPane.WARNING_MESSAGE);
+                if (isFiltratedPlaceTransition()) {
                     return null;
                 }
-                // TODO: wrong place/transition adding filter;
             } else {
                 if (addedElement.getType() == "A") {
-                    Arc addedArc = (Arc) addedElement;
-
-                    Element selectedEl = ElementFinder.findElement(mouseX,
-                            mouseY, data);
-
-                    if (addedArc.getXsequence().size() > 0) {
-                        if ((selectedEl != null)
-                                && (selectedEl.getType() != "A")) {
-                            int x1 = addedArc.getXsequence().get(0);
-                            int y1 = addedArc.getYsequence().get(0);
-                            String s1 = ElementFinder.findElement(x1, y1, data)
-                                    .getType();
-                            String s2 = selectedEl.getType();
-
-                            if (s1 == s2) {
-                                JOptionPane.showMessageDialog(null,
-                                        "You cann't link equal elements.",
-                                        "Error of drawing",
-                                        JOptionPane.WARNING_MESSAGE);
-                                return null;
-                            }
-                        }
-                    } else {
-                        if ((selectedEl == null)
-                                || (selectedEl.getType() == "A")) {
-                            return null;
-                        }
+                    if (isFiltratedArc()) {
+                        return null;
                     }
                 }
             }

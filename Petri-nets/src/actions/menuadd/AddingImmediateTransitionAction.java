@@ -46,7 +46,8 @@ public class AddingImmediateTransitionAction extends AbstractAction {
             }
         }
 
-        data.setAddingModeElement(new Transition(0.0, 0.0, null, -1, -1, -1));
+        Transition newTran = new Transition(0.0, 0.0, 0.0, null, -1, -1, -1);
+        data.setAddingModeElement(newTran);
     }
 
 }

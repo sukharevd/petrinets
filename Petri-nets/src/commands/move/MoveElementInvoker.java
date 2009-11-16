@@ -37,7 +37,7 @@ public class MoveElementInvoker {
         this.yNew = yNew;
         this.xPrevious = selElement.getX();
         this.yPrevious = selElement.getY();
-        // TODO: what about (selEl == null)?
+        // TODO: what about if(selEl == null)?
         this.selElement = selElement;
     }
 

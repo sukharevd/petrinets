@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import org.xml.sax.Attributes;
 
+import exceptions.MissedXmlArgumentException;
 import exceptions.WrongQNameException;
 import exceptions.XmlArgumentException;
 import exceptions.arcXYSizeException;
@@ -25,7 +26,7 @@ public class ElementSimpleFactory {
     public Element createElement(java.lang.String localName,
             java.lang.String qName, Attributes attrs, Element prevElement)
             throws XmlArgumentException, arcXYSizeException,
-            WrongQNameException {
+            WrongQNameException, MissedXmlArgumentException {
 
         Properties pr = new java.util.Properties();
         pr.setProperty("name", qName);
@@ -36,19 +37,32 @@ public class ElementSimpleFactory {
         }
 
         if (qName == "Place") {
-            int x = Integer.valueOf(pr.getProperty("x"));
-            int y = Integer.valueOf(pr.getProperty("y"));
-            int no = Integer.valueOf(pr.getProperty("no"));
-            int numTokens = Integer.valueOf(pr.getProperty("numTokens"));
-            return new Place(numTokens, no, x, y);
-        } else {
-            if (qName == "Transition") {
+            try {
                 int x = Integer.valueOf(pr.getProperty("x"));
                 int y = Integer.valueOf(pr.getProperty("y"));
                 int no = Integer.valueOf(pr.getProperty("no"));
-                double lyambda = Double.valueOf(pr.getProperty("lyambda"));
-                double g = Double.valueOf(pr.getProperty("g"));
-                return new Transition(lyambda, g, null, no, x, y);
+                int numTokens = Integer.valueOf(pr.getProperty("numTokens"));
+                return new Place(numTokens, no, x, y);
+            } catch (NullPointerException e) {
+                throw new MissedXmlArgumentException();
+            }
+        } else {
+            if (qName == "Transition") {
+                try {
+                    int x = Integer.valueOf(pr.getProperty("x"));
+                    int y = Integer.valueOf(pr.getProperty("y"));
+                    int no = Integer.valueOf(pr.getProperty("no"));
+                    double lyambda = Double.valueOf(pr.getProperty("lyambda"));
+                    double g = Double.valueOf(pr.getProperty("g"));
+                    double r = Double.valueOf(pr.getProperty("r"));
+                    // TODO: somevar
+                    // double somevar = Double.valueOf(pr.getProperty("somevar"));
+                    // TODO: low
+                    // String low = pr.getProperty("low"); 
+                    return new Transition(lyambda, g, r, null, no, x, y);
+                } catch (NullPointerException e) {
+                    throw new MissedXmlArgumentException();
+                }
             } else {
                 if (qName == "Arc") {
                     ArrayList<Integer> xseq = new ArrayList<Integer>();
@@ -65,13 +79,13 @@ public class ElementSimpleFactory {
                                 if (attrs.getQName(i) == "to") {
                                     to = Integer.valueOf(attrs.getValue(i));
                                 } else {
-                                    throw new exceptions.XmlArgumentException();
+                                    throw new XmlArgumentException();
                                 }
                             }
                         }
                     }
                     if (xseq.size() != yseq.size()) {
-                        throw new exceptions.arcXYSizeException();
+                        throw new arcXYSizeException();
                     }
                     String toType;
                     if (prevElement.getType() == "P") {
