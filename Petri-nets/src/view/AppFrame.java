@@ -24,7 +24,8 @@ import javax.swing.KeyStroke;
 import view.tabdrawer.ElementDrawer;
 import view.tabgraphs.MarkovGraphDrawer;
 import view.tabgraphs.ReachabilityGraphDrawer;
-import view.tabtable.TransitionsTableDrawer;
+import view.tabtables.DescriptiveTableDrawer;
+import view.tabtables.TransitionsTableDrawer;
 
 import data.Data;
 
@@ -386,20 +387,24 @@ public class AppFrame extends JFrame {
     protected void initializeTabs() {
         JPanel drawingPanel = new JPanel(new BorderLayout());
         JPanel tablePanel = new JPanel(new BorderLayout());
+        JPanel descrTablePanel = new JPanel(new BorderLayout());
         JPanel markovGraphPanel = new MarkovGraphDrawer(data);
         JPanel reachabiblityGraphPanel = new ReachabilityGraphDrawer(data);
 
         elementDrawer = new ElementDrawer(data, this);
-        TransitionsTableDrawer transtable = new TransitionsTableDrawer(this);
+        TransitionsTableDrawer transtable = new TransitionsTableDrawer(data, this);
+        DescriptiveTableDrawer descrtable = new DescriptiveTableDrawer(data, this);
         panelToPanelWithScroll(elementDrawer, drawingPanel);
         panelToPanelWithScroll(transtable, tablePanel);
+        panelToPanelWithScroll(descrtable, descrTablePanel);
         
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.add("Drawing", drawingPanel);
-        tabPane.add("Transitions Table", tablePanel);
+        tabPane.add("Descriptive Table", descrTablePanel);
         tabPane.add("Markov Graph", markovGraphPanel);
         tabPane.add("Reachabiblity Graph", reachabiblityGraphPanel);
-
+        tabPane.add("Transitions Table", tablePanel);
+        
         this.getContentPane().add(tabPane);
     }
 
