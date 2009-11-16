@@ -12,6 +12,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import exceptions.MissedXmlArgumentException;
 import exceptions.WrongQNameException;
 import exceptions.XmlArgumentException;
 import exceptions.arcXYSizeException;
@@ -63,6 +64,11 @@ public class ElementXmlParser extends DefaultHandler {
             el = factory.createElement(localName, qName, attrs, curElement);
         } catch (XmlArgumentException e) {
             JOptionPane.showMessageDialog(null, "Wrong argument of " + qName
+                    + " node while parsing.", "Error of parsing",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (MissedXmlArgumentException e) {
+            JOptionPane.showMessageDialog(null, "Missed argument of " + qName
                     + " node while parsing.", "Error of parsing",
                     JOptionPane.ERROR_MESSAGE);
             return;

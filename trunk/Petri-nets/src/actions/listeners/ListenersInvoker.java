@@ -95,6 +95,7 @@ public class ListenersInvoker {
                 if (element.getType() == "T") {
                     double lyambda;
                     double g;
+                    double r;
                     while (true) {
                         try {
                             title = "Changing transition values";
@@ -121,9 +122,21 @@ public class ListenersInvoker {
                                 break;
                             }
                             g = Double.valueOf(resStr);
+                            
+                            message = "r:";
+                            initialSelectionValue = ((Double) ((Transition) element)
+                                    .getR()).toString();
+                            resStr = (String) JOptionPane.showInputDialog(
+                                    mainFrame, message, title,
+                                    JOptionPane.PLAIN_MESSAGE, null, null,
+                                    initialSelectionValue);
+                            if (resStr == null) {
+                                break;
+                            }
+                            r = Double.valueOf(resStr);
 
                             ChangeTransitionValuesCommand command = new ChangeTransitionValuesCommand(
-                                    (Transition) element, lyambda, g);
+                                    (Transition) element, lyambda, g, r);
                             data.getCommandStack().add(command);
                             command.execute();
                             break;
