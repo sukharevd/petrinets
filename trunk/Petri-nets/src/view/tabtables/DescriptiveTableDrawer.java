@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view.tabtable;
+package view.tabtables;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import data.Data;
+
 /**
  * Some table and set of the method for painting at it.
  *
@@ -19,7 +21,7 @@ import javax.swing.JTable;
  * @author <a href="mailto:ydzyuban@gmail.com">Dzyuban Yuriy</a>
  *
  */
-public class TransitionsTableDrawer extends JPanel {
+public class DescriptiveTableDrawer extends JPanel {
     /**
      * 
      */
@@ -29,6 +31,12 @@ public class TransitionsTableDrawer extends JPanel {
      * Table on the current panel.
      */
     private JTable table;
+    // TODO: realize this:
+    // private JTable inTranTable;
+    // private JTable outTranTable;
+    // private JTable markingTable;
+    // private JTable LyambdaTable;
+    // private JTable smthngTable;
 
     private JScrollPane scroll;
 
@@ -39,15 +47,18 @@ public class TransitionsTableDrawer extends JPanel {
     private int numColumns = 6;
 
     private int numRows;
+    
+    private Data data;
 
     private JFrame mainFrame;
 
     /**
      * Single constructor of the class, calls parent constructor only.
      */
-    public TransitionsTableDrawer(JFrame mainFrame) {
+    public DescriptiveTableDrawer(Data data, JFrame mainFrame) {
         super();
 
+        this.data = data;
         this.mainFrame = mainFrame;
         table = new JTable();
         scroll = new JScrollPane(table);
@@ -72,6 +83,7 @@ public class TransitionsTableDrawer extends JPanel {
         // TODO: rewrite this method.
         int numRows = 50;
         rows = new Object[numRows][numColumns];
+        rows[0][0] = data.getElements().size();
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
                 rows[i][j] = i;
@@ -119,8 +131,8 @@ public class TransitionsTableDrawer extends JPanel {
         initializeRows();
         numRows = rows.length;
 
-        TransitionsTableModel transitionsTableModel = new TransitionsTableModel(rows, columns);
-        table.setModel(transitionsTableModel);
+        DescriptiveTableModel tableModel = new DescriptiveTableModel(rows, columns);
+        table.setModel(tableModel);
 
         resizeTable();
         resizeScrollPane();

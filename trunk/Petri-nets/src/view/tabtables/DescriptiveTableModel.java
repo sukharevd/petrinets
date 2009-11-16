@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view.tabtable;
+package view.tabtables;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  *
  */
-public class TransitionsTableModel extends DefaultTableModel {
+public class DescriptiveTableModel extends DefaultTableModel {
 
     /**
      * JDK 1.1 serialVersionUID.
@@ -23,7 +23,7 @@ public class TransitionsTableModel extends DefaultTableModel {
      * @param data array of data of the table.
      * @param columnNames array of column names of  the table.
      */
-    public TransitionsTableModel(Object[][] data, Object[] columnNames) {
+    public DescriptiveTableModel(Object[][] data, Object[] columnNames) {
         super(data, columnNames);
     }
 
@@ -33,10 +33,6 @@ public class TransitionsTableModel extends DefaultTableModel {
     @SuppressWarnings("unchecked")
     @Override
     public Class getColumnClass(final int columnIndex) {
-        if ((columnIndex < 2) || (columnIndex == 5)) {
-            return Integer.class;
-        } else {
-            return String.class;
-        }
+        return Integer.class;
     }
 }
