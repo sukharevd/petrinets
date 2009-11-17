@@ -1,4 +1,7 @@
 package data;
+
+import java.util.ArrayList;
+
 /**
  * 
  * @author Jacky
@@ -78,6 +81,16 @@ public class TreeofPetriNet {
      */
     public static int Number;
     
+    private ArrayList<CrossingRow> CrossTable = new ArrayList<CrossingRow>();
+    /**
+	 * @return the crossTable
+	 */
+	public ArrayList<CrossingRow> getCrossTable() {
+		return CrossTable;
+	}
+	private ArrayList<String> typeT= new ArrayList<String>();
+    private ArrayList<Integer> numTypeT= new ArrayList<Integer>();
+    
     /**
      * for Graph of Markov
      */
@@ -127,8 +140,8 @@ public class TreeofPetriNet {
     
     private void getVuhodNumber(TreeConnection[] Z1, int Num2){
     	for (int j = 0; j < Number-3; j++) {
-			if ((Z1[j].getNameVuhod())==Num2){
-				Z1[Number-2].addVuhod(j-1);
+			if ((Z1[j].getNameVhod())==Num2){
+				Z1[Number-2].addVuhod(j);
 				return;
 			}
 		}
@@ -184,6 +197,8 @@ public class TreeofPetriNet {
                 if (IsCrossingEnabled(Res, i)) {
                     C[i] = 1;
                     momentSequance=momentSequance+"m"+(i+1);
+                    typeT.add("m");
+                    numTypeT.add(i+1);
                     flag = true;
                 } else
                     C[i] = 0;
@@ -226,9 +241,14 @@ public class TreeofPetriNet {
             int[] P, String Str, int yarus) {
         int i;
         String S = "";
+        CrossingRow curRow= new CrossingRow();
         System.out.print(Integer.toString(Number) + "  ");
+        curRow.setNumber(Number);
         System.out.print(Integer.toString(Level) + "  ");
+        curRow.setBranch(Level);
         System.out.print("M" + Integer.toString(Num2) + "("
+                + getStringValue(P, Np) + ")  ");
+        curRow.setPrevMark("M" + Integer.toString(Num2) + "("
                 + getStringValue(P, Np) + ")  ");
         if (RepeatCount != 0) {
             S = "";
@@ -240,8 +260,17 @@ public class TreeofPetriNet {
         }
         System.out.print("M" + Integer.toString(Num) + "("
                 + getStringValue(M, Np) + ")  ");
+        curRow.setCurMark("M" + Integer.toString(Num) + "("
+                + getStringValue(M, Np) + ")  ");
         System.out.print(Str+"   ");
+        curRow.setTypeMark(Str);
         System.out.println(yarus);
+        curRow.setTier(yarus);
+        curRow.setTypeT(typeT);
+        curRow.setNumTypeT(numTypeT);
+        CrossTable.add(curRow);
+        typeT= new ArrayList<String>();
+        numTypeT= new ArrayList<Integer>();
         Number++;
         if (RepeatCount >= 0) {
             Z1[Number - 2].addNameVhod(Num);
@@ -340,7 +369,7 @@ public class TreeofPetriNet {
         RepeatList[RepeatCount] = Curr;}
         if ((RepeatCount == 0) ||(RepeatCount == 1)){
             if  (RepeatCount == 0){
-                WriteMarker(0, 0, Prev, 0, Prev, "",0);
+                WriteMarker(0, 0, Prev, 0, Prev, "Root",0);
             }
             if(RepeatCount == 1){
             	WriteMarker(Level, RepeatCount, Curr, PrevNum, Curr1, "Vnutrenya",yarus);
@@ -361,6 +390,8 @@ public class TreeofPetriNet {
                 Curr = RunCrossing(Curr, GetCrossingByNumber(i));
                 LastCross = i+1;
                 momentSequance = momentSequance + " t" + Integer.toString(LastCross);
+                typeT.add("t");
+                numTypeT.add(LastCross);
                 Curr = RunMomentCrossing(Curr);
                 Next(Curr,Prev,PrevNum,yarus);
                 saveArray(Curr, SaveCurr);
