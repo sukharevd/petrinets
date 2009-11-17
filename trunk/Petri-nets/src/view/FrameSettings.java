@@ -22,7 +22,7 @@ public class FrameSettings {
     //public Color stdgradcolor1() {return new Color(255,255,153);
     //khameleon
     public static Color stdgradcolor1() {
-        return new Color(78,255,102);
+        return new Color(255,255,153);
     }
     //green
     //public Color stdgradcolor1() {return new Color(204,255,204);
@@ -43,12 +43,12 @@ public class FrameSettings {
     //public Color stdgradcolor2() {return new Color(153,204,204);
     //blue
     public static Color stdgradcolor2() {
-        return new Color(102,204,255);
+        return new Color(255,162,0);
     }
     
     //lightblue
     public static Color actgradcolor1() {
-        return new Color(131,219,255);
+        return new Color(255,153,0);
     }
 
     //orange
@@ -64,7 +64,7 @@ public class FrameSettings {
     
     //lightblue
     public static Color activeElementsColor() {
-        return new Color(0,246,255);
+        return new Color(204,0,255);
     }
     //red
     //public Color activeElementsColor() {return new Color(204,0,255);
@@ -77,7 +77,7 @@ public class FrameSettings {
     //public Color inputArcsColor() {return new Color(255,162,0);
     //green
     public static Color inputArcsColor() {
-        return new Color(102,204,0);
+        return new Color(255,162,0);
     }
     
     public static Color gridColor() {
@@ -90,7 +90,7 @@ public class FrameSettings {
     
     public static Color arcArrowColor() {
         //return new Color(154,9,9); //darkred
-        return new Color(0,204,153); //greeny
+        return new Color(154,9,9); //greeny
     }
 
     public static int elementHeight() {
