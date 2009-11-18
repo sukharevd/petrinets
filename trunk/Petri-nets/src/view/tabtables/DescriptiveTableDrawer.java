@@ -3,6 +3,7 @@
  */
 package view.tabtables;
 
+// TODO: make subclasses for every table. Use OOP.
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -54,10 +55,9 @@ public class DescriptiveTableDrawer extends JPanel {
     private int numRows;
     
     private Data data;
-    JLabel l;
 
     private TableManagment tableManager;
-    
+
     /**
      * Single constructor of the class, calls parent constructor only.
      */
@@ -84,16 +84,14 @@ public class DescriptiveTableDrawer extends JPanel {
         addScrollTable(dqScroll, dqTable, "Dq");
         addScrollTable(markingScroll, markingTable, "Marking");
         addScrollTable(lyambdaScroll, lyambdaTable, "Lyambda");
-        
     }
 
     protected void addScrollTable(JScrollPane scroll, JTable table, String name) {
-        l = new JLabel(name);
+        JLabel l = new JLabel(name);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
         l.setVisible(true);
         l.setEnabled(true);
         add(l);
-        l.setOpaque(true);
 
         scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(scroll);
@@ -259,9 +257,9 @@ public class DescriptiveTableDrawer extends JPanel {
      * @param g
      * @see javax.swing.JComponent#paint(java.awt.Graphics)
      */
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+               
         if ((data.getElements() != null) && (data.getElements().size() != 0)) {
-            l.setVisible(true);
             paintDi(g);
             paintDq(g);
             paintMarking(g);
