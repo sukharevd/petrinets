@@ -53,7 +53,7 @@ public class ListenersInvoker {
         this.elementDrawer = elementDrawer;
     }
 
-    protected void changeValuesOfElementAt(final int x, final int y) {
+    public void changeValuesOfElementAt(final int x, final int y) {
         Element element = ElementFinder.findElement(x, y, data);
 
         if ((element != null) && (element.getType() != "A")) {
@@ -155,7 +155,7 @@ public class ListenersInvoker {
         }
     }
 
-    protected void activateNewElementAddingTo(int x, int y) {
+    public void activateNewElementAddingTo(int x, int y) {
         Element addedElement = data.getAddingModeElement();
 
         if (addedElement == null) {
@@ -177,7 +177,7 @@ public class ListenersInvoker {
         }
     }
 
-    protected void selectElementAt(final int x, final int y) {
+    public void selectElementAt(final int x, final int y) {
         Element selElement = ElementFinder.findElement(x, y, data);
 
         if (selElement != null) {
@@ -188,7 +188,7 @@ public class ListenersInvoker {
         mainFrame.repaint();
     }
 
-    protected void activateElementMovingTo(final int x, final int y) {
+    public void activateElementMovingTo(final int x, final int y) {
 
         Element selElement = data.getActiveElement();
 

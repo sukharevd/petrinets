@@ -33,6 +33,10 @@ public class DescriptiveTableModel extends DefaultTableModel {
     @SuppressWarnings("unchecked")
     @Override
     public Class getColumnClass(final int columnIndex) {
-        return Integer.class;
+        if (columnIndex == 0) {
+            return String.class;
+        } else {
+            return Integer.class;
+        }
     }
 }
