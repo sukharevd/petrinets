@@ -393,7 +393,7 @@ public class AppFrame extends JFrame {
 
         elementDrawer = new ElementDrawer(data, this);
         TransitionsTableDrawer transtable = new TransitionsTableDrawer(data, this);
-        DescriptiveTableDrawer descrtable = new DescriptiveTableDrawer(data, this);
+        DescriptiveTableDrawer descrtable = new DescriptiveTableDrawer(data);
         panelToPanelWithScroll(elementDrawer, drawingPanel);
         panelToPanelWithScroll(transtable, tablePanel);
         panelToPanelWithScroll(descrtable, descrTablePanel);

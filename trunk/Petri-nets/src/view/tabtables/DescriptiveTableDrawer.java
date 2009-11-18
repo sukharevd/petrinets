@@ -3,16 +3,22 @@
  */
 package view.tabtables;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import javax.swing.JFrame;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import data.Data;
+import data.Element;
+import data.Place;
+import data.TableManagment;
+import data.Transition;
 
 /**
  * Some table and set of the method for painting at it.
@@ -30,97 +36,189 @@ public class DescriptiveTableDrawer extends JPanel {
     /**
      * Table on the current panel.
      */
-    private JTable table;
+    private JTable diTable;
     // TODO: realize this:
-    // private JTable inTranTable;
-    // private JTable outTranTable;
-    // private JTable markingTable;
-    // private JTable LyambdaTable;
-    // private JTable smthngTable;
+    //private JTable inTranTable;
+    //private JTable diTable;
+    private JTable dqTable;
+    private JTable markingTable;
+    private JTable lyambdaTable;
+    //private JTable smthngTable;
 
-    private JScrollPane scroll;
+    private JScrollPane diScroll;
+    private JScrollPane dqScroll;
+    private JScrollPane markingScroll;
+    private JScrollPane lyambdaScroll;
 
     private String[] columns;
 
     private Object[][] rows;
 
-    private int numColumns = 6;
+    private int numColumns;
 
     private int numRows;
     
     private Data data;
 
-    private JFrame mainFrame;
-
+    private TableManagment tableManager;
+    
     /**
      * Single constructor of the class, calls parent constructor only.
      */
-    public DescriptiveTableDrawer(Data data, JFrame mainFrame) {
+    public DescriptiveTableDrawer(Data data) {
         super();
 
         this.data = data;
-        this.mainFrame = mainFrame;
-        table = new JTable();
-        scroll = new JScrollPane(table);
+        
+        BoxLayout boxY=new BoxLayout(this,BoxLayout.Y_AXIS);
+        setLayout(boxY);
+        setAlignmentX(CENTER_ALIGNMENT);
+
+        diTable = new JTable();
+        dqTable = new JTable();
+        markingTable = new JTable();
+
+        diScroll = new JScrollPane(diTable);
+        dqScroll = new JScrollPane(dqTable);
+        markingScroll = new JScrollPane(markingTable);
+
+        addScrollTable(diScroll, diTable, "Di");
+        addScrollTable(dqScroll, dqTable, "Dq");
+        addScrollTable(markingScroll, markingTable, "Marking");        
+    }
+
+    protected void addScrollTable(JScrollPane scroll, JTable table, String name) {
+        JLabel l = new JLabel(name);
+        l.setAlignmentX(Component.CENTER_ALIGNMENT);
+        l.setVisible(true);
+        l.setEnabled(true);
+        add(l);
+
+        scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(scroll);
 
-        initializeColumns();
-        configureTable();
-        resizeScrollPane();
+        configureTable(table);
+        resizeScrollPane(scroll, table);
     }
 
-    protected void initializeColumns() {
-        columns = new String[numColumns];
+    protected void initializeColumns(Object[] places) {
+        int width = places.length;
+        columns = new String[width+1];
+        for (int i = 0; i < width; i++) {
+            columns[i+1] = ((Place)places[i]).getTitle();            
+        }
         columns[0] = "#";
-        columns[1] = "Branch";
-        columns[2] = "Prev.marking";
-        columns[3] = "Worked Transiotions";
-        columns[4] = "Cur. marking";
-        columns[5] = "Level";
+        numColumns = columns.length;
     }
 
-    protected void initializeRows() {
+    protected void initializeRows(int[][] rowsTable, Object[] trans) {
         // TODO: rewrite this method.
-        int numRows = 50;
-        rows = new Object[numRows][numColumns];
-        rows[0][0] = data.getElements().size();
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numColumns; j++) {
-                rows[i][j] = i;
+        int intDi[][] = rowsTable;
+        int height = intDi.length;
+        int width = intDi[0].length;
+        rows = new Object[height][width+1];
+        
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                rows[i][j+1] = rowsTable[i][j];
             }
         }
+        
+        for (int i = 0; i < height; i++) {
+            if (trans != null) {
+                rows[i][0] = ((Transition)trans[i]).getTitle();
+            }
+        }
+        numRows = rows.length;
     }
 
-    protected void configureTable() {
+    protected void configureTable(JTable table) {
         table.setRowSelectionAllowed(true);
         table.setFont(new Font("Lucida", 0, 11));
 
         int cellHeight = getFont().getSize() + 5;
         table.setRowHeight(cellHeight);
 
-        resizeTable();
+        resizeTable(table);
     }
 
-    protected void resizeTable() {
-        int cellWidth = 100;
+    protected void resizeTable(JTable table) {
+        int cellWidth = 50;
         int cellHeight = getFont().getSize() + 5;
 
         int tableWidth = numColumns * cellWidth;
         int tableHeight = numRows * cellHeight;
+        
+        for (int i = 0; i < numColumns; i++) {
+            table.getColumnModel().getColumn(i).setPreferredWidth(cellWidth);
+            table.getColumnModel().getColumn(i).setMaxWidth(cellWidth);
+        }
 
         table.setMaximumSize(new Dimension(tableWidth, tableHeight));
         table.setPreferredSize(new Dimension(tableWidth, tableHeight));
         table.setSize(new Dimension(tableWidth, tableHeight));
     }
 
-    protected void resizeScrollPane() {
-        int menuAndToolbarHeight = 135;
-        int panelHeight = mainFrame.getHeight() - menuAndToolbarHeight;
-
-        scroll.setMaximumSize(new Dimension(table.getWidth(), panelHeight));
-        scroll.setPreferredSize(new Dimension(table.getWidth(), panelHeight));
-        scroll.setSize(new Dimension(table.getWidth(), panelHeight));
+    protected void resizeScrollPane(JScrollPane scroll, JTable table) {
+        //int menuAndToolbarHeight = 135;
+        //int panelHeight = mainFrame.getHeight() - menuAndToolbarHeight;
+        int tableHeight = table.getHeight() + table.getTableHeader().getHeight();
+        int tableWidth = table.getWidth();
+        
+        scroll.setMaximumSize(new Dimension(tableWidth, tableHeight));
+        scroll.setPreferredSize(new Dimension(tableWidth, tableHeight));
+        scroll.setSize(new Dimension(tableWidth, tableHeight));
         scroll.repaint();
+    }
+    
+    public void paintDi(Graphics g) {
+        tableManager = new TableManagment(data);
+        int[][] rowsTable = tableManager.getMatrixDi();
+        Object[] placeNames = tableManager.getAllP().toArray();
+        Object[] tranNames = tableManager.getAllT().toArray();
+        initializeColumns(placeNames);
+        initializeRows(rowsTable, tranNames);
+        
+
+        DescriptiveTableModel tableModel = new DescriptiveTableModel(rows, columns);
+        diTable.setModel(tableModel);
+
+        resizeTable(diTable);
+        resizeScrollPane(diScroll, diTable);
+    }
+    
+    public void paintDq(Graphics g) {
+        tableManager = new TableManagment(data);
+        int[][] rowsTable = tableManager.getMatrixDq();
+        Object[] placeNames = tableManager.getAllP().toArray();
+        Object[] tranNames = tableManager.getAllT().toArray();
+        initializeColumns(placeNames);
+        initializeRows(rowsTable, tranNames);
+        
+
+        DescriptiveTableModel tableModel = new DescriptiveTableModel(rows, columns);
+        dqTable.setModel(tableModel);
+
+        resizeTable(dqTable);
+        resizeScrollPane(dqScroll, dqTable);
+    }
+    
+    public void paintMarking(Graphics g) {
+        
+        tableManager = new TableManagment(data);
+        int[] rowsTable0 = tableManager.getMarkirovka();
+        int[][] rowsTable = new int[1][rowsTable0.length];
+        rowsTable[0] = rowsTable0;
+        Object[] placeNames = tableManager.getAllP().toArray();
+        initializeColumns(placeNames);
+        initializeRows(rowsTable, null);
+        
+
+        DescriptiveTableModel tableModel = new DescriptiveTableModel(rows, columns);
+        markingTable.setModel(tableModel);
+
+        resizeTable(markingTable);
+        resizeScrollPane(markingScroll, markingTable);
     }
 
     /**
@@ -128,14 +226,11 @@ public class DescriptiveTableDrawer extends JPanel {
      * @see javax.swing.JComponent#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
-        initializeRows();
-        numRows = rows.length;
-
-        DescriptiveTableModel tableModel = new DescriptiveTableModel(rows, columns);
-        table.setModel(tableModel);
-
-        resizeTable();
-        resizeScrollPane();
+        if ((data.getElements() != null) && (data.getElements().size() != 0)) {
+        paintDi(g);
+        paintDq(g);        
+        paintMarking(g);
+        }
     }
 
 }
