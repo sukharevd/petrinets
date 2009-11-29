@@ -1,6 +1,8 @@
-package data;
+package data.elements;
 
 import java.util.ArrayList;
+
+import data.generators.Generator;
 
 /**
  * Contains features of the transition of petri-net, Provides methods for

@@ -10,8 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import data.Data;
-import data.Place;
-import data.Transition;
+import data.elements.Place;
+import data.elements.Transition;
 
 //import javax.swing.filechooser.FileNameExtensionFilter;
 

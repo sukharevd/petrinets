@@ -5,11 +5,11 @@
 package commands.add;
 
 import view.ElementFinder;
-import data.Arc;
 import data.Data;
-import data.Element;
-import data.Place;
-import data.Transition;
+import data.elements.Arc;
+import data.elements.Element;
+import data.elements.Place;
+import data.elements.Transition;
 
 /**
  * Provides executing of Undo/Redo operations for adding of Element.

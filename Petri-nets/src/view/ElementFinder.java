@@ -3,11 +3,11 @@
  */
 package view;
 
-import data.Arc;
 import data.Data;
-import data.Element;
-import data.Place;
-import data.Transition;
+import data.elements.Arc;
+import data.elements.Element;
+import data.elements.Place;
+import data.elements.Transition;
 
 /**
  * Finds elements of drawing area by coordinates.

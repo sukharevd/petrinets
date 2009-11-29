@@ -1,4 +1,4 @@
-package data;
+package data.xmlparsing;
 
 /**
  * Contains converting method to XML format.

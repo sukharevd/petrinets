@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import data.Data;
-import data.Place;
-import data.Transition;
+import data.elements.Place;
+import data.elements.Transition;
 
 /**
  * Action, which is occurred when user clicks "New" component, it saves current

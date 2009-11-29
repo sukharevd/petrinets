@@ -11,7 +11,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 
 import data.Data;
-import data.Element;
+import data.elements.Element;
 
 import view.ElementFinder;
 import view.tabdrawer.ElementDrawer;

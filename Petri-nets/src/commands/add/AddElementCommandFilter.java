@@ -10,9 +10,9 @@ import commands.Command;
 import commands.CommandFilter;
 
 import view.ElementFinder;
-import data.Arc;
 import data.Data;
-import data.Element;
+import data.elements.Arc;
+import data.elements.Element;
 
 /**
  * Filters element adding command if it is wrong.

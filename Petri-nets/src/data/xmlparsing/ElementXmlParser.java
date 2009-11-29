@@ -1,4 +1,4 @@
-package data;
+package data.xmlparsing;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +11,10 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import data.Data;
+import data.elements.Arc;
+import data.elements.Element;
 
 import exceptions.MissedXmlArgumentException;
 import exceptions.WrongQNameException;

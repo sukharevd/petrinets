@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import view.AppFrame;
 
 import data.Data;
-import data.Element;
+import data.elements.Element;
 
 /**
  * Entry point of application.

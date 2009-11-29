@@ -16,9 +16,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import data.Data;
-import data.Element;
 import data.TableManagment;
-import data.Transition;
+import data.elements.Element;
+import data.elements.Transition;
 
 /**
  * Some table and set of the method for painting at it.

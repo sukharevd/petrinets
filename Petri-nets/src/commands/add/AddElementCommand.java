@@ -7,7 +7,7 @@ package commands.add;
 import commands.Command;
 
 import data.Data;
-import data.Element;
+import data.elements.Element;
 
 /**
  * Class provides Undo/Redo operations for adding new Element.

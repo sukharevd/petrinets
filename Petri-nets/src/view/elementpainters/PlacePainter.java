@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 
 import view.FrameSettings;
 
-import data.Place;
+import data.elements.Place;
 
 /**
  * Points place at drawing area.

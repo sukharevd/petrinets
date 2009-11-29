@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 
 import view.FrameSettings;
 
-import data.Transition;
+import data.elements.Transition;
 
 /**
  * Points transition at the drawing area.

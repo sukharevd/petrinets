@@ -6,7 +6,7 @@ package commands.change;
 
 import commands.Command;
 
-import data.Place;
+import data.elements.Place;
 
 /**
  * Class provides Undo/Redo operations for changing of Place.

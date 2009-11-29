@@ -6,8 +6,8 @@ package commands.move;
 
 import java.util.ArrayList;
 
-import data.Arc;
-import data.Element;
+import data.elements.Arc;
+import data.elements.Element;
 
 /**
  * Provides executing of Undo/Redo operations for moving of Element.
