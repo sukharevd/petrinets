@@ -26,9 +26,6 @@ import view.tabgraphs.MarkovGraphDrawer;
 import view.tabgraphs.ReachabilityGraphDrawer;
 import view.tabtables.DescriptiveTableDrawer;
 import view.tabtables.TransitionsTableDrawer;
-
-import data.Data;
-
 import actions.listeners.AppWindowListener;
 import actions.listeners.DrawerAdjustmentListener;
 import actions.menuadd.AddingArcAction;
@@ -44,6 +41,8 @@ import actions.menugeneral.OpeningAction;
 import actions.menugeneral.SavingAction;
 import actions.menuundo.RedoAction;
 import actions.menuundo.UndoAction;
+import data.Data;
+import data.ReachabilityConnection;
 
 /**
  * Main frame of application, Creates and shows GUI.
@@ -389,8 +388,8 @@ public class AppFrame extends JFrame {
         JPanel tablePanel = new JPanel(new BorderLayout());
         JPanel descrTablePanel = new JPanel(new BorderLayout());
         JPanel markovGraphPanel = new MarkovGraphDrawer(data);
-        JPanel reachabiblityGraphPanel = new ReachabilityGraphDrawer(data);
-
+        JPanel reachabiblityGraphPanel = new JPanel(new BorderLayout());
+        ReachabilityGraphDrawer reachabiblityGraph = new ReachabilityGraphDrawer(data);
         elementDrawer = new ElementDrawer(data, this);
         TransitionsTableDrawer transtable = new TransitionsTableDrawer(data, this);
         DescriptiveTableDrawer descrtable = new DescriptiveTableDrawer(data);
@@ -398,6 +397,8 @@ public class AppFrame extends JFrame {
         panelToPanelWithScroll(elementDrawer, drawingPanel);
         panelToPanelWithScroll(transtable, tablePanel);
         panelToPanelWithScroll(descrtable, descrTablePanel);
+        //----------------
+        panelToPanelWithScroll(reachabiblityGraph, reachabiblityGraphPanel);
         
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.add("Drawing", drawingPanel);
