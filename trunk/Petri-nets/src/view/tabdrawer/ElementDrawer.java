@@ -15,11 +15,11 @@ import view.elementpainters.TransitionPainter;
 
 import actions.listeners.DrawerKeyListener;
 import actions.listeners.DrawerMouseListener;
-import data.Arc;
 import data.Data;
-import data.Element;
-import data.Place;
-import data.Transition;
+import data.elements.Arc;
+import data.elements.Element;
+import data.elements.Place;
+import data.elements.Transition;
 
 /**
  * Drawing area and set of the method for painting at it.

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import commands.CommandStack;
+import data.elements.Arc;
+import data.elements.Element;
+import data.xmlparsing.ElementXmlParser;
 
 import exceptions.arcConnectionException;
 

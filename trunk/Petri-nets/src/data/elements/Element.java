@@ -1,6 +1,8 @@
-package data;
+package data.elements;
 
 import java.util.ArrayList;
+
+import data.xmlparsing.XmlCompatible;
 
 /**
  * Abstract class for all Elements of petri-net, It provides all base and

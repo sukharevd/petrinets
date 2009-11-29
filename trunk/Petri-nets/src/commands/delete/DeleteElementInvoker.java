@@ -4,9 +4,9 @@
  */
 package commands.delete;
 
-import data.Arc;
 import data.Data;
-import data.Element;
+import data.elements.Arc;
+import data.elements.Element;
 
 /**
  * Provides executing of Undo/Redo operations for deleting of Elements.

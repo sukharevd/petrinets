@@ -1,9 +1,14 @@
-package data;
+package data.xmlparsing;
 
 import java.util.ArrayList;
 import java.util.Properties;
 
 import org.xml.sax.Attributes;
+
+import data.elements.Arc;
+import data.elements.Element;
+import data.elements.Place;
+import data.elements.Transition;
 
 import exceptions.MissedXmlArgumentException;
 import exceptions.WrongQNameException;

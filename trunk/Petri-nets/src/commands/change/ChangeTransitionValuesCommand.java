@@ -6,7 +6,7 @@ package commands.change;
 
 import commands.Command;
 
-import data.Transition;
+import data.elements.Transition;
 
 /**
  * Class provides Undo/Redo operations for changing of Transition.

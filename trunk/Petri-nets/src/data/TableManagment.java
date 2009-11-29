@@ -2,6 +2,9 @@ package data;
 
 import java.util.ArrayList;
 
+import data.elements.Place;
+import data.elements.Transition;
+
 /**
  * Provides different operations with data, like making Di/Dq/Dr matrix and
  * marking line.

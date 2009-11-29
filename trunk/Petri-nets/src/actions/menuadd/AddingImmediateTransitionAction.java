@@ -5,9 +5,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import data.Data;
-import data.Element;
-import data.Place;
-import data.Transition;
+import data.elements.Element;
+import data.elements.Place;
+import data.elements.Transition;
 
 /**
  * Action, which is occurred when user clicks "Add Immediate Transition"

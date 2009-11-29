@@ -4,7 +4,7 @@
  */
 package commands.change;
 
-import data.Transition;
+import data.elements.Transition;
 
 /**
  * Provides executing of Undo/Redo operations for changing of Transition.

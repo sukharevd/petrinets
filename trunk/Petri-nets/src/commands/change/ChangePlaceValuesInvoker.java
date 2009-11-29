@@ -4,7 +4,7 @@
  */
 package commands.change;
 
-import data.Place;
+import data.elements.Place;
 
 /**
  * Provides executing of Undo/Redo operations for changing of Place.

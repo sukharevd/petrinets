@@ -22,11 +22,11 @@ import commands.move.MoveElementCommandFilter;
 import view.ElementFinder;
 import view.FrameSettings;
 import view.tabdrawer.ElementDrawer;
-import data.Arc;
 import data.Data;
-import data.Element;
-import data.Place;
-import data.Transition;
+import data.elements.Arc;
+import data.elements.Element;
+import data.elements.Place;
+import data.elements.Transition;
 
 /**
  * This class invokes acts which are used by listeners, includes methods for

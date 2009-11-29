@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import view.FrameSettings;
 
-import data.Arc;
+import data.elements.Arc;
 
 /**
  * Points arc at drawing area.
