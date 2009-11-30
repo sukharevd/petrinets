@@ -39,6 +39,7 @@ import actions.menugeneral.ExportingAction;
 import actions.menugeneral.HelpingAction;
 import actions.menugeneral.OpeningAction;
 import actions.menugeneral.SavingAction;
+import actions.menugeneral.ScalingPanelAction;
 import actions.menuundo.RedoAction;
 import actions.menuundo.UndoAction;
 import data.Data;
@@ -58,6 +59,8 @@ public class AppFrame extends JFrame {
     private Data data;
 
     private ElementDrawer elementDrawer;
+
+    private ReachabilityGraphDrawer reachabiblityGraph;
 
     /**
      * Start width of the frame.
@@ -193,6 +196,8 @@ public class AppFrame extends JFrame {
         JMenuItem addTTransition = new JMenuItem();
         JMenuItem addITransition = new JMenuItem();
         JMenuItem addArc = new JMenuItem();
+        JMenuItem scPlus = new JMenuItem();
+        JMenuItem scMinus = new JMenuItem();
 
         undo.setAction(new UndoAction(data, this));
         undo.setText("Undo");
@@ -230,6 +235,16 @@ public class AppFrame extends JFrame {
         addArc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
                 ActionEvent.CTRL_MASK));
 
+        // TODO: change nulls to real actions:
+        scPlus.setAction(new ScalingPanelAction(reachabiblityGraph, true));
+        scPlus.setText("Scale Plus");
+        scPlus.setMnemonic(KeyEvent.VK_PLUS);
+        scPlus.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, 0));
+
+        scMinus.setAction(new ScalingPanelAction(reachabiblityGraph, false));
+        scMinus.setText("Scale Minus");
+        scMinus.setMnemonic(KeyEvent.VK_MINUS);
+        scMinus.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0));
         // -------------------------------------
         // ---------> Help Menu <---------------
         // -------------------------------------
@@ -265,7 +280,9 @@ public class AppFrame extends JFrame {
         edit.add(addTTransition);
         edit.add(addITransition);
         edit.add(addArc);
-
+        edit.addSeparator();
+        edit.add(scPlus);
+        edit.add(scMinus);
         // mode.add(editor);
         // mode.add(tree);
         // mode.add(emul);
@@ -381,31 +398,32 @@ public class AppFrame extends JFrame {
         scroller.getVerticalScrollBar().addAdjustmentListener(listener);
         outPanel.add(scroller, BorderLayout.CENTER);
     }
-    
+
     protected void initializeTabs() {
         JPanel drawingPanel = new JPanel(new BorderLayout());
         JPanel tablePanel = new JPanel(new BorderLayout());
         JPanel descrTablePanel = new JPanel(new BorderLayout());
         JPanel markovGraphPanel = new MarkovGraphDrawer(data);
         JPanel reachabiblityGraphPanel = new JPanel(new BorderLayout());
-        
+
         elementDrawer = new ElementDrawer(data, this);
-        TransitionsTableDrawer transtable = new TransitionsTableDrawer(data, this);
+        reachabiblityGraph = new ReachabilityGraphDrawer(data);
+        TransitionsTableDrawer transtable = new TransitionsTableDrawer(data,
+                this);
         DescriptiveTableDrawer descrtable = new DescriptiveTableDrawer(data);
-        ReachabilityGraphDrawer reachabiblityGraph = new ReachabilityGraphDrawer(data);
-        
+
         panelToPanelWithScroll(elementDrawer, drawingPanel);
+        panelToPanelWithScroll(reachabiblityGraph, reachabiblityGraphPanel);
         panelToPanelWithScroll(transtable, tablePanel);
         panelToPanelWithScroll(descrtable, descrTablePanel);
-        panelToPanelWithScroll(reachabiblityGraph, reachabiblityGraphPanel);
-        
+
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.add("Drawing", drawingPanel);
         tabPane.add("Descriptive Table", descrTablePanel);
         tabPane.add("Markov Graph", markovGraphPanel);
         tabPane.add("Reachabiblity Graph", reachabiblityGraphPanel);
         tabPane.add("Transitions Table", tablePanel);
-        
+
         this.getContentPane().add(tabPane);
     }
 
@@ -416,7 +434,7 @@ public class AppFrame extends JFrame {
 
         initializeMenuBar();
         initializeToolBar();
-        initializeTabs();        
+        initializeTabs();
 
         setVisible(true);
 

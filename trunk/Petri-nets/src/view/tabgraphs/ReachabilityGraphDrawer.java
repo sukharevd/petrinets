@@ -8,6 +8,8 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import view.Scalable;
+
 import data.Data;
 import data.ReachabilityConnection;
 import data.TableManagment;
@@ -18,7 +20,7 @@ import data.TreeofPetriNet;
  * @author <a href="mailto:jacky@gmail.com">Dzyuban Yuriy</a>
  * 
  */
-public class ReachabilityGraphDrawer extends JPanel {
+public class ReachabilityGraphDrawer extends JPanel implements Scalable {
 
     /**
      * 
@@ -28,12 +30,21 @@ public class ReachabilityGraphDrawer extends JPanel {
 
     private Data data;
     private ReachabilityConnection rc;
+    private TreeConnection[] Z;
+    private double scale;
 
     public ReachabilityGraphDrawer(Data data) {
         this.data = data; 
     }
 
-    TreeConnection[] Z;
+    public final void incScale() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final void decScale() {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * Build tree of destination
      */
