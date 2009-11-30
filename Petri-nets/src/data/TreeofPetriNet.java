@@ -20,6 +20,7 @@ public class TreeofPetriNet {
 	 * max number of tree connections
 	 */
     final  int Inside = 8000;
+    final int limit =5;
     /**
      * number of positions
      */
@@ -326,6 +327,12 @@ public class TreeofPetriNet {
             for (j = 0; j < A[i].length; j++)
                 A[i][j] = B[i][j];
     }
+    public void Limit(int [] Curr){
+    	for (int i = 0; i < Curr.length; i++) {
+			if (Curr[i]>limit)
+				Curr[i]=limit;
+		}
+    }
     /**
      * Recursive procedure for making Tree
      * @param Curr2
@@ -346,6 +353,7 @@ public class TreeofPetriNet {
         	temp=GetMarkerRepeat(Prev);
         }
         else {
+        Limit(Curr);
         temp = GetMarkerRepeat(Curr);}
         if (temp != -1) {
             WriteMarker(Level, temp, Curr, PrevNum, Prev, "Povtorilas`",yarus);
