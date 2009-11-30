@@ -27,4 +27,8 @@ public class GeneratorsPool {
         
         return generator;
     }
+    
+    public Generator getLCG() {
+        return lcg;
+    }
 }

@@ -1,56 +1,92 @@
+// TODO: test this code.
 package data;
 
 import java.util.ArrayList;
 
 public class Marking {
 
-	private ArrayList<Integer> list;
-	private ArrayList<Marking> childMarkings;  // TODO: are they necessary?
+    private ArrayList<Integer> list;
 
-	/**
-	 * 
-	 * @param list
-	 */
-	public Marking(ArrayList<Integer> list) {
-		throw new UnsupportedOperationException();
-	}
+    // TODO: are they necessary?
+    private ArrayList<Marking> childMarkings;
 
-	/**
-	 * 
-	 * @param list
-	 * @param childMarkings
-	 */
-	public Marking(ArrayList<Integer> list, ArrayList<Marking> childMarkings) {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * 
+     * @param list
+     */
+    public Marking(ArrayList<Integer> list) {
+        this.list = list;
+    }
 
-	public void GETTERS_and_SETTERS() {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * 
+     * @param list
+     * @param childMarkings
+     */
+    public Marking(ArrayList<Integer> list, ArrayList<Marking> childMarkings) {
+        this.list = list;
+        this.childMarkings = childMarkings;
+    }
 
-	public Integer[] getIntegerArray() {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * @return the list
+     */
+    public final ArrayList<Integer> getList() {
+        return list;
+    }
 
-	/**
-	 * 
-	 * @param index
-	 */
-	public Integer getAt(int index) {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * @param list the list to set
+     */
+    public final void setList(ArrayList<Integer> list) {
+        this.list = list;
+    }
 
-	/**
-	 * 
-	 * @param index
-	 * @param value
-	 */
-	public void setAt(int index, Integer value) {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * @return the childMarkings
+     */
+    public final ArrayList<Marking> getChildMarkings() {
+        return childMarkings;
+    }
 
-	public String toString() {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * @param childMarkings the childMarkings to set
+     */
+    public final void setChildMarkings(ArrayList<Marking> childMarkings) {
+        this.childMarkings = childMarkings;
+    }
+
+    public Integer[] getIntegerArray() {
+        // TODO: check:
+        return (Integer[])list.toArray();
+    }
+
+    /**
+     * 
+     * @param index
+     */
+    public Integer getAt(int index) {
+        return list.get(index);
+    }
+
+    /**
+     * 
+     * @param index
+     * @param value
+     */
+    public void setAt(int index, Integer value) {
+        list.set(index, value);
+    }
+
+    public String toString() {
+        StringBuilder strBuilder = new StringBuilder("");
+        
+        for (int i = 0; i < list.size(); i++) {
+            strBuilder.append(list.get(i));
+            strBuilder.append("\t");
+        }
+        
+        return strBuilder.toString();
+    }
 
 }

@@ -13,7 +13,6 @@ import data.Data;
 import data.elements.Place;
 import data.elements.Transition;
 
-//import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Action, which is occurred when user clicks "Open..." component, it saves
@@ -107,6 +106,7 @@ public class OpeningAction extends AbstractAction {
 
             data.getCommandStack().getCommandList().clear();
             data.getCommandStack().setCurIndex(-1); // no the commands
+            
         }
 
     }
