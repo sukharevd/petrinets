@@ -42,7 +42,6 @@ import actions.menugeneral.SavingAction;
 import actions.menuundo.RedoAction;
 import actions.menuundo.UndoAction;
 import data.Data;
-import data.ReachabilityConnection;
 
 /**
  * Main frame of application, Creates and shows GUI.
@@ -389,15 +388,15 @@ public class AppFrame extends JFrame {
         JPanel descrTablePanel = new JPanel(new BorderLayout());
         JPanel markovGraphPanel = new MarkovGraphDrawer(data);
         JPanel reachabiblityGraphPanel = new JPanel(new BorderLayout());
-        ReachabilityGraphDrawer reachabiblityGraph = new ReachabilityGraphDrawer(data);
+        
         elementDrawer = new ElementDrawer(data, this);
         TransitionsTableDrawer transtable = new TransitionsTableDrawer(data, this);
         DescriptiveTableDrawer descrtable = new DescriptiveTableDrawer(data);
+        ReachabilityGraphDrawer reachabiblityGraph = new ReachabilityGraphDrawer(data);
         
         panelToPanelWithScroll(elementDrawer, drawingPanel);
         panelToPanelWithScroll(transtable, tablePanel);
         panelToPanelWithScroll(descrtable, descrTablePanel);
-        //----------------
         panelToPanelWithScroll(reachabiblityGraph, reachabiblityGraphPanel);
         
         JTabbedPane tabPane = new JTabbedPane();

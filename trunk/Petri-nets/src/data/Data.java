@@ -270,4 +270,47 @@ public class Data {
             }
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public final <T extends Element> ArrayList<T> getTypedElements() {
+        ArrayList<T> list = new ArrayList<T>();
+        for (int i = 0; i < elements.size(); i++) {
+            if (elements.get(i).getType() == "P") {
+                list.add((T) elements.get(i));
+            }
+        }
+
+        this.<T> sort(list);
+
+        return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    public final <T extends Element> T getElementWithNo(int no) {
+        T place = null;
+        for (int i = 0; i < elements.size(); i++) {
+            if ((elements.get(i).getType() == "P")
+                    && (elements.get(i).getNo() == no)) {
+                place = (T) elements.get(i);
+            }
+        }
+
+        return place;
+    }
+
+    protected <T extends Element> void sort(ArrayList<T> el) {
+        boolean isSorted;
+        T temp = null;
+        do {
+            isSorted = true;
+            for (int i = 0; i < el.size() - 1; i++) {
+                if (el.get(i).getNo() > el.get(i + 1).getNo()) {
+                    temp = el.get(i);
+                    el.set(i, el.get(i + 1));
+                    el.set(i + 1, temp);
+                    isSorted = false;
+                }
+            }
+        } while (!isSorted);
+    }
 }
