@@ -27,22 +27,24 @@ public class ReachabilityGraphDrawer extends JPanel implements Scalable {
      */
     private static final long serialVersionUID = 7897141005109233931L;
 
-
     private Data data;
     private ReachabilityConnection rc;
     private TreeConnection[] Z;
-    private double scale;
+    private double scale=1;
 
     public ReachabilityGraphDrawer(Data data) {
         this.data = data; 
     }
 
     public final void incScale() {
-        throw new UnsupportedOperationException();
+        scale=scale+0.1;
+        repaint();
     }
 
     public final void decScale() {
-        throw new UnsupportedOperationException();
+        //throw new UnsupportedOperationException();
+    	scale= scale-0.1;
+    	repaint();
     }
 
     /**
@@ -64,8 +66,9 @@ public class ReachabilityGraphDrawer extends JPanel implements Scalable {
         Z = mytree.WriteResult(1);
         super.paint(g);
         rc = new ReachabilityConnection(Z,mytree.getCrossTable());
+        rc.setScale(scale);
         rc.draw(g);
-        this.setPreferredSize(new Dimension(rc.getTotalwidth(),rc.getTotalheight()));
+        this.setPreferredSize(new Dimension((int)(rc.getTotalwidth()*scale),(int)(rc.getTotalheight()*scale)));
         this.revalidate();
         }
 

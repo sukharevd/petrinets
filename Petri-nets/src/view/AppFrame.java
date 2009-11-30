@@ -61,6 +61,7 @@ public class AppFrame extends JFrame {
     private ElementDrawer elementDrawer;
 
     private ReachabilityGraphDrawer reachabiblityGraph;
+    private MarkovGraphDrawer markGraph;
 
     /**
      * Start width of the frame.
@@ -196,8 +197,10 @@ public class AppFrame extends JFrame {
         JMenuItem addTTransition = new JMenuItem();
         JMenuItem addITransition = new JMenuItem();
         JMenuItem addArc = new JMenuItem();
-        JMenuItem scPlus = new JMenuItem();
-        JMenuItem scMinus = new JMenuItem();
+        JMenuItem scPlusR = new JMenuItem();
+        JMenuItem scMinusR = new JMenuItem();
+        JMenuItem scMinusM = new JMenuItem();
+        JMenuItem scPlusM = new JMenuItem();
 
         undo.setAction(new UndoAction(data, this));
         undo.setText("Undo");
@@ -236,15 +239,26 @@ public class AppFrame extends JFrame {
                 ActionEvent.CTRL_MASK));
 
         // TODO: change nulls to real actions:
-        scPlus.setAction(new ScalingPanelAction(reachabiblityGraph, true));
-        scPlus.setText("Scale Plus");
-        scPlus.setMnemonic(KeyEvent.VK_PLUS);
-        scPlus.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, 0));
+        scPlusM.setAction(new ScalingPanelAction(markGraph, true));
+        scPlusM.setText("Scale Plus");
+        scPlusM.setMnemonic(KeyEvent.VK_0);
+        scPlusM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, 0));
 
-        scMinus.setAction(new ScalingPanelAction(reachabiblityGraph, false));
-        scMinus.setText("Scale Minus");
-        scMinus.setMnemonic(KeyEvent.VK_MINUS);
-        scMinus.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0));
+        scMinusM.setAction(new ScalingPanelAction(markGraph, false));
+        scMinusM.setText("Scale Minus");
+        scMinusM.setMnemonic(KeyEvent.VK_MINUS);
+        scMinusM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0));
+        
+        scPlusR.setAction(new ScalingPanelAction(reachabiblityGraph, true));
+        scPlusR.setText("Scale Plus");
+        scPlusR.setMnemonic(KeyEvent.VK_1);
+        scPlusR.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, 0));
+
+        scMinusR.setAction(new ScalingPanelAction(reachabiblityGraph, false));
+        scMinusR.setText("Scale Minus");
+        scMinusR.setMnemonic(KeyEvent.VK_2);
+        scMinusR.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, 0));
+        
         // -------------------------------------
         // ---------> Help Menu <---------------
         // -------------------------------------
@@ -281,8 +295,10 @@ public class AppFrame extends JFrame {
         edit.add(addITransition);
         edit.add(addArc);
         edit.addSeparator();
-        edit.add(scPlus);
-        edit.add(scMinus);
+        edit.add(scPlusM);
+        edit.add(scMinusM);
+        edit.add(scPlusR);
+        edit.add(scMinusR);
         // mode.add(editor);
         // mode.add(tree);
         // mode.add(emul);
@@ -403,9 +419,9 @@ public class AppFrame extends JFrame {
         JPanel drawingPanel = new JPanel(new BorderLayout());
         JPanel tablePanel = new JPanel(new BorderLayout());
         JPanel descrTablePanel = new JPanel(new BorderLayout());
-        JPanel markovGraphPanel = new MarkovGraphDrawer(data);
+        markGraph = new MarkovGraphDrawer(data);
         JPanel reachabiblityGraphPanel = new JPanel(new BorderLayout());
-
+        JPanel markovGraphPanel = new JPanel(new BorderLayout());
         elementDrawer = new ElementDrawer(data, this);
         reachabiblityGraph = new ReachabilityGraphDrawer(data);
         TransitionsTableDrawer transtable = new TransitionsTableDrawer(data,
@@ -416,7 +432,7 @@ public class AppFrame extends JFrame {
         panelToPanelWithScroll(reachabiblityGraph, reachabiblityGraphPanel);
         panelToPanelWithScroll(transtable, tablePanel);
         panelToPanelWithScroll(descrtable, descrTablePanel);
-
+        panelToPanelWithScroll(markGraph, markovGraphPanel);
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.add("Drawing", drawingPanel);
         tabPane.add("Descriptive Table", descrTablePanel);
@@ -432,9 +448,9 @@ public class AppFrame extends JFrame {
         setSize(fWidth, fHeight);
         setMinimumSize(new Dimension(fWidth, fHeight));
 
+        initializeTabs();
         initializeMenuBar();
         initializeToolBar();
-        initializeTabs();
 
         setVisible(true);
 
