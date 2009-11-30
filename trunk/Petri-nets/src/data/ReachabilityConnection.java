@@ -39,7 +39,20 @@ public class ReachabilityConnection {
 	private int[] y;
 	private String[] type;
 	private TreeConnection[] z;
-	public ReachabilityConnection(TreeConnection[] z, ArrayList<CrossingRow> CrossTable ){
+	private double scale;
+	/**
+	 * @return the scale
+	 */
+	public double getScale() {
+		return scale;
+	}
+	/**
+	 * @param scale the scale to set
+	 */
+	public void setScale(double scale) {
+		this.scale = scale;
+	}
+	public ReachabilityConnection(TreeConnection[] z, ArrayList<CrossingRow> CrossTable){
 		this.z = new TreeConnection[z.length];
 		this.z=z;
 		int curHeight=0;
@@ -75,11 +88,12 @@ public class ReachabilityConnection {
 		
 	}
 	public void draw(Graphics g){
+		r=(int)(r*scale);
 		for (int i = 0; i <x.length ; i++) {
-			int fromX = x[z[i].getElementVuhod(0)];
-			int fromY=y[z[i].getElementVuhod(0)];
-			int toX=x[z[i].getElementVhod(0)];
-			int toY=y[z[i].getElementVhod(0)];
+			int fromX = (int) (x[z[i].getElementVuhod(0)]*scale);
+			int fromY=(int) (y[z[i].getElementVuhod(0)]*scale);
+			int toX=(int) (x[z[i].getElementVhod(0)]*scale);
+			int toY=(int) (y[z[i].getElementVhod(0)]*scale);
 			g.drawLine(fromX, fromY, toX, toY);
 		}
 		for (int i = 0; i <x.length ; i++) {
@@ -91,8 +105,8 @@ public class ReachabilityConnection {
 				g.setColor(Color.PINK);
 			if (type[i] =="Typikovaja")
 				g.setColor(Color.RED);
-			int posX=x[z[i].getElementVhod(0)];
-			int posY=y[z[i].getElementVhod(0)];
+			int posX=(int)(x[z[i].getElementVhod(0)]*scale);
+			int posY=(int)(y[z[i].getElementVhod(0)]*scale);
 			g.fillOval(posX-r, posY-r, 2*r, 2*r);
 			g.setColor(Color.BLACK);
 			g.drawString(Integer.toString(z[i].getNameVhod()), posX,posY );

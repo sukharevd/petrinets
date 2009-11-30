@@ -4,10 +4,13 @@
 package view.tabgraphs;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Polygon;
 
 import javax.swing.JPanel;
+
+import view.Scalable;
 
 import data.Data;
 import data.TableManagment;
@@ -18,7 +21,7 @@ import data.TreeofPetriNet;
  * @author <a href="mailto:jacky@gmail.com">Dzyuban Yuriy</a>
  * 
  */
-public class MarkovGraphDrawer extends JPanel {
+public class MarkovGraphDrawer extends JPanel implements Scalable {
 
     /**
      * 
@@ -42,9 +45,9 @@ public class MarkovGraphDrawer extends JPanel {
         
     }
 
-    int WIDTH = 550;
+    int WIDTH = 1000;
 
-    int HEIGTH = 550;
+    int HEIGTH = 1000;
 
     int CenterX = WIDTH / 2;
 
@@ -52,18 +55,20 @@ public class MarkovGraphDrawer extends JPanel {
 
     int Dist = WIDTH / 3;
 
-    int d = 40;
+    int d = 10;
 
     int r = d / 2;
 
     int L = d / 3;
 
     int LA = 20;
+    double scale=2.0;
 
     // int N;
     static TreeConnection[] Z;
 
     public void paint(Graphics g) {
+    	LA=(int)(LA);
         TableManagment myTable = new TableManagment(this.data);
         int[] typecrossing = new int[myTable.getAllT().size()];
         for (int i = 0; i < typecrossing.length; i++) {
@@ -91,12 +96,12 @@ public class MarkovGraphDrawer extends JPanel {
         dAngle = 360 / count;
         for (i = 0; i < count; i++) {
             g.setColor(Color.red);
-            g.fillOval(CenterX + (int) (Dist * Math.cos(Angle * DegToRad)),
-                    CenterY + (int) (Dist * Math.sin(Angle * DegToRad)), d, d);
+            g.fillOval((int)(CenterX*scale) + (int) (Dist*scale * Math.cos(Angle * DegToRad)),
+                    (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(Angle * DegToRad)), (int)(d*scale),(int) (d*scale));
             g.setColor(Color.white);
-            g.drawString(Integer.toString(i), CenterX
-                    + (int) (Dist * Math.cos(Angle * DegToRad)) + r - 5,
-                    CenterY + (int) (Dist * Math.sin(Angle * DegToRad)) + r);
+            g.drawString(Integer.toString(i), (int) (CenterX*scale)
+                    + (int) (Dist*scale * Math.cos(Angle * DegToRad)) + (int)(r*scale - 5*scale),
+                    (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(Angle * DegToRad)) + (int)(r*scale));
             Angle = Angle + dAngle;
         }
 
@@ -108,14 +113,14 @@ public class MarkovGraphDrawer extends JPanel {
                 A2 = dAngle * Z[i].getElementVuhod(j); // konec
                 A1 = dAngle * Z[i].getElementVhod(j); // na4alo
 
-                dx1 = (int) (r * Math.cos(A1 * DegToRad));
-                dy1 = (int) (r * Math.sin(A1 * DegToRad));
-                dx2 = (int) (r * Math.cos(A2 * DegToRad));
-                dy2 = (int) (r * Math.sin(A2 * DegToRad));
-                x1 = CenterX + (int) (Dist * Math.cos(A1 * DegToRad)) + r - dx1;
-                y1 = CenterY + (int) (Dist * Math.sin(A1 * DegToRad)) + r - dy1;
-                x2 = CenterX + (int) (Dist * Math.cos(A2 * DegToRad)) + r - dx2;
-                y2 = CenterY + (int) (Dist * Math.sin(A2 * DegToRad)) + r - dy2;
+                dx1 = (int) (r*scale * Math.cos(A1 * DegToRad));
+                dy1 = (int) (r*scale * Math.sin(A1 * DegToRad));
+                dx2 = (int) (r*scale * Math.cos(A2 * DegToRad));
+                dy2 = (int) (r*scale * Math.sin(A2 * DegToRad));
+                x1 = (int)(CenterX*scale) + (int) (Dist*scale * Math.cos(A1 * DegToRad)) + (int)(r*scale) - dx1;
+                y1 = (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(A1 * DegToRad)) + (int)(r*scale) - dy1;
+                x2 = (int)(CenterX*scale) + (int) (Dist*scale * Math.cos(A2 * DegToRad)) + (int)(r*scale) - dx2;
+                y2 = (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(A2 * DegToRad)) + (int)(r*scale) - dy2;
                 if (A1 != A2) {
                     g.setColor(Color.blue);
                     g.drawLine(x2, y2, x1, y1);
@@ -126,10 +131,10 @@ public class MarkovGraphDrawer extends JPanel {
                     cx = (x1 + x2) / 2;
                     cy = (y1 + y2) / 2;
                     Angle = (int) (Math.atan(k) * RadToDeg);
-                    lx1 = s * ((int) (L * Math.cos((Angle + LA) * DegToRad)));
-                    ly1 = s * ((int) (L * Math.sin((Angle + LA) * DegToRad)));
-                    lx2 = s * ((int) (L * Math.cos((Angle - LA) * DegToRad)));
-                    ly2 = s * ((int) (L * Math.sin((Angle - LA) * DegToRad)));
+                    lx1 = s * ((int) (L*scale * Math.cos((Angle + LA) * DegToRad)));
+                    ly1 = s * ((int) (L*scale * Math.sin((Angle + LA) * DegToRad)));
+                    lx2 = s * ((int) (L*scale* Math.cos((Angle - LA) * DegToRad)));
+                    ly2 = s * ((int) (L*scale* Math.sin((Angle - LA) * DegToRad)));
                     Polygon P = new Polygon();
                     P.addPoint(cx, +cy);
                     P.addPoint(+cx + lx1, +cy + ly1);
@@ -140,12 +145,27 @@ public class MarkovGraphDrawer extends JPanel {
 
                 } else {
                     g.setColor(Color.blue);
-                    g.drawArc(x2 + r + dx2, y2 - d / 4, d / 2, d / 2, 0, 360);
+                    g.drawArc(x2 + (int)(r*scale) + dx2, y2 - (int)(d*scale / 4), (int)(d*scale / 2), (int)(d*scale / 2), 0, 360);
                     g.setColor(Color.black);
-                    g.fillOval(x2 + r + dx2 - 3, y2 - 3, 6, 6);
+                    g.fillOval(x2 + (int)(r*scale) + dx2 - 3, y2 - 3, 6, 6);
                 }
             }
         }
+        this.setPreferredSize(new Dimension((int)(WIDTH*scale),(int)(HEIGTH*scale)));
+        this.revalidate();
     }
+
+	@Override
+	public void decScale() {
+		scale=scale-0.1;
+		this.repaint();
+		
+	}
+
+	@Override
+	public void incScale() {
+		scale=scale+0.1;
+		this.repaint();
+	}
 
 }
