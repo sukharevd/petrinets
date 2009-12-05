@@ -62,10 +62,10 @@ public class ReachabilityGraphDrawer extends JPanel implements Scalable {
 
         TreeofPetriNet mytree = new TreeofPetriNet(myTable.getAllP().size(),
                 myTable.getAllT().size(), myTable.getMatrixDi(), myTable
-                        .getMatrixDq(), myTable.getMarkirovka(), typecrossing);
+                        .getMatrixDq(), myTable.getMarkirovka(), typecrossing, data);
         Z = mytree.WriteResult(1);
         super.paint(g);
-        rc = new ReachabilityConnection(Z,mytree.getCrossTable());
+        rc = new ReachabilityConnection(Z,mytree.getTransTable());
         rc.setScale(scale);
         rc.draw(g);
         this.setPreferredSize(new Dimension((int)(rc.getTotalwidth()*scale),(int)(rc.getTotalheight()*scale)));
