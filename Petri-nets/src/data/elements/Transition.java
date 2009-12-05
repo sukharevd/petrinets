@@ -128,8 +128,21 @@ public class Transition extends Element {
         return new Transition(lyambda, g, r, law, Transition.curIndex, getX() + 2,
                 getY() + 2);
     }
+    
+    public String getTitle() {
+        String transType;
+        
+        // if transition is instant it is marked as "M"
+        if (this.lyambda == 0) {
+            transType = "M";
+        } else {
+            transType = "T";
+        }
+        
+        return transType + getNo();
+    }
 
-    public java.lang.String toString() {
+    public String toString() {
         StringBuilder sb = new StringBuilder("    <Transition no=\"");
         sb.append(getNo());
         sb.append("\" x=\"");

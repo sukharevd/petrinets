@@ -33,10 +33,6 @@ public class TransitionsTableModel extends DefaultTableModel {
     @SuppressWarnings("unchecked")
     @Override
     public Class getColumnClass(final int columnIndex) {
-        if ((columnIndex < 2) || (columnIndex == 5)) {
-            return Integer.class;
-        } else {
-            return String.class;
-        }
+       return String.class;
     }
 }

@@ -4,6 +4,8 @@ package data;
 import java.util.ArrayList;
 
 public class Marking {
+    
+    private int no;
 
     private ArrayList<Integer> list;
 
@@ -14,8 +16,21 @@ public class Marking {
      * 
      * @param list
      */
-    public Marking(ArrayList<Integer> list) {
+    public Marking(int no, ArrayList<Integer> list) {
+        this.no = no;
         this.list = list;
+    }
+    
+    /**
+     * 
+     * @param array
+     */
+    public Marking(int no, int[] array) {
+        this.no = no;
+        this.list = new ArrayList<Integer>();
+        for (int i = 0; i < array.length; i++) {
+            this.list.add(array[i]);
+        }
     }
 
     /**
@@ -23,7 +38,8 @@ public class Marking {
      * @param list
      * @param childMarkings
      */
-    public Marking(ArrayList<Integer> list, ArrayList<Marking> childMarkings) {
+    public Marking(int no, ArrayList<Integer> list, ArrayList<Marking> childMarkings) {
+        this.no = no;
         this.list = list;
         this.childMarkings = childMarkings;
     }
@@ -79,13 +95,17 @@ public class Marking {
     }
 
     public String toString() {
-        StringBuilder strBuilder = new StringBuilder("");
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("M");
+        strBuilder.append(no);
+        strBuilder.append("(");
         
-        for (int i = 0; i < list.size(); i++) {
+        strBuilder.append(list.get(0));
+        for (int i = 1; i < list.size(); i++) {
+            strBuilder.append(",");
             strBuilder.append(list.get(i));
-            strBuilder.append("\t");
         }
-        
+        strBuilder.append(")");
         return strBuilder.toString();
     }
 

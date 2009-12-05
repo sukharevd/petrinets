@@ -195,9 +195,7 @@ public class TableManagment {
     	double[] array = new double[getAllT().size()];
     	for (int i = 0; i < getAllT().size(); i++){
     		array[i] = getAllT().get(i).getLyambda();
-    		System.out.print(array[i] + " ");
     	}
-    	System.out.println();
     	return array;    	
     }
 }

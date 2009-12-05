@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import commands.CommandStack;
 import data.elements.Arc;
 import data.elements.Element;
+import data.elements.Place;
+import data.elements.Transition;
 import data.xmlparsing.ElementXmlParser;
 
 import exceptions.arcConnectionException;
@@ -271,32 +273,56 @@ public class Data {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public final <T extends Element> ArrayList<T> getTypedElements() {
-        ArrayList<T> list = new ArrayList<T>();
+    public final ArrayList<Place> getPlaces() {
+        ArrayList<Place> list = new ArrayList<Place>();
         for (int i = 0; i < elements.size(); i++) {
             if (elements.get(i).getType() == "P") {
-                list.add((T) elements.get(i));
+                list.add((Place) elements.get(i));
             }
         }
+        this.<Place>sort(list);
 
-        this.<T> sort(list);
+        return list;
+    }
+    
+    public final ArrayList<Transition> getTransitions() {
+        ArrayList<Transition> list = new ArrayList<Transition>();
+        for (int i = 0; i < elements.size(); i++) {
+            if (elements.get(i).getType() == "T") {
+                list.add((Transition) elements.get(i));
+            }
+        }
+        this.<Transition>sort(list);
 
         return list;
     }
 
-    @SuppressWarnings("unchecked")
-    public final <T extends Element> T getElementWithNo(int no) {
-        T place = null;
+
+    public final Place getPlaceWithNo(int no) {
+        Place place = null;
         for (int i = 0; i < elements.size(); i++) {
             if ((elements.get(i).getType() == "P")
                     && (elements.get(i).getNo() == no)) {
-                place = (T) elements.get(i);
+                place = (Place) elements.get(i);
             }
         }
 
         return place;
     }
+    
+    public final Transition getTransitionWithNo(int no) {
+        Transition transition = null;
+        for (int i = 0; i < elements.size(); i++) {
+            if ((elements.get(i).getType() == "T")
+                    && (elements.get(i).getNo() == no)) {
+                transition = (Transition) elements.get(i);
+            }
+        }
+
+        return transition;
+    }
+    
+    
 
     protected <T extends Element> void sort(ArrayList<T> el) {
         boolean isSorted;

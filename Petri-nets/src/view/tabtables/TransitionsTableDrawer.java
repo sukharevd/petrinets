@@ -77,15 +77,7 @@ public class TransitionsTableDrawer extends JPanel {
     }
 
     protected void initializeRows() {
-        // TODO: rewrite this method.
-//        int numRows = 50;
-//        rows = new Object[numRows][numColumns];
-//        rows[0][0] = data.getElements().size();
-//        for (int i = 0; i < numRows; i++) {
-//            for (int j = 0; j < numColumns; j++) {
-//                rows[i][j] = i;
-//            }
-//        }
+
     	TableManagment myTable = new TableManagment(this.data);
         int[] typecrossing = new int[myTable.getAllT().size()];
         for (int i = 0; i < typecrossing.length; i++) {
@@ -97,24 +89,13 @@ public class TransitionsTableDrawer extends JPanel {
 
         TreeofPetriNet mytree = new TreeofPetriNet(myTable.getAllP().size(),
                 myTable.getAllT().size(), myTable.getMatrixDi(), myTable
-                        .getMatrixDq(), myTable.getMarkirovka(), typecrossing);
+                        .getMatrixDq(), myTable.getMarkirovka(), typecrossing, data);
 
         mytree.WriteResult(0);
-        int numRows = mytree.getCrossTable().size();
-        rows = new String[numRows][numColumns];
+        int numRows = mytree.getTransTable().count();
+        rows = new Object[numRows][numColumns];
         for (int i = 0; i < numRows; i++) {
-         rows[i][0] = Integer.toString(mytree.getCrossTable().get(i).getNumber());
-         rows[i][1] = Integer.toString(mytree.getCrossTable().get(i).getBranch());
-         rows[i][2] = mytree.getCrossTable().get(i).getPrevMark();
-         String s= ""; 
-         for (int j = 0; j <mytree.getCrossTable().get(i).getTypeT().size() ; j++) {
-		 	s=s + mytree.getCrossTable().get(i).getTypeT().get(j)
-		 	+ mytree.getCrossTable().get(i).getNumTypeT().get(j);
-		}
-         rows[i][3] = s;
-         rows[i][4] = mytree.getCrossTable().get(i).getCurMark();
-         rows[i][5] = mytree.getCrossTable().get(i).getTypeMark();
-         rows[i][6] = Integer.toString(mytree.getCrossTable().get(i).getTier());
+            rows[i] = mytree.getTransTable().getAt(i).getObjectArray();
         }
     }
 

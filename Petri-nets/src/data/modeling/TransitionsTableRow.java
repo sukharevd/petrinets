@@ -7,7 +7,7 @@ import data.elements.Transition;
 
 public class TransitionsTableRow {
 
-	private int id;
+	private int no;
 	private int branch;
 	private int level;
 	private Marking prevMarking;
@@ -23,7 +23,7 @@ public class TransitionsTableRow {
     }
 
 	/**
-     * @param id
+     * @param no
      * @param branch
      * @param level
      * @param prevMarking
@@ -31,32 +31,32 @@ public class TransitionsTableRow {
      * @param workedTransitions
      * @param markType
      */
-    public TransitionsTableRow(int id, int branch, int level,
+    public TransitionsTableRow(int no, int branch, int level,
             Marking prevMarking, Marking nextMarking,
             ArrayList<Transition> workedTransitions, MarkType markType) {
-        this.id = id;
+        this.no = no;
         this.branch = branch;
         this.level = level;
         this.prevMarking = prevMarking;
         this.nextMarking = nextMarking;
         this.workedTransitions = workedTransitions;
         this.markType = markType;
-        throw new UnsupportedOperationException();
+    }
+    
+    
+    /**
+     * @return the no
+     */
+    public final int getNo() {
+        return no;
     }
 
-    /**
-     * @return the id
-     */
-    public final int getId() {
-        return id;
-    }
-
 
     /**
-     * @param id the id to set
+     * @param no the id to set
      */
-    public final void setId(int id) {
-        this.id = id;
+    public final void setNo(int no) {
+        this.no = no;
     }
 
 
@@ -157,7 +157,23 @@ public class TransitionsTableRow {
 
 
     public Object[] getObjectArray() {
-		throw new UnsupportedOperationException();
+		Object[] array = new Object[7];
+		
+		array[0] = (Integer)no;
+        array[1] = (Integer)branch;
+        array[2] = prevMarking;
+        String s = ""; 
+        if (workedTransitions.size() != 0) {
+        for (int j = 0; j <workedTransitions.size() ; j++) {
+            // TODO: change toString() -> toXML() for Elements.
+            if(workedTransitions.get(j) != null)
+           s += workedTransitions.get(j).getTitle();
+       }}
+        array[3] = s;
+        array[4] = nextMarking;
+        array[5] = markType;
+        array[6] = (Integer)level;
+		return array;
 	}
 
 	public String toString() {

@@ -45,24 +45,24 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
         
     }
 
-    int WIDTH = 1000;
+    int WIDTH = 550;
 
-    int HEIGTH = 1000;
+    int HEIGTH = 350;
 
     int CenterX = WIDTH / 2;
 
     int CenterY = HEIGTH / 2;
 
-    int Dist = WIDTH / 3;
+    int Dist = WIDTH / 4;
 
-    int d = 10;
+    int d = 25;
 
     int r = d / 2;
 
     int L = d / 3;
 
     int LA = 20;
-    double scale=2.0;
+    double scale = 1.0;
 
     // int N;
     static TreeConnection[] Z;
@@ -80,7 +80,7 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
 
         TreeofPetriNet mytree = new TreeofPetriNet(myTable.getAllP().size(),
                 myTable.getAllT().size(), myTable.getMatrixDi(), myTable
-                        .getMatrixDq(), myTable.getMarkirovka(), typecrossing);
+                        .getMatrixDq(), myTable.getMarkirovka(), typecrossing, data);
 
         Z=mytree.WriteResult(0);
         

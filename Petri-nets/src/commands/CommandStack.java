@@ -56,7 +56,7 @@ public class CommandStack {
         }
         commandList.add(command);
         curIndex++;
-        System.out.println("Added at " + curIndex);
+        // System.out.println("Added at " + curIndex);
         // TODO: not more than 100
     }
 
@@ -73,7 +73,7 @@ public class CommandStack {
         if (getCurIndex() + 1 < getCommandList().size()) {
             curIndex++;
 
-            System.out.println("Redo to " + curIndex);
+            // System.out.println("Redo to " + curIndex);
             commandList.get(curIndex).execute();
 
         }
@@ -81,7 +81,7 @@ public class CommandStack {
 
     public void undoCur() {
         if (curIndex >= 0) {
-            System.out.println("Undo From " + curIndex);
+            // System.out.println("Undo From " + curIndex);
 
             commandList.get(curIndex).undo();
             curIndex--;

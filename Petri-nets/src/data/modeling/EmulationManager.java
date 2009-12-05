@@ -203,7 +203,7 @@ public class EmulationManager {
             int no = collisionSet.get(j);
             double range = ranges.get(j - 1);
             if (statuses.get(no)) {
-                range += data.<Transition>getElementWithNo(no).getR();
+                range += data.getTransitionWithNo(no).getR();
             }
             ranges.add(range);
         }

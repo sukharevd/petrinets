@@ -139,7 +139,8 @@ public class Arc extends Element {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder("        <Arc to=\"");
+        StringBuilder sb = new StringBuilder();
+        sb.append("        <Arc to=\"");
         sb.append(to);
         sb.append("\"");
 

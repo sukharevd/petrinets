@@ -12,6 +12,7 @@ public class TransitionsTable {
      * 
      */
     public TransitionsTable() {
+        this.rows = new ArrayList<TransitionsTableRow>();
     }
 
     /**
@@ -41,25 +42,37 @@ public class TransitionsTable {
 	 * @param index
 	 */
 	public TransitionsTableRow getAt(int index) {
-		throw new UnsupportedOperationException();
+		return rows.get(index);
 	}
 
 	/**
 	 * 
 	 * @param index
-	 * @param TransitionsTableRow
+	 * @param transitionsTableRow
 	 */
-	public void setAt(int index, int TransitionsTableRow) {
-		throw new UnsupportedOperationException();
+	public void setAt(int index, TransitionsTableRow transitionsTableRow) {
+	    rows.set(index, transitionsTableRow);
 	}
+	
+	 /**
+     * 
+     * @param transitionsTableRow
+     */
+    public void add(TransitionsTableRow transitionsTableRow) {
+        rows.add(transitionsTableRow);
+    }
+    
+    public int count() {
+        return rows.size();
+    }
 
-	/**
-	 * 
-	 * @param level
-	 */
-	public ArrayList<TransitionsTableRow> SelectAllWithLevel(int level) {
-		throw new UnsupportedOperationException();
-	}
+//	/**
+//	 * 
+//	 * @param level
+//	 */
+//	public ArrayList<TransitionsTableRow> SelectAllWithLevel(int level) {
+//		throw new UnsupportedOperationException();
+//	}
 
 	/**
 	 * 
@@ -74,7 +87,14 @@ public class TransitionsTable {
      * 
      */
     public TransitionsTableRow SelectRoot() {
-        throw new UnsupportedOperationException();
+        TransitionsTableRow root = null;
+        for (int i = 0; i < rows.size(); i++) {
+            if (rows.get(i).getMarkType() == MarkType.ROOT) {
+                root = rows.get(i);
+            }
+        }
+        
+        return root;
     }
 
 }
