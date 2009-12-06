@@ -139,8 +139,8 @@ public class TransitionsTableDrawer extends JPanel {
         initializeRows();
         numRows = rows.length;
 
-        TransitionsTableModel transitionsTableModel = new TransitionsTableModel(rows, columns);
-        table.setModel(transitionsTableModel);
+        StringTableModel stringTableModel = new StringTableModel(rows, columns);
+        table.setModel(stringTableModel);
 
         resizeTable();
         resizeScrollPane();

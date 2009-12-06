@@ -25,6 +25,7 @@ import view.tabdrawer.ElementDrawer;
 import view.tabgraphs.MarkovGraphDrawer;
 import view.tabgraphs.ReachabilityGraphDrawer;
 import view.tabtables.DescriptiveTableDrawer;
+import view.tabtables.EmulationTablesDrawer;
 import view.tabtables.TransitionsTableDrawer;
 import actions.listeners.AppWindowListener;
 import actions.listeners.DrawerAdjustmentListener;
@@ -34,6 +35,7 @@ import actions.menuadd.AddingPlaceAction;
 import actions.menuadd.AddingTimeTransitionAction;
 import actions.menugeneral.AboutingAction;
 import actions.menugeneral.CreatingAction;
+import actions.menugeneral.EmulatingStepAction;
 import actions.menugeneral.ExitingAction;
 import actions.menugeneral.ExportingAction;
 import actions.menugeneral.HelpingAction;
@@ -43,6 +45,7 @@ import actions.menugeneral.ScalingPanelAction;
 import actions.menuundo.RedoAction;
 import actions.menuundo.UndoAction;
 import data.Data;
+import data.modeling.EmulationManager;
 
 /**
  * Main frame of application, Creates and shows GUI.
@@ -58,9 +61,12 @@ public class AppFrame extends JFrame {
 
     private Data data;
 
+    private EmulationManager emulator;
+
     private ElementDrawer elementDrawer;
 
     private ReachabilityGraphDrawer reachabiblityGraph;
+
     private MarkovGraphDrawer markGraph;
 
     /**
@@ -76,9 +82,10 @@ public class AppFrame extends JFrame {
     /**
      * @param data
      */
-    public AppFrame(final Data data) {
+    public AppFrame(final Data data, final EmulationManager emulator) {
         super();
         this.data = data;
+        this.emulator = emulator;
     }
 
     /**
@@ -151,19 +158,19 @@ public class AppFrame extends JFrame {
         JMenuItem close = new JMenuItem();
         JMenuItem exit = new JMenuItem();
 
-        newf.setAction(new CreatingAction(data, this));
+        newf.setAction(new CreatingAction(data, emulator, this));
         newf.setText("New");
         newf.setMnemonic(KeyEvent.VK_N);
         newf.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
                 ActionEvent.CTRL_MASK));
 
-        open.setAction(new OpeningAction(data, this));
+        open.setAction(new OpeningAction(data, emulator, this));
         open.setText("Open...");
         open.setMnemonic(KeyEvent.VK_O);
         open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
                 ActionEvent.CTRL_MASK));
 
-        save.setAction(new SavingAction(data, this));
+        save.setAction(new SavingAction(data, emulator, this));
         save.setText("Save as...");
         save.setMnemonic(KeyEvent.VK_S);
         save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
@@ -175,7 +182,7 @@ public class AppFrame extends JFrame {
         export.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
                 ActionEvent.CTRL_MASK));
 
-        close.setAction(new CreatingAction(data, this));
+        close.setAction(new CreatingAction(data, emulator, this));
         close.setText("Close");
         close.setMnemonic(KeyEvent.VK_W);
         close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
@@ -248,7 +255,7 @@ public class AppFrame extends JFrame {
         scMinusM.setText("Scale Minus");
         scMinusM.setMnemonic(KeyEvent.VK_MINUS);
         scMinusM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0));
-        
+
         scPlusR.setAction(new ScalingPanelAction(reachabiblityGraph, true));
         scPlusR.setText("Scale Plus");
         scPlusR.setMnemonic(KeyEvent.VK_1);
@@ -258,7 +265,7 @@ public class AppFrame extends JFrame {
         scMinusR.setText("Scale Minus");
         scMinusR.setMnemonic(KeyEvent.VK_2);
         scMinusR.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, 0));
-        
+
         // -------------------------------------
         // ---------> Help Menu <---------------
         // -------------------------------------
@@ -299,9 +306,6 @@ public class AppFrame extends JFrame {
         edit.add(scMinusM);
         edit.add(scPlusR);
         edit.add(scMinusR);
-        // mode.add(editor);
-        // mode.add(tree);
-        // mode.add(emul);
 
         help.add(chelp);
         help.add(about);
@@ -335,10 +339,9 @@ public class AppFrame extends JFrame {
             final AbstractAction action, final String toolTipText,
             final String altText) {
         // Look for the image.
-        String imgLocation = "res/" + imageName + ".gif";
-        String imgLocationPng = "res/" + imageName + ".png";
+        String imgLocation = "res/" + imageName + ".png";
         URL imageURL = AppFrame.class.getResource(imgLocation);
-        URL imageURLpng = AppFrame.class.getResource(imgLocationPng);
+        // /URL imageURLpng = AppFrame.class.getResource(imgLocationPng);
 
         // Create and initialize the button.
         JButton button = new JButton();
@@ -348,12 +351,8 @@ public class AppFrame extends JFrame {
         if (imageURL != null) { // image found
             button.setIcon(new ImageIcon(imageURL, altText));
         } else { // no image found
-            if (imageURLpng != null) { // image found
-                button.setIcon(new ImageIcon(imageURLpng, altText));
-            } else { // no image found
-                button.setText(altText);
-                System.err.println("Resource not found: " + imgLocation);
-            }
+            button.setText(altText);
+            System.err.println("Resource not found: " + imgLocation);
         }
         return button;
     }
@@ -366,15 +365,15 @@ public class AppFrame extends JFrame {
         JToolBar toolBar = new JToolBar("Tool bar");
 
         JButton button = makeToolBarButton("New24", new CreatingAction(data,
-                this), "Create new file", "New");
+                emulator, this), "Create new file", "New");
         toolBar.add(button);
 
-        button = makeToolBarButton("Open24", new OpeningAction(data, this),
-                "Open", "Open");
+        button = makeToolBarButton("Open24", new OpeningAction(data, emulator,
+                this), "Open", "Open");
         toolBar.add(button);
 
-        button = makeToolBarButton("Save24", new SavingAction(data, this),
-                "Save", "Save as");
+        button = makeToolBarButton("Save24", new SavingAction(data, emulator,
+                this), "Save", "Save as");
         toolBar.add(button);
 
         toolBar.addSeparator();
@@ -403,6 +402,12 @@ public class AppFrame extends JFrame {
                 "Add New Arc", "Arc");
         toolBar.add(button);
 
+        toolBar.addSeparator();
+        
+        button = makeToolBarButton("emul124", new EmulatingStepAction(emulator,
+                this), "Emulate 1 step", "Emulate (1x)");
+        toolBar.add(button);
+
         add(toolBar, "North");
 
     }
@@ -417,28 +422,35 @@ public class AppFrame extends JFrame {
 
     protected void initializeTabs() {
         JPanel drawingPanel = new JPanel(new BorderLayout());
-        JPanel tablePanel = new JPanel(new BorderLayout());
+        JPanel transTablePanel = new JPanel(new BorderLayout());
         JPanel descrTablePanel = new JPanel(new BorderLayout());
-        markGraph = new MarkovGraphDrawer(data);
+        JPanel emulTablePanel = new JPanel(new BorderLayout());
         JPanel reachabiblityGraphPanel = new JPanel(new BorderLayout());
         JPanel markovGraphPanel = new JPanel(new BorderLayout());
+
         elementDrawer = new ElementDrawer(data, this);
         reachabiblityGraph = new ReachabilityGraphDrawer(data);
-        TransitionsTableDrawer transtable = new TransitionsTableDrawer(data,
+        markGraph = new MarkovGraphDrawer(data);
+        DescriptiveTableDrawer descrTable = new DescriptiveTableDrawer(data);
+        TransitionsTableDrawer transTable = new TransitionsTableDrawer(data,
                 this);
-        DescriptiveTableDrawer descrtable = new DescriptiveTableDrawer(data);
+        EmulationTablesDrawer emulTable = new EmulationTablesDrawer(data,
+                emulator);
 
         panelToPanelWithScroll(elementDrawer, drawingPanel);
         panelToPanelWithScroll(reachabiblityGraph, reachabiblityGraphPanel);
-        panelToPanelWithScroll(transtable, tablePanel);
-        panelToPanelWithScroll(descrtable, descrTablePanel);
         panelToPanelWithScroll(markGraph, markovGraphPanel);
+        panelToPanelWithScroll(transTable, transTablePanel);
+        panelToPanelWithScroll(descrTable, descrTablePanel);
+        panelToPanelWithScroll(emulTable, emulTablePanel);
+
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.add("Drawing", drawingPanel);
-        tabPane.add("Descriptive Table", descrTablePanel);
+        tabPane.add("Descriptive Tables", descrTablePanel);
         tabPane.add("Markov Graph", markovGraphPanel);
         tabPane.add("Reachabiblity Graph", reachabiblityGraphPanel);
-        tabPane.add("Transitions Table", tablePanel);
+        tabPane.add("Transitions Table", transTablePanel);
+        tabPane.add("Emulation Table", emulTablePanel);
 
         this.getContentPane().add(tabPane);
     }

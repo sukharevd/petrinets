@@ -24,8 +24,8 @@ public class ErlangGenerator implements Generator {
         double a = Math.pow(5, 17);
         double c = Math.pow(3, 3);
         double d = Math.pow(2, 32);
-        double w0 = 6147.0;// (double) new Random().nextInt((int)d);
-        int quantity = 3000; // TODO: 3000?
+        double w0 = 428.0;// (double) new Random().nextInt((int)d);
+        int quantity = 10000; // TODO: 3000?
 
         Generator kGen = new LCGenerator(a, c, d, w0);
         int lkgQuantity = (quantity + 1) * k;

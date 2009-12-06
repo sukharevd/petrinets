@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import data.Data;
 import data.Marking;
+import data.TableManagment;
+import data.TreeofPetriNet;
 import data.elements.Arc;
 import data.elements.Element;
 import data.elements.Transition;
@@ -27,13 +29,13 @@ public class EmulationManager {
 
     private Marking curMarking;
 
-    private int curLevel;
-
     private TransitionsTable transTable;
 
     private Data data;
 
     private ArrayList<Transition> transitions;
+
+    private EmulatedTransitionsLog log;
 
     private GeneratorsPool generatorsPool;
 
@@ -42,34 +44,52 @@ public class EmulationManager {
      * @param transTable
      * @param data
      */
-    public EmulationManager(TransitionsTable transTable, Data data) {
-        this.transTable = transTable;
-        this.data = data;
-        this.curLevel = 1;
+    public EmulationManager() {
+    }
 
+    /**
+     * 
+     * @param transTable
+     * @param data
+     */
+    public EmulationManager(Data data) {
+        this.data = data;
+
+        initializeAll();
+    }
+
+    protected void initializeAll() {
         this.generatorsPool = new GeneratorsPool();
-        this.transitions = generateTransitions();
+        this.log = new EmulatedTransitionsLog();
+        this.transTable = generateTransTable();
+        this.curMarking = null;
+        if (transTable.count() > 1) {
+            this.curMarking = transTable.selectRoot().getPrevMarking();
+        }
+        this.transitions = data.getTransitions();
         this.collisions = generateCollisions();
         generateTimes();
         generateStatuses();
         updateTransitionsStatus();
     }
 
-    /**
-     * Filters transitions from data-object.
-     * 
-     * @return ArrayList of transitions.
-     */
-    protected ArrayList<Transition> generateTransitions() {
-        ArrayList<Transition> list = new ArrayList<Transition>();
-        for (int i = 0; i < data.getElements().size(); i++) {
-            Element el = data.getElements().get(i);
-            if (el.getType() == "T") {
-                list.add((Transition) el);
+    protected TransitionsTable generateTransTable() {
+        TableManagment myTable = new TableManagment(data);
+        int[] typecrossing = new int[myTable.getAllT().size()];
+        for (int i = 0; i < typecrossing.length; i++) {
+            typecrossing[i] = 0;
+            if (myTable.getAllT().get(i).getLyambda() == 0) {
+                typecrossing[i] = 1;
             }
         }
 
-        return list;
+        TreeofPetriNet mytree = new TreeofPetriNet(myTable.getAllP().size(),
+                myTable.getAllT().size(), myTable.getMatrixDi(), myTable
+                        .getMatrixDq(), myTable.getMarkirovka(), typecrossing,
+                data);
+
+        mytree.WriteResult(0);
+        return mytree.getTransTable();
     }
 
     protected void generateTimes() {
@@ -80,7 +100,24 @@ public class EmulationManager {
             Generator generator = generatorsPool.chooseGenerator(g);
             times.add(generator.generateValue());
         }
+        // sortTimes(times);
     }
+
+    // protected void sortTimes(ArrayList<Double> times) {
+    // boolean isSorted;
+    // double temp = 0.0;
+    // do {
+    // isSorted = true;
+    // for (int i = 0; i < times.size() - 1; i++) {
+    // if (times.get(i) > times.get(i + 1)) {
+    // temp = times.get(i);
+    // times.set(i, times.get(i + 1));
+    // times.set(i + 1, temp);
+    // isSorted = false;
+    // }
+    // }
+    // } while (!isSorted);
+    // }
 
     protected ArrayList<ArrayList<Integer>> generateCollisions() {
         ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
@@ -92,8 +129,11 @@ public class EmulationManager {
             if (el.getType() == "P") {
                 for (int j = 0; j < el.getOutputArcs().size(); j++) {
                     Arc arc = el.getOutputArcs().get(j);
-                    if (!list.get(curIndex).contains(arc.getTo())) {
-                        list.get(curIndex).add(arc.getTo());
+
+                    Transition tran = data.getTransitionWithNo(arc.getTo());
+                    int pos = transitions.indexOf(tran);
+                    if (!list.get(curIndex).contains(pos)) {
+                        list.get(curIndex).add(pos);
                     }
                 }
                 if (list.get(curIndex).size() >= 2) {
@@ -104,6 +144,7 @@ public class EmulationManager {
                 }
             }
         }
+        list.remove(list.size() - 1);
 
         return list;
     }
@@ -143,16 +184,32 @@ public class EmulationManager {
      */
     public final void setData(Data data) {
         this.data = data;
+
+        initializeAll();
     }
 
-    public void updateTransitionsStatus() {
+    /**
+     * @return the log
+     */
+    public final EmulatedTransitionsLog getLog() {
+        return log;
+    }
+
+    /**
+     * @param log
+     *            the log to set
+     */
+    public final void setLog(EmulatedTransitionsLog log) {
+        this.log = log;
+    }
+
+    protected void updateTransitionsStatus() {
         for (int i = 0; i < transitions.size(); i++) {
             statuses.set(i, false);
         }
 
         ArrayList<TransitionsTableRow> tableRows;
-        tableRows = transTable.SelectAllWithLevelPrevMarking(curLevel,
-                curMarking);
+        tableRows = transTable.selectAllWithPrevMarking(curMarking);
 
         for (int i = 0; i < tableRows.size(); i++) {
             int no = findTimeTransition(tableRows.get(i).getWorkedTransitions());
@@ -165,7 +222,7 @@ public class EmulationManager {
         for (int i = 0; i < workedTransitions.size(); i++) {
             Transition tran = workedTransitions.get(i);
             if (tran.getLyambda() != 0.0) {
-                return i;
+                return transitions.indexOf(tran);
             }
         }
         return -1;
@@ -180,16 +237,14 @@ public class EmulationManager {
 
             // Step2: generating number and scaling.
             double rand = generatorsPool.getLCG().generateValue();
-            double scale = ranges.get(ranges.size() - 1);
-            rand *= scale;
+            if (ranges.size() > 0) {
+                double scale = ranges.get(ranges.size() - 1);
+                rand *= scale;
 
-            // Security:
-            if (rand > ranges.get(ranges.size() - 1)) {
-                throw new RuntimeException();
+                if (scale != 0.0) {
+                    raffleStatus(collisionSet, ranges, rand);
+                }
             }
-
-            RaffleStatus(collisionSet, ranges, rand);
-
         }
     }
 
@@ -201,9 +256,15 @@ public class EmulationManager {
         for (int j = 0; j < collisionSet.size(); j++) {
             // data.getTransitionWithNo(collSet.get(j))
             int no = collisionSet.get(j);
-            double range = ranges.get(j - 1);
+            double range;
+            if (j == 0) {
+                range = 0;
+            } else {
+                range = ranges.get(j - 1);
+            }
+
             if (statuses.get(no)) {
-                range += data.getTransitionWithNo(no).getR();
+                range += transitions.get(no).getR();
             }
             ranges.add(range);
         }
@@ -211,12 +272,12 @@ public class EmulationManager {
         return ranges;
     }
 
-    protected void RaffleStatus(ArrayList<Integer> collisionSet,
+    protected void raffleStatus(ArrayList<Integer> collisionSet,
             ArrayList<Double> ranges, double rand) {
         // Step3: selecting able one.
         int index;
         for (index = 0; index < ranges.size(); index++) {
-            if (rand > ranges.get(index)) {
+            if (rand < ranges.get(index)) {
                 break;
             }
         }
@@ -225,64 +286,97 @@ public class EmulationManager {
         for (int j = 0; j < collisionSet.size(); j++) {
             statuses.set(collisionSet.get(j), false);
         }
-        statuses.set(index, true);
+        statuses.set(collisionSet.get(index), true);
     }
-    
-    public void updateActiveTransition() {
+
+    protected void updateActiveTransition() {
         // Step1: Generating list of possible transitions.
+        ArrayList<Integer> possibles = getPossibles();
+        ArrayList<Transition> possibleTrans = getPossiblesTrans(possibles);
+
+        // Step2: select active transition.
+        Transition active = selectActiveTransition(possibles);
+
+        Marking prevMarking = curMarking;
+        curMarking = transTable.selectAllWithTransPrevMarking(active,
+                curMarking).get(0).getNextMarking();
+
+        // Step4: Reset time for active.
+        double time = updateTransitionsTime(active);
+        generateTimeForTransition(active);
+
+        // Step5: Logging
+        EmulatedTransitionsLogItem item;
+        item = new EmulatedTransitionsLogItem(time, prevMarking, curMarking,
+                active, possibleTrans);
+        log.add(item);
+    }
+
+    protected ArrayList<Integer> getPossibles() {
         ArrayList<Integer> possibles = new ArrayList<Integer>();
         for (int i = 0; i < statuses.size(); i++) {
             if (statuses.get(i)) {
                 possibles.add(i);
             }
         }
-        
-        // Step2: Rand and scaling
-        double rand = generatorsPool.getLCG().generateValue();
-        double scale = possibles.size();
-        rand *= scale;
-        int position = (int)rand;
-        
-        // Step3: Reset time for active.
-        updateTimeForTransition(position);        
+        return possibles;
     }
 
-    public void updateTransitionsTime() {
-        double shift = times.get(1) - times.get(0);
-        
-        for (int i = 0; i < times.size(); i++) {
-            times.set(i, times.get(i) - shift);
+    protected ArrayList<Transition> getPossiblesTrans(
+            ArrayList<Integer> possibles) {
+        ArrayList<Transition> transitions = new ArrayList<Transition>();
+        for (int i = 0; i < possibles.size(); i++) {
+            Transition tran = this.transitions.get(possibles.get(i));
+            transitions.add(tran);
         }
+        return transitions;
     }
-    
-    // TODO: what??? O_o
-    /**
-     * 
-     * @param transition
-     */
-    public void updateStatusForTransition(Transition transition) {
-        throw new UnsupportedOperationException();
+
+    protected Transition selectActiveTransition(ArrayList<Integer> possibles) {
+        int min = possibles.get(0);
+        for (int i = 1; i < possibles.size(); i++) {
+            if (times.get(possibles.get(i)) < times.get(min)) {
+                min = possibles.get(i);
+            }
+        }
+
+        // double rand = generatorsPool.getLCG().generateValue();
+        // double scale = possibles.size();
+        // rand *= scale;
+        // int position = (int) rand;
+        //
+        // int active = possibles.get(position);
+        int active = min;
+        return transitions.get(active);
+    }
+
+    protected double updateTransitionsTime(Transition active) {
+        double shift = times.get(transitions.indexOf(active));
+
+        if (shift > 0) {
+            for (int i = 0; i < times.size(); i++) {
+                times.set(i, times.get(i) - shift);
+            }
+        }
+        return shift;
     }
 
     /**
      * 
      * @param transition
      */
-    public void updateTimeForTransition(int position) {
-        Transition transition = transitions.get(position);
-        Double g = transition.getG();
+    protected void generateTimeForTransition(Transition active) {
+        Double g = active.getG();
+        int position = transitions.indexOf(active);
         Generator generator = generatorsPool.chooseGenerator(g);
-        times.set(position, generator.generateValue());        
-    }
-
-    public void update() {
-        updateTransitionsStatus();
-        updateTransitionsTime();
-        updateActiveTransition();
+        times.set(position, generator.generateValue());
     }
 
     public void nextStep() {
-        throw new UnsupportedOperationException();
+        if ((transTable != null) && (transTable.count() != 0)) {
+            updateTransitionsStatus();
+            updateActiveTransition();
+        }
     }
 
     public void prevStep() {

@@ -3,6 +3,7 @@ package data.modeling;
 import java.util.ArrayList;
 
 import data.Marking;
+import data.elements.Transition;
 
 public class TransitionsTable {
 
@@ -67,26 +68,65 @@ public class TransitionsTable {
     }
 
 //	/**
-//	 * 
-//	 * @param level
+//	 *
 //	 */
-//	public ArrayList<TransitionsTableRow> SelectAllWithLevel(int level) {
-//		throw new UnsupportedOperationException();
+//	public Marking SelectRootMarking() {
+//	    Marking marking = null;
+//        
+//        for (int i = 0; i < rows.size(); i++) {
+//            TransitionsTableRow row = rows.get(i);
+//            if (row.getMarkType() == MarkType.ROOT) {
+//                marking = row.getPrevMarking();
+//            }
+//        }
+//        
+//        return marking;
 //	}
 
 	/**
 	 * 
-	 * @param level
 	 * @param marking
 	 */
-	public ArrayList<TransitionsTableRow> SelectAllWithLevelPrevMarking(int level, Marking marking) {
-		throw new UnsupportedOperationException();
+	public ArrayList<TransitionsTableRow> selectAllWithPrevMarking(Marking marking) {
+		ArrayList<TransitionsTableRow> list = new ArrayList<TransitionsTableRow>();
+	    
+	    for (int i = 0; i < rows.size(); i++) {
+		    TransitionsTableRow row = rows.get(i);
+		    if ((row.getLevel() > 0) && (row.getPrevMarking().equals(marking))) {
+                list.add(row);
+            }
+        }
+	    
+	    return list;
 	}
 	
 	/**
      * 
+     * @param transition
+     * @param marking
      */
-    public TransitionsTableRow SelectRoot() {
+    public ArrayList<TransitionsTableRow> selectAllWithTransPrevMarking(Transition transition, Marking marking) {
+        ArrayList<TransitionsTableRow> list = new ArrayList<TransitionsTableRow>();
+        
+        for (int i = 0; i < rows.size(); i++) {
+            TransitionsTableRow row = rows.get(i);
+            if ((row.getLevel() > 0) && (row.getPrevMarking().equals(marking))) {
+                ArrayList<Transition> trans = rows.get(i).getWorkedTransitions();
+                for (int j = 0; j < trans.size(); j++) {
+                    if (trans.get(j).getNo() == transition.getNo()) {
+                        list.add(row);
+                    }
+                }
+            }
+        }
+        
+        return list;
+    }
+	
+	/**
+     * 
+     */
+    public TransitionsTableRow selectRoot() {
         TransitionsTableRow root = null;
         for (int i = 0; i < rows.size(); i++) {
             if (rows.get(i).getMarkType() == MarkType.ROOT) {

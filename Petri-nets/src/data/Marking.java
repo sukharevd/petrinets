@@ -93,8 +93,29 @@ public class Marking {
     public void setAt(int index, Integer value) {
         list.set(index, value);
     }
+    
+    public boolean equals(Marking m) {
+        boolean is_equals = false;
+        int sum = 0;
+        
+        if (this.list.size() == m.list.size()) {
+            for (int i = 0; i < this.list.size(); i++) {
+                sum +=  Math.abs(this.list.get(i) - m.list.get(i));
+            }
+        }
+        
+        if (sum == 0) {
+            is_equals = true;
+        }
+        
+        return is_equals;
+    }
 
     public String toString() {
+        if (list.size() == 0) {
+            return "";
+        }
+        
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append("M");
         strBuilder.append(no);

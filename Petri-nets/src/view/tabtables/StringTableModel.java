@@ -6,12 +6,12 @@ package view.tabtables;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Table model for table in class D????????TableDrawer.
+ * Table model for table in class TransitionsTableDrawer.
  *
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  *
  */
-public class TransitionsTableModel extends DefaultTableModel {
+public class StringTableModel extends DefaultTableModel {
 
     /**
      * JDK 1.1 serialVersionUID.
@@ -23,7 +23,7 @@ public class TransitionsTableModel extends DefaultTableModel {
      * @param data array of data of the table.
      * @param columnNames array of column names of  the table.
      */
-    public TransitionsTableModel(Object[][] data, Object[] columnNames) {
+    public StringTableModel(Object[][] data, Object[] columnNames) {
         super(data, columnNames);
     }
 

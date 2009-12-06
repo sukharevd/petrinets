@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import data.Data;
 import data.elements.Place;
 import data.elements.Transition;
+import data.modeling.EmulationManager;
 
 /**
  * Action, which is occurred when user clicks "New" component, it saves current
@@ -26,15 +27,18 @@ public class CreatingAction extends AbstractAction {
     private static final long serialVersionUID = 8032711014811260318L;
 
     private Data data;
+    
+    private EmulationManager emulator;
 
     private JFrame mainFrame;
 
     /**
      * @param data
      */
-    public CreatingAction(Data data, final JFrame parentFrame) {
+    public CreatingAction(Data data, EmulationManager emulator, JFrame parentFrame) {
         super();
         this.data = data;
+        this.emulator = emulator;
         this.mainFrame = parentFrame;
     }
 
@@ -68,6 +72,9 @@ public class CreatingAction extends AbstractAction {
 
         data.setActiveElement(null);
         data.setAddingModeElement(null);
+        
+        emulator.setData(data);
+        
         // Main.getAppFrame().getElementDrawer().repaint();
         mainFrame.repaint();
     }

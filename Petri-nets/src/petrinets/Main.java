@@ -6,6 +6,7 @@ import view.AppFrame;
 
 import data.Data;
 import data.elements.Element;
+import data.modeling.EmulationManager;
 
 /**
  * Entry point of application.
@@ -22,11 +23,18 @@ public final class Main {
      * Data of the application.
      */
     private static Data data = new Data(new ArrayList<Element>());
-
+    
+    /**
+     * Emulation manager of application, it emulates the work of petri-net. 
+     */
+    private static EmulationManager emulator = new EmulationManager();
+    
     /**
      * Frame of the application.
      */
-    private static AppFrame appFrame = new AppFrame(data);
+    private static AppFrame appFrame = new AppFrame(data, emulator);
+    
+    
 
     /**
      * Starts GUI shell.

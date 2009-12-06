@@ -16,12 +16,19 @@ public class HyperExpGenerator implements Generator {
     private double b = 0.0;
 
     public HyperExpGenerator() {
-        this.lkgValues = null;
-        this.lyambda = 2.0;
+        this.lyambda = 25.0;
         this.g = 2;
-
         this.curIndex = 0;
         this.values = new ArrayList<Double>();
+        
+        double a = Math.pow(13, 11);
+        double c = Math.pow(5, 3);
+        double d = Math.pow(2, 32);
+        double w0 = 6147.0;// (double) new Random().nextInt((int)d);
+        int quantity = 10000;
+        Generator kGen = new LCGenerator(a, c, d, w0);
+        int lkgQuantity = quantity * 2;
+        this.lkgValues = kGen.generateList(lkgQuantity);
     }
 
     public HyperExpGenerator(ArrayList<Double> srcvals, double lyambda, int g) {
