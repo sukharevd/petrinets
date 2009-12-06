@@ -12,6 +12,7 @@ import javax.swing.filechooser.FileFilter;
 import data.Data;
 import data.elements.Place;
 import data.elements.Transition;
+import data.modeling.EmulationManager;
 
 
 /**
@@ -32,13 +33,16 @@ public class OpeningAction extends AbstractAction {
     private Data data;
 
     private JFrame mainFrame;
+    
+    private EmulationManager emulator;
 
     /**
      * @param data
      */
-    public OpeningAction(final Data data, final JFrame mainFrame) {
+    public OpeningAction(final Data data, final EmulationManager emulator, final JFrame mainFrame) {
         super();
         this.data = data;
+        this.emulator = emulator;
         this.mainFrame = mainFrame;
     }
 
@@ -101,12 +105,13 @@ public class OpeningAction extends AbstractAction {
             data.load(path);
             data.setActiveElement(null);
             data.setAddingModeElement(null);
+            emulator.setData(data);
             // mainFrame.getElementDrawer().repaint();
             mainFrame.repaint();
 
             data.getCommandStack().getCommandList().clear();
             data.getCommandStack().setCurIndex(-1); // no the commands
-            
+
         }
 
     }

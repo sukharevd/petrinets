@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import data.Data;
+import data.modeling.EmulationManager;
 
 /**
  * Action, which is occurred when user clicks "Save as..." component, it saves
@@ -26,6 +27,8 @@ public class SavingAction extends AbstractAction {
     private static final long serialVersionUID = 8048312361973227507L;
 
     private Data data = null;
+    
+    private EmulationManager emulator;
 
     private JFrame mainFrame = null;
 
@@ -33,9 +36,10 @@ public class SavingAction extends AbstractAction {
      * @param data
      * @param mainFrame
      */
-    public SavingAction(Data data, JFrame mainFrame) {
+    public SavingAction(Data data, EmulationManager emulator, JFrame mainFrame) {
         super();
         this.data = data;
+        this.emulator = emulator;
         this.mainFrame = mainFrame;
     }
 
@@ -44,6 +48,7 @@ public class SavingAction extends AbstractAction {
      */
     public void actionPerformed(final ActionEvent arg0) {
         save(data, mainFrame);
+        resetEmulator();
     }
 
     /**
@@ -86,6 +91,10 @@ public class SavingAction extends AbstractAction {
 
             data.save(path);
         }
+    }
+    
+    protected void resetEmulator() {
+        emulator.setData(data);
     }
 
 }

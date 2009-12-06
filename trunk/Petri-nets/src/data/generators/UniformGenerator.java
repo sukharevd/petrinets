@@ -15,11 +15,20 @@ public class UniformGenerator implements Generator {
     private double b = 0.0;
 
     public UniformGenerator() {
-        this.lkgValues = null;
         this.lyamda = 2.0;
 
         this.curIndex = 0;
         this.values = new ArrayList<Double>();
+        
+        double a = Math.pow(5, 17);
+        double c = Math.pow(3, 3);
+        double d = Math.pow(2, 32);
+        double w0 = 428.0;
+        int quantity = 10000;
+        
+        Generator kGen = new LCGenerator(a, c, d, w0);
+        this.lkgValues = kGen.generateList(quantity);
+        
     }
 
     public UniformGenerator(ArrayList<Double> newvals, double lyamda) {
