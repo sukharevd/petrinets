@@ -357,6 +357,8 @@ public class EmulationManager {
             for (int i = 0; i < times.size(); i++) {
                 times.set(i, times.get(i) - shift);
             }
+        } else {
+            shift = 0.0;
         }
         return shift;
     }
