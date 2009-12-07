@@ -35,6 +35,7 @@ import actions.menuadd.AddingPlaceAction;
 import actions.menuadd.AddingTimeTransitionAction;
 import actions.menugeneral.AboutingAction;
 import actions.menugeneral.CreatingAction;
+import actions.menugeneral.Emulating10KStepsAction;
 import actions.menugeneral.EmulatingStepAction;
 import actions.menugeneral.ExitingAction;
 import actions.menugeneral.ExportingAction;
@@ -405,7 +406,11 @@ public class AppFrame extends JFrame {
         toolBar.addSeparator();
         
         button = makeToolBarButton("emul124", new EmulatingStepAction(emulator,
-                this), "Emulate 1 step", "Emulate (1x)");
+                this), "Emulate 1 step", "Emulate (1)");
+        toolBar.add(button);
+        
+        button = makeToolBarButton("emul10k24", new Emulating10KStepsAction(emulator,
+                this), "Emulate 10 000 steps", "Emulate (10K)");
         toolBar.add(button);
 
         add(toolBar, "North");

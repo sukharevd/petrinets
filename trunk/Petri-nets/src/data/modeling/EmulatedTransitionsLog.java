@@ -21,6 +21,13 @@ public class EmulatedTransitionsLog {
         rows = new ArrayList<EmulatedTransitionsLogItem>();
     }
     
+    /**
+     * @return the rows
+     */
+    public final ArrayList<EmulatedTransitionsLogItem> getRows() {
+        return rows;
+    }
+
     public void add(EmulatedTransitionsLogItem row) {
         rows.add(row);
     }

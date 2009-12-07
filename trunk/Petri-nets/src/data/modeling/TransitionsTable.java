@@ -137,4 +137,15 @@ public class TransitionsTable {
         return root;
     }
 
+    public ArrayList<Marking> getListOfMarking() {
+    	ArrayList<Marking> markings = new ArrayList<Marking>();
+    	
+    	for (int i = 0; i < rows.size(); i++) {
+    		Marking marking = rows.get(i).getNextMarking();
+    		if (!markings.contains(marking)) {
+    			markings.add(marking);
+    		}
+		}
+    	return markings;
+    }
 }
