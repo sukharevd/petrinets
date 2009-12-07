@@ -296,13 +296,14 @@ public class EmulationManager {
 
         // Step2: select active transition.
         Transition active = selectActiveTransition(possibles);
+        int activePos = transitions.indexOf(active);
 
         Marking prevMarking = curMarking;
         curMarking = transTable.selectAllWithTransPrevMarking(active,
                 curMarking).get(0).getNextMarking();
 
         // Step4: Reset time for active.
-        double time = updateTransitionsTime(active);
+        double time = updateTransitionsTime(activePos, possibles);
         generateTimeForTransition(active);
 
         // Step5: Logging
@@ -350,16 +351,14 @@ public class EmulationManager {
         return transitions.get(active);
     }
 
-    protected double updateTransitionsTime(Transition active) {
-        double shift = times.get(transitions.indexOf(active));
+    protected double updateTransitionsTime(int activePos,
+            ArrayList<Integer> possibles) {
+        double shift = times.get(activePos);
 
-        if (shift > 0) {
-            for (int i = 0; i < times.size(); i++) {
-                times.set(i, times.get(i) - shift);
-            }
-        } else {
-            shift = 0.0;
+        for (int i = 0; i < possibles.size(); i++) {
+            times.set(possibles.get(i), times.get(possibles.get(i)) - shift);
         }
+
         return shift;
     }
 
