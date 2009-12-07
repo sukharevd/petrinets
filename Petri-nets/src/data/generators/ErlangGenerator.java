@@ -14,6 +14,8 @@ public class ErlangGenerator implements Generator {
     private int k;
 
     private double b = 0.0;
+    
+    private Generator kGen;
 
     public ErlangGenerator() {
         this.lyamda = 89.0;
@@ -25,12 +27,13 @@ public class ErlangGenerator implements Generator {
         double c = Math.pow(3, 3);
         double d = Math.pow(2, 32);
         double w0 = 428.0;// (double) new Random().nextInt((int)d);
-        int quantity = 10000; // TODO: 3000?
+        //int quantity = 10000; // TODO: 3000?
 
-        Generator kGen = new LCGenerator(a, c, d, w0);
-        int lkgQuantity = (quantity + 1) * k;
+        this.kGen = new LCGenerator(a, c, d, w0);
+        //int lkgQuantity = (quantity + 1) * k;
 
-        this.lkgValues = kGen.generateList(lkgQuantity);
+        //this.lkgValues = kGen.generateList(lkgQuantity);
+        //this.lkgValues = kGen.generateList();
 
     }
 
@@ -41,37 +44,66 @@ public class ErlangGenerator implements Generator {
         this.values = new ArrayList<Double>();
     }
 
-    @Override
-    public ArrayList<Double> generateList(int quantity) {
-        double sum;
-        for (; curIndex < quantity; curIndex++) {
-            sum = 0.0;
-            for (int j = curIndex * k + 1; j < (curIndex + 1) * k + 1; j++) {
-                sum += Math.log(lkgValues.get(j));
-            }
-            values.add(curIndex, sum / (-lyamda * k));
-            if (values.get(curIndex) > b) {
-                b = values.get(curIndex);
-            }
-        }
+//    @Override
+//    public ArrayList<Double> generateList(int quantity) {
+//        double sum;
+//        for (; curIndex < quantity; curIndex++) {
+//            sum = 0.0;
+//            for (int j = curIndex * k + 1; j < (curIndex + 1) * k + 1; j++) {
+//                sum += Math.log(lkgValues.get(j));
+//            }
+//            values.add(curIndex, sum / (-lyamda * k));
+//            if (values.get(curIndex) > b) {
+//                b = values.get(curIndex);
+//            }
+//        }
+//
+//        return values;
+//    }
+    
+//    @Override
+//    public ArrayList<Double> generateList() {
+//        double sum = 0.0;
+//        for (int j = 0; j < k; j++) {
+//            sum += Math.log(lkgValues.get(j));
+//        }
+//        values.set(0, sum / (-lyamda * k));
+//        if (values.get(0) > b) {
+//            b = values.get(0);
+//        }
+//
+//        return values;
+//    }
 
-        return values;
-    }
-
+//    @Override
+//    public Double generateValue() {
+//        double sum = 0.0;
+//        for (int j = curIndex * k + 1; j < (curIndex + 1) * k + 1; j++) {
+//            sum += Math.log(lkgValues.get(j));
+//        }
+//        values.add(curIndex, sum / (-lyamda * k));
+//        if (values.get(curIndex) > b) {
+//            b = values.get(curIndex);
+//        }
+//
+//        double res = values.get(curIndex);
+//        curIndex++;
+//
+//        return res;
+//    }
+    
     @Override
     public Double generateValue() {
         double sum = 0.0;
-        for (int j = curIndex * k + 1; j < (curIndex + 1) * k + 1; j++) {
-            sum += Math.log(lkgValues.get(j));
+        for (int j = 0; j < k; j++) {
+            sum += Math.log(this.kGen.generateValue());
         }
-        values.add(curIndex, sum / (-lyamda * k));
-        if (values.get(curIndex) > b) {
-            b = values.get(curIndex);
+        values.add(0, sum / (-lyamda * k));
+        if (values.get(0) > b) {
+            b = values.get(0);
         }
 
-        double res = values.get(curIndex);
-        curIndex++;
-
+        double res = values.get(0);
         return res;
     }
 
