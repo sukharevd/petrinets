@@ -5,13 +5,14 @@ package view.tabtables;
 
 import javax.swing.JTable;
 
+import data.modeling.EmulatedStatisticMaker;
 import data.modeling.EmulationManager;
 
 /**
  * @author Admin
  * 
  */
-public class EmulLogTable extends JTable {
+public class JEmulLogTable extends JTable {
 
     /**
      * 
@@ -26,7 +27,7 @@ public class EmulLogTable extends JTable {
 
     private EmulationManager emulator;
 
-    public EmulLogTable(EmulationManager emulator) {
+    public JEmulLogTable(EmulationManager emulator) {
         super();
         this.emulator = emulator;
         this.rows = null;
@@ -47,6 +48,9 @@ public class EmulLogTable extends JTable {
     public void updateRows() {
         rows = emulator.getLog().getObjectTable();
         stringTableModel.setDataVector(rows, columns);
+        
+        EmulatedStatisticMaker maker = new EmulatedStatisticMaker(emulator);
+        maker.makeStatistic();
     }
 
 }

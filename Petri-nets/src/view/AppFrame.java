@@ -432,6 +432,7 @@ public class AppFrame extends JFrame {
         JPanel emulTablePanel = new JPanel(new BorderLayout());
         JPanel reachabiblityGraphPanel = new JPanel(new BorderLayout());
         JPanel markovGraphPanel = new JPanel(new BorderLayout());
+        JPanel emulatingPanel = new JPanel(new BorderLayout());
 
         elementDrawer = new ElementDrawer(data, this);
         reachabiblityGraph = new ReachabilityGraphDrawer(data);
@@ -441,6 +442,7 @@ public class AppFrame extends JFrame {
                 this);
         EmulationTablesDrawer emulTable = new EmulationTablesDrawer(data,
                 emulator);
+        ElementDrawer emulatingDrawer = new ElementDrawer(emulator.getData(), this);
 
         panelToPanelWithScroll(elementDrawer, drawingPanel);
         panelToPanelWithScroll(reachabiblityGraph, reachabiblityGraphPanel);
@@ -448,6 +450,7 @@ public class AppFrame extends JFrame {
         panelToPanelWithScroll(transTable, transTablePanel);
         panelToPanelWithScroll(descrTable, descrTablePanel);
         panelToPanelWithScroll(emulTable, emulTablePanel);
+        panelToPanelWithScroll(emulatingDrawer, emulatingPanel);
 
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.add("Drawing", drawingPanel);
@@ -456,7 +459,8 @@ public class AppFrame extends JFrame {
         tabPane.add("Reachabiblity Graph", reachabiblityGraphPanel);
         tabPane.add("Transitions Table", transTablePanel);
         tabPane.add("Emulation Table", emulTablePanel);
-
+        //tabPane.add("Emulating", emulatingPanel);
+        
         this.getContentPane().add(tabPane);
     }
 

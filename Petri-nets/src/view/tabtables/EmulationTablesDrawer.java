@@ -24,9 +24,12 @@ public class EmulationTablesDrawer extends JPanel {
     //private EmulationManager emulator;
     private Data data;
     
-    private EmulLogTable table;
+    private JEmulLogTable logTable;
+    private JEmulStatisticTable statisticTable;
 
-    private JScrollPane scroll;
+    private JScrollPane logScroll;
+    private JScrollPane statisticScroll;
+    
 
     //private JFrame mainFrame;
     /**
@@ -36,14 +39,19 @@ public class EmulationTablesDrawer extends JPanel {
         this.data = data;
         //this.emulator = emulator;
         
-        table = new EmulLogTable(emulator);
-        scroll = new JScrollPane(table);
-        add(scroll);
+        logTable = new JEmulLogTable(emulator);
+        logScroll = new JScrollPane(logTable);
+        add(logScroll);
+        
+        statisticTable = new JEmulStatisticTable(emulator);
+        statisticScroll = new JScrollPane(statisticTable);
+        add(statisticScroll);
     }
     
     public void paint(Graphics g) {
         if (data.getElements().size() != 0) {
-            table.updateRows();
+            logTable.updateRows();
+            statisticTable.updateRows();
             //table.repaint();
         }
     }

@@ -142,7 +142,14 @@ public class TransitionsTable {
     	
     	for (int i = 0; i < rows.size(); i++) {
     		Marking marking = rows.get(i).getNextMarking();
-    		if (!markings.contains(marking)) {
+    		boolean is_contains = false;
+    		for (int j = 0; j < markings.size(); j++) {
+                if (markings.get(j).equals(marking)) {
+                    is_contains = true;
+                    break;
+                }
+            } 
+    		if (!is_contains) {
     			markings.add(marking);
     		}
 		}

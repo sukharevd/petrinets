@@ -8,6 +8,7 @@ import data.TableManagment;
 import data.TreeofPetriNet;
 import data.elements.Arc;
 import data.elements.Element;
+import data.elements.Place;
 import data.elements.Transition;
 import data.generators.Generator;
 import data.generators.GeneratorsPool;
@@ -301,6 +302,7 @@ public class EmulationManager {
         Marking prevMarking = curMarking;
         curMarking = transTable.selectAllWithTransPrevMarking(active,
                 curMarking).get(0).getNextMarking();
+        changeDataMarking();
 
         // Step4: Reset time for active.
         double time = updateTransitionsTime(activePos, possibles);
@@ -349,6 +351,15 @@ public class EmulationManager {
         // int active = possibles.get(position);
         int active = min;
         return transitions.get(active);
+    }
+    
+    protected void changeDataMarking() {
+        ArrayList<Place> places;
+        places = data.getPlaces();
+        for (int i = 0; i < places.size(); i++) {
+            int numTokens = curMarking.getAt(i);            
+            places.get(i).setNumTokens(numTokens);
+        }
     }
 
     protected double updateTransitionsTime(int activePos,

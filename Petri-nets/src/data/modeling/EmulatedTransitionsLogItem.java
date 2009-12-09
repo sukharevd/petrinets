@@ -36,13 +36,88 @@ import data.elements.Transition;
         this.startedTransitions = startedTransitions;
     }
     
+    /**
+     * @return the time
+     */
+    public final double getTime() {
+        return time;
+    }
+
+    /**
+     * @param time the time to set
+     */
+    public final void setTime(double time) {
+        this.time = time;
+    }
+
+    /**
+     * @return the prevMarking
+     */
+    public final Marking getPrevMarking() {
+        return prevMarking;
+    }
+
+    /**
+     * @param prevMarking the prevMarking to set
+     */
+    public final void setPrevMarking(Marking prevMarking) {
+        this.prevMarking = prevMarking;
+    }
+
+    /**
+     * @return the nextMarking
+     */
+    public final Marking getNextMarking() {
+        return nextMarking;
+    }
+
+    /**
+     * @param nextMarking the nextMarking to set
+     */
+    public final void setNextMarking(Marking nextMarking) {
+        this.nextMarking = nextMarking;
+    }
+
+    /**
+     * @return the activeTransition
+     */
+    public final Transition getActiveTransition() {
+        return activeTransition;
+    }
+
+    /**
+     * @param activeTransition the activeTransition to set
+     */
+    public final void setActiveTransition(Transition activeTransition) {
+        this.activeTransition = activeTransition;
+    }
+
+    /**
+     * @return the startedTransitions
+     */
+    public final ArrayList<Transition> getStartedTransitions() {
+        return startedTransitions;
+    }
+
+    /**
+     * @param startedTransitions the startedTransitions to set
+     */
+    public final void setStartedTransitions(ArrayList<Transition> startedTransitions) {
+        this.startedTransitions = startedTransitions;
+    }
+
     public Object[] getObjectArray() {
         Object[] array = new Object[5];
         array[0] = time;
         array[1] = prevMarking.toString();
         array[2] = nextMarking.toString();
         array[3] = activeTransition.getTitle();
-        array[4] = startedTransitions;
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < startedTransitions.size(); i++) {
+            str.append(startedTransitions.get(i).getTitle());
+            str.append(" ");
+        }
+        array[4] = str.toString();
         
         return array;
     }

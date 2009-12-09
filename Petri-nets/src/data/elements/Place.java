@@ -57,7 +57,7 @@ public class Place extends Element {
 
     public java.lang.Object clone() {
         // TODO: +2???
-        return new Place(numTokens, curIndex + 1, getX() + 2, getY() + 2);
+        return new Place(numTokens, getNo(), getX() + 2, getY() + 2);
     }
 
     public String toString() {
