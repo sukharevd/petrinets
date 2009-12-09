@@ -125,7 +125,7 @@ public class Transition extends Element {
     }
 
     public Object clone() {
-        return new Transition(lyambda, g, r, law, Transition.curIndex, getX() + 2,
+        return new Transition(lyambda, g, r, law, getNo(), getX() + 2,
                 getY() + 2);
     }
     

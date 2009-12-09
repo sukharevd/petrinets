@@ -11,8 +11,7 @@ import java.util.ArrayList;
 public interface Generator {
     public Double generateValue();
 
-    //public ArrayList<Double> generateList(int quantity);
+    public ArrayList<Double> generateList(int quantity);
 
-    //public ArrayList<Double> generateList();
     public double getB();
 }

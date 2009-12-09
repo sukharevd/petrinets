@@ -105,7 +105,7 @@ public class OpeningAction extends AbstractAction {
             data.load(path);
             data.setActiveElement(null);
             data.setAddingModeElement(null);
-            emulator.setData(data);
+            emulator.setData(data); // TODO: clone!!!!!!!!!11
             // mainFrame.getElementDrawer().repaint();
             mainFrame.repaint();
 
