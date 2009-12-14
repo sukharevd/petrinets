@@ -17,7 +17,6 @@ import data.TreeofPetriNet;
 
 /**
  * @author <a href="mailto:jacky@gmail.com">Dzyuban Yuriy</a>
- * @author <a href="mailto:vixentael@gmail.com">Voitova Anastasi</a>
  * 
  */
 public class ReachabilityGraphDrawer extends JPanel implements Scalable {
