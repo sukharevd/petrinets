@@ -5,7 +5,6 @@ package view.tabtables;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -41,6 +40,8 @@ public class EmulationTablesDrawer extends JPanel {
 
     private EmulationManager emulator;
 
+    private EmulationStatisticMaker statistic;
+
     private Data data;
 
     private int curStep;
@@ -51,33 +52,16 @@ public class EmulationTablesDrawer extends JPanel {
 
     private JTable changingPMarkStatisticTable;
 
-    private JScrollPane statisticScroll;
+    private JTable summaryTable;
 
-    private JScrollPane changingMarkStatisticScroll;
+    private DefaultCategoryDataset frequencyDataset;
 
-    private JScrollPane changingPMarkStatisticScroll;
+    private DefaultCategoryDataset timeAvgDataset;
 
-    DefaultCategoryDataset frequencyDataset;
+    private DefaultCategoryDataset timeAvgReturnDataset;
 
-    DefaultCategoryDataset timeAvgDataset;
+    private DefaultCategoryDataset probabilityDataset;
 
-    DefaultCategoryDataset timeAvgReturnDataset;
-
-    DefaultCategoryDataset probabilityDataset;
-
-//    JFreeChart chart;
-//
-//    ChartPanel frequenceChartPanel;
-//
-//    ChartPanel timeAvgChartPanel;
-//
-//    ChartPanel timeAvgReturnChartPanel;
-//
-//    ChartPanel probabilityChartPanel;
-
-    private EmulationStatisticMaker statistic;
-
-    // private JFrame mainFrame;
     /**
      * @param data
      */
@@ -96,33 +80,38 @@ public class EmulationTablesDrawer extends JPanel {
     }
 
     private void tablesInitialize() {
+        JScrollPane scroll;
+
         statisticTable = new JTable(new StringTableModel(new Object[0][0],
                 new Object[0]));
         statisticTable.getTableHeader().setReorderingAllowed(false);
-        statisticScroll = new JScrollPane(statisticTable);
-        statisticScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(statisticScroll);
+        scroll = new JScrollPane(statisticTable);
+        scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(scroll);
 
         changingMarkStatisticTable = new JTable(new StringTableModel(
                 new Object[0][0], new Object[0]));
-        changingMarkStatisticScroll = new JScrollPane(
-                changingMarkStatisticTable);
-        changingMarkStatisticScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(changingMarkStatisticScroll);
+        scroll = new JScrollPane(changingMarkStatisticTable);
+        scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(scroll);
 
         changingPMarkStatisticTable = new JTable(new StringTableModel(
                 new Object[0][0], new Object[0]));
-        changingPMarkStatisticScroll = new JScrollPane(
-                changingPMarkStatisticTable);
-        changingPMarkStatisticScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(changingPMarkStatisticScroll);
+        scroll = new JScrollPane(changingPMarkStatisticTable);
+        scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(scroll);
 
+        summaryTable = new JTable(new StringTableModel(new Object[0][0],
+                new Object[0]));
+        scroll = new JScrollPane(summaryTable);
+        scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(scroll);
     }
 
     protected void graphsInitialize() {
         JPanel panel;
         JFreeChart chart;
-        
+
         frequencyDataset = new DefaultCategoryDataset();
         chart = ChartFactory.createBarChart("Frequency", // chart title
                 "Marking", // domain axis label
@@ -224,6 +213,14 @@ public class EmulationTablesDrawer extends JPanel {
         ((DefaultTableModel) changingPMarkStatisticTable.getModel())
                 .setDataVector(statisticRows, columns);
 
+        statisticRows = new Object[1][3];
+        statisticRows[0][0] = emulator.getData().getMarking().toString();
+        statisticRows[0][1] = statistic.getStepsQuantity();
+        statisticRows[0][2] = statistic.getSumTime();
+        columns = getResumeColumns();
+        ((DefaultTableModel) summaryTable.getModel()).setDataVector(
+                statisticRows, columns);
+
     }
 
     protected void updateStatistic() {
@@ -242,6 +239,14 @@ public class EmulationTablesDrawer extends JPanel {
         columns[3] = "Return Time";
         columns[4] = "Probability";
         columns[5] = "Return Freq";
+        return columns;
+    }
+
+    protected Object[] getResumeColumns() {
+        Object[] columns = new String[3];
+        columns[0] = "Current Marking";
+        columns[1] = "Current Step";
+        columns[2] = "Current Time";
         return columns;
     }
 
@@ -277,7 +282,6 @@ public class EmulationTablesDrawer extends JPanel {
                     .getReturnTime();
             double probability = statistic.getStatisticItemAt(i)
                     .getProbability(statistic.getSumTime());
-            ArrayList<Integer> markToMark = statistic.getStatisticItemAt(i).getFromMarkings();
             frequencyDataset.addValue(freq, "Frequency1", descriptive);
             timeAvgDataset.addValue(sumTime / (freq - 1), series1, descriptive);
             timeAvgReturnDataset.addValue(sumReturnTime / freq, series1,
