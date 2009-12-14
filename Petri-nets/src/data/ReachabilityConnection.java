@@ -1,7 +1,9 @@
 package data;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import data.modeling.MarkType;
 import data.modeling.TransitionsTable;
@@ -43,6 +45,8 @@ public class ReachabilityConnection {
 	private MarkType[] type;
 	private TreeConnection[] z;
 	private double scale;
+	Color gr1 = Color.white;
+	Color gr2 = Color.black;
 	/**
 	 * @return the scale
 	 */
@@ -100,19 +104,36 @@ public class ReachabilityConnection {
 			g.drawLine(fromX, fromY, toX, toY);
 		}
 		for (int i = 0; i <x.length ; i++) {
-			if (type[i] == MarkType.ROOT)
-				g.setColor(Color.GREEN);
-			if (type[i] == MarkType.INTERNAL)
-				g.setColor(Color.YELLOW);
-			if (type[i] == MarkType.REPEATED)
-				g.setColor(Color.PINK);
-			if (type[i] == MarkType.DEADLOCK)
-				g.setColor(Color.RED);
+			//green
+			if (type[i] == MarkType.ROOT) {
+				gr1 = new Color(97,254,137);
+				gr2 = new Color(76,159,98); 
+			}
+			//yellow
+			if (type[i] == MarkType.INTERNAL) {
+				gr1 = new Color(252,255,161);
+				gr2 = new Color(223,220,0);
+			} 
+			//orange
+			if (type[i] == MarkType.REPEATED) {
+				gr1 = new Color(255,238,144);
+				gr2 = new Color(255,147,99);
+			}
+			//red
+			if (type[i] == MarkType.DEADLOCK) {
+				gr1 = new Color(246,107,107);
+				gr2 = new Color(199,72,72);
+			}
 			int posX=(int)(x[z[i].getElementVhod(0)]*scale);
 			int posY=(int)(y[z[i].getElementVhod(0)]*scale);
+			Graphics2D g2 = (Graphics2D) g;
+			GradientPaint gradient = new GradientPaint(posX-r, posY-r,gr1, 
+					posX+r, posY+r,gr2);
+			g2.setPaint(gradient);
 			g.fillOval(posX-r, posY-r, 2*r, 2*r);
 			g.setColor(Color.BLACK);
-			g.drawString(Integer.toString(z[i].getNameVhod()), posX,posY );
+			g.drawOval(posX-r, posY-r, 2*r, 2*r);
+			g.drawString(Integer.toString(z[i].getNameVhod()), posX-5,posY );
 			
 			
 		}

@@ -105,7 +105,7 @@ public class TransitionsTableDrawer extends JPanel {
 
         int cellHeight = getFont().getSize() + 5;
         table.setRowHeight(cellHeight);
-
+        table.getTableHeader().setReorderingAllowed(false);
         resizeTable();
     }
 
