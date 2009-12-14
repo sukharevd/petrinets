@@ -80,6 +80,13 @@ public class EmulationStatisticMaker {
         return logItems.size();
     }
 
+    /**
+     * @return the sumTime
+     */
+    public final double getSumTime() {
+        return sumTime;
+    }
+
     public Object[][] makeEmulationStatistic() {
         int numColumns = 6;
         double delta = 0.01;
