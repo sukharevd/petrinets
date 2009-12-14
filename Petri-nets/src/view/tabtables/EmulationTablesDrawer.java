@@ -5,6 +5,7 @@ package view.tabtables;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -266,6 +267,7 @@ public class EmulationTablesDrawer extends JPanel {
         frequencyDataset.clear();
         timeAvgDataset.clear();
         timeAvgReturnDataset.clear();
+        probabilityDataset.clear();
         String series1 = "M0";
         for (int i = 0; i < emulator.getTransTable().getListOfMarking().size(); i++) {
             String descriptive = "M" + (i + 1);
@@ -275,26 +277,12 @@ public class EmulationTablesDrawer extends JPanel {
                     .getReturnTime();
             double probability = statistic.getStatisticItemAt(i)
                     .getProbability(statistic.getSumTime());
+            ArrayList<Integer> markToMark = statistic.getStatisticItemAt(i).getFromMarkings();
             frequencyDataset.addValue(freq, "Frequency1", descriptive);
             timeAvgDataset.addValue(sumTime / (freq - 1), series1, descriptive);
             timeAvgReturnDataset.addValue(sumReturnTime / freq, series1,
                     descriptive);
             probabilityDataset.addValue(probability, series1, descriptive);
         }
-        // frequencyDataset.addValue(Math.random(), series1, "0");
-        // frequencyDataset.addValue(Math.random(), series1, "1");
-        // frequencyDataset.addValue(3.0, series1, "2");
-        // frequencyDataset.addValue(5.0, series1, "3");
-        // frequencyDataset.addValue(5.0, series1, "4");
-        // frequenceChartPanel.repaint();
-
-        // timeAvgDataset.clear();
-        // //String series1 = "M0";
-        // timeAvgDataset.addValue(Math.random(), series1, "0");
-        // timeAvgDataset.addValue(Math.random(), series1, "1");
-        // timeAvgDataset.addValue(3.0, series1, "2");
-        // timeAvgDataset.addValue(5.0, series1, "3");
-        // timeAvgDataset.addValue(5.0, series1, "4");
     }
-
 }
