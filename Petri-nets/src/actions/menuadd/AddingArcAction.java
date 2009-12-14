@@ -7,9 +7,6 @@ import javax.swing.AbstractAction;
 
 import data.Data;
 import data.elements.Arc;
-import data.elements.Element;
-import data.elements.Place;
-import data.elements.Transition;
 
 /**
  * Action, which is occurred when user clicks "Add Arc" component, it adds new
@@ -33,18 +30,6 @@ public class AddingArcAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Element addedEl = data.getAddingModeElement();
-        if (addedEl != null) {
-            if (addedEl.getType() == "P") {
-                Place.setCurIndex(Place.getCurIndex() - 1);
-            } else {
-                if (addedEl.getType() == "T") {
-                    Transition.setCurIndex(Transition.getCurIndex() - 1);
-                }
-            }
-
-        }
-
         data.setAddingModeElement(new Arc(new ArrayList<Integer>(),
                 new ArrayList<Integer>(), -1, null));
 

@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * @author Admin
+ * Linear congruent generator, it contains methods for generation random values. (???????)
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * 
  */
 public class LCGenerator implements Generator {
-    private ArrayList<Double> values;
+    private double prevValue;
 
     private double a;
 
@@ -19,26 +21,18 @@ public class LCGenerator implements Generator {
 
     private double d;
 
-    private int curIndex;
-
-    //private int maxCapacity = 5000;
-
     public LCGenerator() {
-        a = Math.pow(5, 15);//214013;
-        c = Math.pow(7, 16);//2531011;
+        a = Math.pow(5, 17);
+        c = Math.pow(3, 3);
         d = Math.pow(2, 32);
-        values = new ArrayList<Double>(/*maxCapacity*/);
-        values.add((double) new Random().nextInt((int)d));
-        curIndex = 0;
+        prevValue = (double) new Random().nextInt((int)d);
     }
 
     public LCGenerator(double a, double c, double d, double w0) {
         this.a = a;
         this.c = c;
         this.d = d;
-        values = new ArrayList<Double>(/*maxCapacity*/);
-        values.add(w0);
-        curIndex = 0;
+        this.prevValue = w0;
     }
 
     /*
@@ -48,15 +42,16 @@ public class LCGenerator implements Generator {
      */
     @Override
     public ArrayList<Double> generateList(int quantity) {
-        for (; curIndex < quantity - 1; curIndex++) {
-            values.add(((a * values.get(curIndex) + c) % d));
-//            values.add((((a * values.get(curIndex) + c) / d)%1));
+        ArrayList<Double> list = new ArrayList<Double>();
+        for (int i = 0; i < quantity; i++) {
+            prevValue = (a * prevValue + c) % d;
+            list.add(prevValue);
         }
         
         for (int i=0 ; i < quantity; i++) {
-            values.set(i, values.get(i) / d);
+            list.set(i, list.get(i) / d);
         }
-        return values;
+        return list;
     }
 
 
@@ -66,13 +61,12 @@ public class LCGenerator implements Generator {
      * @see lab1cm.Generator#generateValue()
      */
     @Override
-    public Double generateValue() {
-        double res = ((a * values.get(curIndex) + c) % d);
-        values.add(res);
-        curIndex++;
-        res /= d;
-        
-        return res;
+    public Double generateValue() {        
+        double res;
+        res = (a * prevValue + c) % d;
+        prevValue = res;
+                
+        return res / d;
     }
     
     public double getB() {

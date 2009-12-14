@@ -4,11 +4,13 @@
  */
 package commands.move;
 
+import view.ElementFinder;
+
 import commands.Command;
 import commands.CommandFilter;
 
-import view.ElementFinder;
 import data.Data;
+import data.elements.Arc;
 import data.elements.Element;
 
 /**
@@ -44,7 +46,7 @@ public class MoveElementCommandFilter implements CommandFilter {
 
             Element atRelease = ElementFinder.findElement(mouseX, mouseY, data);
 
-            if ((selElement != null) && (selElement.getType() != "A")
+            if ((selElement != null) && (!(selElement instanceof Arc))
                     && (mouseX > 0)
                     && (mouseY > 0)
                     && ((atRelease == null) || (atRelease == selElement))

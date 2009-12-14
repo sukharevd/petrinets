@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import view.ElementFinder;
+import view.FrameSettings;
+import view.tabdrawer.ElementDrawer;
+
 import commands.Command;
 import commands.CommandFilter;
 import commands.add.AddElementCommand;
@@ -19,9 +23,6 @@ import commands.delete.DeleteElementCommand;
 import commands.move.MoveElementCommand;
 import commands.move.MoveElementCommandFilter;
 
-import view.ElementFinder;
-import view.FrameSettings;
-import view.tabdrawer.ElementDrawer;
 import data.Data;
 import data.elements.Arc;
 import data.elements.Element;
@@ -56,14 +57,14 @@ public class ListenersInvoker {
     public void changeValuesOfElementAt(final int x, final int y) {
         Element element = ElementFinder.findElement(x, y, data);
 
-        if ((element != null) && (element.getType() != "A")) {
+        if ((element != null) && (!(element instanceof Arc))) {
 
             // TODO: refactor with arrays:
             String title;
             String message;
             String initialSelectionValue;
             String resStr;
-            if (element.getType() == "P") {
+            if (element instanceof Place) {
                 int res;
                 while (true) {
                     try {
@@ -92,7 +93,7 @@ public class ListenersInvoker {
                     }
                 }
             } else {
-                if (element.getType() == "T") {
+                if (element instanceof Transition) {
                     double lyambda;
                     double g;
                     double r;

@@ -12,7 +12,6 @@ import view.FrameSettings;
 import view.elementpainters.ArcPainter;
 import view.elementpainters.PlacePainter;
 import view.elementpainters.TransitionPainter;
-
 import actions.listeners.DrawerKeyListener;
 import actions.listeners.DrawerMouseListener;
 import data.Data;
@@ -59,8 +58,8 @@ public class ElementDrawer extends JPanel {
         if (element == data.getActiveElement()) {
             return FrameSettings.activeElementsColor();
         } else {
-            if ((element.getType() == "A")
-                    && (((Arc) element).getToType() == "P")) {
+            if ((element.getType() == "A") && (((Arc) element).getToType() != null)
+                    && (((Arc) element).getToType().equals("P"))) {
                 return FrameSettings.inputArcsColor();
             }
             return FrameSettings.elementsColor();

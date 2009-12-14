@@ -10,11 +10,10 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 
-import data.Data;
-import data.elements.Element;
-
 import view.ElementFinder;
 import view.tabdrawer.ElementDrawer;
+import data.Data;
+import data.elements.Element;
 
 /**
  * This class listens the mouse click, it performs adding, deleting, replacing

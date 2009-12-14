@@ -11,8 +11,6 @@ import java.util.ArrayList;
  */
 public class Place extends Element {
 
-    private static int curIndex = 0;
-
     private int numTokens;
 
     public Place(int numTokens, int no, int x, int y) {
@@ -24,8 +22,6 @@ public class Place extends Element {
         setOutputArcs(new ArrayList<Arc>());
 
         this.numTokens = numTokens;
-        curIndex++;
-
     }
 
     /**
@@ -43,21 +39,64 @@ public class Place extends Element {
         this.numTokens = numTokens;
     }
 
-    public static void setCurIndex(int curIndex) {
-        Place.curIndex = curIndex;
+    public Object clone() {
+        Place place = new Place(numTokens, getNo(), getX(), getY());
+
+        ArrayList<Arc> outputArcs = new ArrayList<Arc>();
+//        ArrayList<Arc> inputArcs = new ArrayList<Arc>();
+        for (int i = 0; i < this.getOutputArcs().size(); i++) {
+            outputArcs.add((Arc) this.getOutputArcs().get(i).clone());
+        }
+//        for (int i = 0; i < this.getInputArcs().size(); i++) {
+//            inputArcs.add((Arc) this.getInputArcs().get(i).clone());
+//        }
+
+        place.setOutputArcs(outputArcs);
+//        place.setInputArcs(inputArcs);
+// TODO: delete comments.
+        return place;
     }
 
-    public static int getCurIndex() {
-        return Place.curIndex;
+    public boolean equals(final Object o) {
+        Place place;
+        try {
+            place = (Place) o;
+        } catch (ClassCastException e) {
+            return false;
+        }
+
+        boolean isEquals = true;
+        int oNo = place.getNo();
+        int oX = place.getX();
+        int oY = place.getY();
+        int oNumTokens = place.getNumTokens();
+        if ((this.getNo() != oNo) || (this.getX() != oX) || (this.getY() != oY)
+                || (this.getNumTokens() != oNumTokens)) {
+            isEquals = false;
+        }
+
+        if (!isArcsEqual(place)) {
+            isEquals = false;
+        }
+
+        return isEquals;
     }
 
-    // public void draw() {
-    // throw new UnsupportedOperationException();
-    // }
+    protected boolean isArcsEqual(final Place place) {
+        boolean isEqual = true;
 
-    public java.lang.Object clone() {
-        // TODO: +2???
-        return new Place(numTokens, getNo(), getX() + 2, getY() + 2);
+        int length = this.getOutputArcs().size();
+        if (length != place.getOutputArcs().size()) {
+            isEqual = false;
+        } else {
+            for (int i = 0; i < length; i++) {
+                if (!this.getOutputArcs().get(i).equals(
+                        place.getOutputArcs().get(i))) {
+                    isEqual = false;
+                }
+            }
+        }
+        return isEqual;
     }
 
     public String toString() {

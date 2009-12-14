@@ -90,7 +90,6 @@ public class DescriptiveTableDrawer extends JPanel {
         JLabel l = new JLabel(name);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
         l.setVisible(true);
-        l.setEnabled(true);
         add(l);
 
         scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -266,5 +265,5 @@ public class DescriptiveTableDrawer extends JPanel {
             paintLyambda(g);
         }
     }
-
+    
 }

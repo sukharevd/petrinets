@@ -48,4 +48,8 @@ public class EmulatedTransitionsLog {
     public void clear() {
         rows.clear();
     }
+    
+    public int size() {
+        return rows.size();
+    }
 }

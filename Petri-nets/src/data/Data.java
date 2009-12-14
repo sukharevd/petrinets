@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import commands.CommandStack;
+
 import data.elements.Arc;
 import data.elements.Element;
 import data.elements.Place;
 import data.elements.Transition;
 import data.xmlparsing.ElementXmlParser;
-
 import exceptions.arcConnectionException;
 
 /**
@@ -127,18 +127,64 @@ public class Data {
         elements.remove(element);
     }
 
-    // public void draw() {
-    // throw new UnsupportedOperationException();
-    // }
-
+    @Override
     public Object clone() {
         ArrayList<Element> e = new ArrayList<Element>();
         for (int i = 0; i < elements.size(); i++) {
             e.add((Element) elements.get(i).clone());
         }
-        return new Data(e);
+        
+        Data clone = new Data(e);
+        clone.synchronizeInputAndOutputArcs();
+        return clone;
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        boolean isEquals = true;
+
+        Data oData = (Data) o;
+        if (this.elements.size() != oData.getElements().size()) {
+            isEquals = false;
+        } else {
+            for (int i = 0; i < this.getElements().size(); i++) {
+                Element e1 = this.getElements().get(i);
+                Element e2 = oData.getElements().get(i);
+                if (this.getElements().get(i) instanceof Place) {
+                    if (!this.<Place> areElementsEqual(e1, e2)) {
+                        isEquals = false;
+                    }
+                } else {
+                    if (this.getElements().get(i) instanceof Transition) {
+                        if (!this.<Transition> areElementsEqual(e1, e2)) {
+                            isEquals = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return isEquals;
+    }
+
+    // TODO: how to cast types safely?
+    @SuppressWarnings("unchecked")
+    protected <T extends Element> boolean areElementsEqual(Element e1, Element e2) {
+        boolean isEquals = true;
+
+        if (e1.getClass() != e2.getClass()) {
+            isEquals = false;
+        } else {
+            T p1 = (T) e1;
+            if (!p1.equals(e2)) {
+                isEquals = false;
+            }
+        }
+
+        return isEquals;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < elements.size(); i++) {
@@ -273,35 +319,34 @@ public class Data {
         }
     }
 
-    public final ArrayList<Place> getPlaces() {
+    public ArrayList<Place> getPlaces() {
         ArrayList<Place> list = new ArrayList<Place>();
         for (int i = 0; i < elements.size(); i++) {
-            if (elements.get(i).getType() == "P") {
+            if (elements.get(i) instanceof Place) {
                 list.add((Place) elements.get(i));
             }
         }
-        this.<Place>sort(list);
+        this.<Place> sort(list);
 
         return list;
     }
-    
-    public final ArrayList<Transition> getTransitions() {
+
+    public ArrayList<Transition> getTransitions() {
         ArrayList<Transition> list = new ArrayList<Transition>();
         for (int i = 0; i < elements.size(); i++) {
-            if (elements.get(i).getType() == "T") {
+            if (elements.get(i) instanceof Transition) {
                 list.add((Transition) elements.get(i));
             }
         }
-        this.<Transition>sort(list);
+        this.<Transition> sort(list);
 
         return list;
     }
 
-
-    public final Place getPlaceWithNo(int no) {
+    public Place getPlaceWithNo(int no) {
         Place place = null;
         for (int i = 0; i < elements.size(); i++) {
-            if ((elements.get(i).getType() == "P")
+            if ((elements.get(i) instanceof Place)
                     && (elements.get(i).getNo() == no)) {
                 place = (Place) elements.get(i);
             }
@@ -309,11 +354,11 @@ public class Data {
 
         return place;
     }
-    
-    public final Transition getTransitionWithNo(int no) {
+
+    public Transition getTransitionWithNo(int no) {
         Transition transition = null;
         for (int i = 0; i < elements.size(); i++) {
-            if ((elements.get(i).getType() == "T")
+            if ((elements.get(i) instanceof Transition)
                     && (elements.get(i).getNo() == no)) {
                 transition = (Transition) elements.get(i);
             }
@@ -321,8 +366,6 @@ public class Data {
 
         return transition;
     }
-    
-    
 
     protected <T extends Element> void sort(ArrayList<T> el) {
         boolean isSorted;
@@ -338,5 +381,44 @@ public class Data {
                 }
             }
         } while (!isSorted);
+    }
+    
+    public void changeDataMarking(final Marking marking) {
+        ArrayList<Place> places;
+        places = this.getPlaces();
+        for (int i = 0; i < places.size(); i++) {
+            int numTokens = marking.getAt(i);            
+            places.get(i).setNumTokens(numTokens);
+        }
+    }
+    
+    public Marking getMarking() {
+        ArrayList<Place> places = getPlaces();
+        ArrayList<Integer> tokens = new ArrayList<Integer>(); 
+        for (int i = 0; i < places.size(); i++) {
+            tokens.add(places.get(i).getNumTokens());
+        }
+        // TODO: 0? Am I sure?
+        Marking marking = new Marking(0, tokens);
+        return marking;
+    }    
+
+    public <T extends Element> int getFirstFreeElementNo(ArrayList<T> elements) {
+        int first = -1;
+
+        this.<T> sort(elements);
+        if ((elements.size() == 0) || (elements.get(0).getNo() != 1)) {
+            first = 1;
+        } else {
+            for (int i = 0; i < elements.size() - 1; i++) {
+                if (elements.get(i + 1).getNo() - elements.get(i).getNo() > 1) {
+                    first = elements.get(i).getNo() + 1;
+                }
+            }
+            if (first == -1) {
+                first = elements.get(elements.size() - 1).getNo() + 1;
+            }
+        }
+        return first;
     }
 }

@@ -9,7 +9,6 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 import view.Scalable;
-
 import data.Data;
 import data.ReachabilityConnection;
 import data.TableManagment;

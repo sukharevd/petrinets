@@ -42,18 +42,19 @@ public class AddElementInvoker {
     protected void addPlaceOrTransition() {
         addedElement.setX(x);
         addedElement.setY(y);
-        
+
         if (addedElement.getNo() == -1) {
             int no = 0;
-            
-            if (addedElement.getType() == "P") {
-                no = Place.getCurIndex();
+
+            if (addedElement instanceof Place) {
+                no = data.<Place> getFirstFreeElementNo(data.getPlaces());
             } else {
-                no = Transition.getCurIndex();
+                no = data.<Transition> getFirstFreeElementNo(data
+                        .getTransitions());
             }
             addedElement.setNo(no);
         }
-        
+
         data.add(addedElement);
 
         data.setAddingModeElement(null);
@@ -75,7 +76,7 @@ public class AddElementInvoker {
         int x1 = addedArc.getXsequence().get(0);
         int y1 = addedArc.getYsequence().get(0);
         String s1 = ElementFinder.findElement(x1, y1, data).getType(); // for
-                                                                       // testing
+        // testing
         String s2 = toElement.getType(); //
 
         if (s1 != s2) { //
@@ -139,24 +140,25 @@ public class AddElementInvoker {
 
     public void addNewElement() {
 
-        if ((addedElement.getType() == "P") || (addedElement.getType() == "T")) {
+        if ((addedElement instanceof Place)
+                || (addedElement instanceof Transition)) {
 
             addPlaceOrTransition();
         } else {
-            if (addedElement.getType() == "A") {
+            if (addedElement instanceof Arc) {
                 Arc addedArc = (Arc) addedElement;
 
                 Element element = ElementFinder.findElement(x, y, data);
 
                 if (addedArc.getXsequence().size() > 0) {
-                    if ((element != null) && (element.getType() != "A")) {
+                    if ((element != null) && (!(element instanceof Arc))) {
                         // if the last point
                         addFinishArcPoint(element);
                     } else {
                         addedArc.AddConnectedPoint(x, y);
                     }
                 } else {
-                    if ((element != null) && (element.getType() != "A")) {
+                    if ((element != null) && (!(element instanceof Arc))) {
                         addedArc.AddConnectedPoint(element.getX(), element
                                 .getY());
                         data.setAddingModeElement(addedElement);
@@ -168,24 +170,24 @@ public class AddElementInvoker {
 
     public void undoAddNewElement() {
 
-        if ((addedElement.getType() == "P") || (addedElement.getType() == "T")) {
+        if ((addedElement instanceof Place) || (addedElement instanceof Transition)) {
 
             deletePlaceOrTransition();
         } else {
-            if (addedElement.getType() == "A") {
+            if (addedElement instanceof Arc) {
 
                 Arc addedArc = (Arc) addedElement;
                 Element element = ElementFinder.findElement(x, y, data);
 
                 if (addedArc.getXsequence().size() > 1) {
-                    if ((element != null) && (element.getType() != "A")) {
+                    if ((element != null) && (!(element instanceof Arc))) {
                         // if the last point
                         deleteFinishArcPoint(element);
                     } else {
                         deleteLastArcPoint();
                     }
                 } else {
-                    if ((element != null) && (element.getType() != "A")
+                    if ((element != null) && (!(element instanceof Arc))
                             && (addedArc.getXsequence().size() > 0)) {
                         deleteFirstArcPoint();
                     }

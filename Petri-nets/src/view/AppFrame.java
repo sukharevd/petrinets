@@ -41,6 +41,7 @@ import actions.menugeneral.ExitingAction;
 import actions.menugeneral.ExportingAction;
 import actions.menugeneral.HelpingAction;
 import actions.menugeneral.OpeningAction;
+import actions.menugeneral.ResetingEmulationAction;
 import actions.menugeneral.SavingAction;
 import actions.menugeneral.ScalingPanelAction;
 import actions.menuundo.RedoAction;
@@ -139,8 +140,9 @@ public class AppFrame extends JFrame {
         JMenuBar bar;
 
         JMenu file = new JMenu("File");
-        // JMenu mode = new JMenu("Mode");
+        JMenu view = new JMenu("View");
         JMenu edit = new JMenu("Edit");
+        JMenu emulation = new JMenu("Emulation");
         JMenu help = new JMenu("Help");
 
         int fontsize = 12;
@@ -194,6 +196,50 @@ public class AppFrame extends JFrame {
         exit.setMnemonic(KeyEvent.VK_Q);
         exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
                 ActionEvent.CTRL_MASK));
+        
+        file.add(newf);
+        file.add(open);
+        file.add(save);
+        file.addSeparator();
+        file.add(export);
+        file.addSeparator();
+        file.add(close);
+        file.addSeparator();
+        file.add(exit);
+
+        // -------------------------------------
+        // ---------> View Menu <---------------
+        // -------------------------------------
+
+        JMenuItem scPlusR = new JMenuItem();
+        JMenuItem scMinusR = new JMenuItem();
+        JMenuItem scMinusM = new JMenuItem();
+        JMenuItem scPlusM = new JMenuItem();
+        
+        scPlusM.setAction(new ScalingPanelAction(markGraph, true));
+        scPlusM.setText("Scale Plus");
+        scPlusM.setMnemonic(KeyEvent.VK_0);
+        scPlusM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, 0));
+
+        scMinusM.setAction(new ScalingPanelAction(markGraph, false));
+        scMinusM.setText("Scale Minus");
+        scMinusM.setMnemonic(KeyEvent.VK_MINUS);
+        scMinusM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0));
+
+        scPlusR.setAction(new ScalingPanelAction(reachabiblityGraph, true));
+        scPlusR.setText("Scale Plus");
+        scPlusR.setMnemonic(KeyEvent.VK_1);
+        scPlusR.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, 0));
+
+        scMinusR.setAction(new ScalingPanelAction(reachabiblityGraph, false));
+        scMinusR.setText("Scale Minus");
+        scMinusR.setMnemonic(KeyEvent.VK_2);
+        scMinusR.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, 0));
+        
+        view.add(scPlusM);
+        view.add(scMinusM);
+        view.add(scPlusR);
+        view.add(scMinusR);
 
         // -------------------------------------
         // ---------> Edit Menu <---------------
@@ -205,10 +251,6 @@ public class AppFrame extends JFrame {
         JMenuItem addTTransition = new JMenuItem();
         JMenuItem addITransition = new JMenuItem();
         JMenuItem addArc = new JMenuItem();
-        JMenuItem scPlusR = new JMenuItem();
-        JMenuItem scMinusR = new JMenuItem();
-        JMenuItem scMinusM = new JMenuItem();
-        JMenuItem scPlusM = new JMenuItem();
 
         undo.setAction(new UndoAction(data, this));
         undo.setText("Undo");
@@ -245,27 +287,45 @@ public class AppFrame extends JFrame {
         addArc.setMnemonic(KeyEvent.VK_A);
         addArc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
                 ActionEvent.CTRL_MASK));
+        
+        edit.add(undo);
+        edit.add(redo);
+        edit.addSeparator();
+        edit.add(addPlace);
+        edit.add(addTTransition);
+        edit.add(addITransition);
+        edit.add(addArc);
 
-        // TODO: change nulls to real actions:
-        scPlusM.setAction(new ScalingPanelAction(markGraph, true));
-        scPlusM.setText("Scale Plus");
-        scPlusM.setMnemonic(KeyEvent.VK_0);
-        scPlusM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, 0));
+        // -------------------------------------
+        // --------> Emulation Menu <-----------
+        // -------------------------------------
 
-        scMinusM.setAction(new ScalingPanelAction(markGraph, false));
-        scMinusM.setText("Scale Minus");
-        scMinusM.setMnemonic(KeyEvent.VK_MINUS);
-        scMinusM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0));
+        JMenuItem oneStep = new JMenuItem();
+        JMenuItem oneKStep = new JMenuItem();
+        JMenuItem reset = new JMenuItem();
+        // TODO: add hot keys:
+        oneStep.setAction(new EmulatingStepAction(emulator, data, this));
+        oneStep.setText("One Step");
+        oneStep.setMnemonic(KeyEvent.VK_1);
+        oneStep.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,
+                ActionEvent.CTRL_MASK));
 
-        scPlusR.setAction(new ScalingPanelAction(reachabiblityGraph, true));
-        scPlusR.setText("Scale Plus");
-        scPlusR.setMnemonic(KeyEvent.VK_1);
-        scPlusR.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, 0));
+        oneKStep.setAction(new Emulating10KStepsAction(emulator, data, this));
+        oneKStep.setText("10K Steps");
+        oneKStep.setMnemonic(KeyEvent.VK_K);
+        oneKStep.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K,
+                ActionEvent.CTRL_MASK));
 
-        scMinusR.setAction(new ScalingPanelAction(reachabiblityGraph, false));
-        scMinusR.setText("Scale Minus");
-        scMinusR.setMnemonic(KeyEvent.VK_2);
-        scMinusR.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, 0));
+        reset.setAction(new ResetingEmulationAction(emulator, data, this));
+        reset.setText("Reset");
+        reset.setMnemonic(KeyEvent.VK_R);
+        reset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
+                ActionEvent.CTRL_MASK));
+
+        emulation.add(oneStep);
+        emulation.add(oneKStep);
+        emulation.addSeparator();
+        emulation.add(reset);
 
         // -------------------------------------
         // ---------> Help Menu <---------------
@@ -284,45 +344,20 @@ public class AppFrame extends JFrame {
         about.setMnemonic(KeyEvent.VK_B);
         about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B,
                 ActionEvent.CTRL_MASK));
-
-        file.add(newf);
-        file.add(open);
-        file.add(save);
-        file.addSeparator();
-        file.add(export);
-        file.addSeparator();
-        file.add(close);
-        file.addSeparator();
-        file.add(exit);
-
-        edit.add(undo);
-        edit.add(redo);
-        edit.addSeparator();
-        edit.add(addPlace);
-        edit.add(addTTransition);
-        edit.add(addITransition);
-        edit.add(addArc);
-        edit.addSeparator();
-        edit.add(scPlusM);
-        edit.add(scMinusM);
-        edit.add(scPlusR);
-        edit.add(scMinusR);
-
+        
         help.add(chelp);
         help.add(about);
 
         bar = new JMenuBar();
         bar.add(file);
+        bar.add(view);
         bar.add(edit);
-        // bar.add(mode);
+        bar.add(emulation);
         bar.add(help);
 
         setJMenuBar(bar);
     }
 
-    // protected void makeToolBarButton(int seeYourKP) {
-    //        
-    // }
     /**
      * Creates the button for tool bar with specified parameters.
      * 
@@ -342,7 +377,6 @@ public class AppFrame extends JFrame {
         // Look for the image.
         String imgLocation = "res/" + imageName + ".png";
         URL imageURL = AppFrame.class.getResource(imgLocation);
-        // /URL imageURLpng = AppFrame.class.getResource(imgLocationPng);
 
         // Create and initialize the button.
         JButton button = new JButton();
@@ -404,13 +438,17 @@ public class AppFrame extends JFrame {
         toolBar.add(button);
 
         toolBar.addSeparator();
-        
+
         button = makeToolBarButton("emul124", new EmulatingStepAction(emulator,
-                this), "Emulate 1 step", "Emulate (1)");
+                data, this), "Emulate 1 step", "Emulate (1)");
         toolBar.add(button);
-        
-        button = makeToolBarButton("emul10k24", new Emulating10KStepsAction(emulator,
-                this), "Emulate 10 000 steps", "Emulate (10K)");
+
+        button = makeToolBarButton("emul10k24", new Emulating10KStepsAction(
+                emulator, data, this), "Emulate 10 000 steps", "Emulate (10K)");
+        toolBar.add(button);
+
+        button = makeToolBarButton("reset24", new ResetingEmulationAction(
+                emulator, data, this), "Reset emulation", "Reset");
         toolBar.add(button);
 
         add(toolBar, "North");
@@ -441,8 +479,9 @@ public class AppFrame extends JFrame {
         TransitionsTableDrawer transTable = new TransitionsTableDrawer(data,
                 this);
         EmulationTablesDrawer emulTable = new EmulationTablesDrawer(data,
-                emulator);
-        ElementDrawer emulatingDrawer = new ElementDrawer(emulator.getData(), this);
+                emulator, this);
+        ElementDrawer emulatingDrawer = new ElementDrawer(emulator.getData(),
+                this);
 
         panelToPanelWithScroll(elementDrawer, drawingPanel);
         panelToPanelWithScroll(reachabiblityGraph, reachabiblityGraphPanel);
@@ -453,14 +492,14 @@ public class AppFrame extends JFrame {
         panelToPanelWithScroll(emulatingDrawer, emulatingPanel);
 
         JTabbedPane tabPane = new JTabbedPane();
-        tabPane.add("Drawing", drawingPanel);
+        tabPane.add("Editing", drawingPanel);
         tabPane.add("Descriptive Tables", descrTablePanel);
         tabPane.add("Markov Graph", markovGraphPanel);
         tabPane.add("Reachabiblity Graph", reachabiblityGraphPanel);
         tabPane.add("Transitions Table", transTablePanel);
         tabPane.add("Emulation Table", emulTablePanel);
-        //tabPane.add("Emulating", emulatingPanel);
-        
+        tabPane.add("Emulating", emulatingPanel);
+
         this.getContentPane().add(tabPane);
     }
 

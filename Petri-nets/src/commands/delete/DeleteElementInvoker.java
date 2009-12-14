@@ -82,7 +82,7 @@ public class DeleteElementInvoker {
     }
 
     public void deleteElement() {
-        if (deletedElement.getType() == "A") {
+        if (deletedElement instanceof Arc) {
             deleteOneArc();
         } else {
             deleteElementWithArcs();
@@ -92,7 +92,7 @@ public class DeleteElementInvoker {
 
     public void undoDeleteElement() {
         data.setActiveElement(deletedElement);
-        if (deletedElement.getType() == "A") {
+        if (deletedElement instanceof Arc) {
             recoverOneArc();
         } else {
             recoverElementWithArcs();

@@ -2,6 +2,8 @@ package data.modeling;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import data.Data;
 import data.Marking;
 import data.TableManagment;
@@ -13,6 +15,12 @@ import data.elements.Transition;
 import data.generators.Generator;
 import data.generators.GeneratorsPool;
 
+/**
+ * Main class of emulation, it manages and executes emulation process.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
+ * 
+ */
 public class EmulationManager {
 
     /**
@@ -46,6 +54,8 @@ public class EmulationManager {
      * @param data
      */
     public EmulationManager() {
+        this.data = new Data(new ArrayList<Element>());
+        initializeAll();
     }
 
     /**
@@ -54,7 +64,7 @@ public class EmulationManager {
      * @param data
      */
     public EmulationManager(Data data) {
-        this.data = data;
+        this.data = (Data)data.clone();
 
         initializeAll();
     }
@@ -88,7 +98,7 @@ public class EmulationManager {
                 myTable.getAllT().size(), myTable.getMatrixDi(), myTable
                         .getMatrixDq(), myTable.getMarkirovka(), typecrossing,
                 data);
-
+        
         mytree.WriteResult(0);
         return mytree.getTransTable();
     }
@@ -101,24 +111,7 @@ public class EmulationManager {
             Generator generator = generatorsPool.chooseGenerator(g);
             times.add(generator.generateValue());
         }
-        // sortTimes(times);
     }
-
-    // protected void sortTimes(ArrayList<Double> times) {
-    // boolean isSorted;
-    // double temp = 0.0;
-    // do {
-    // isSorted = true;
-    // for (int i = 0; i < times.size() - 1; i++) {
-    // if (times.get(i) > times.get(i + 1)) {
-    // temp = times.get(i);
-    // times.set(i, times.get(i + 1));
-    // times.set(i + 1, temp);
-    // isSorted = false;
-    // }
-    // }
-    // } while (!isSorted);
-    // }
 
     protected ArrayList<ArrayList<Integer>> generateCollisions() {
         ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
@@ -127,7 +120,7 @@ public class EmulationManager {
 
         for (int i = 0; i < data.getElements().size(); i++) {
             Element el = data.getElements().get(i);
-            if (el.getType() == "P") {
+            if (el instanceof Place) {
                 for (int j = 0; j < el.getOutputArcs().size(); j++) {
                     Arc arc = el.getOutputArcs().get(j);
 
@@ -184,7 +177,10 @@ public class EmulationManager {
      *            the data to set
      */
     public final void setData(Data data) {
-        this.data = data;
+        Data clone = (Data)data.clone();
+        
+        ArrayList<Element> elements = clone.getElements();
+        this.data.setElements(elements);
 
         initializeAll();
     }
@@ -294,7 +290,12 @@ public class EmulationManager {
         // Step1: Generating list of possible transitions.
         ArrayList<Integer> possibles = getPossibles();
         ArrayList<Transition> possibleTrans = getPossiblesTrans(possibles);
-
+        if (possibles.size() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Emulation is in deadlock, it was stoped.",
+                    "Deadlock", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         // Step2: select active transition.
         Transition active = selectActiveTransition(possibles);
         int activePos = transitions.indexOf(active);
@@ -302,7 +303,7 @@ public class EmulationManager {
         Marking prevMarking = curMarking;
         curMarking = transTable.selectAllWithTransPrevMarking(active,
                 curMarking).get(0).getNextMarking();
-        changeDataMarking();
+        data.changeDataMarking(curMarking);////////////////////////////////////////////////////////
 
         // Step4: Reset time for active.
         double time = updateTransitionsTime(activePos, possibles);
@@ -343,25 +344,10 @@ public class EmulationManager {
             }
         }
 
-        // double rand = generatorsPool.getLCG().generateValue();
-        // double scale = possibles.size();
-        // rand *= scale;
-        // int position = (int) rand;
-        //
-        // int active = possibles.get(position);
         int active = min;
         return transitions.get(active);
     }
     
-    protected void changeDataMarking() {
-        ArrayList<Place> places;
-        places = data.getPlaces();
-        for (int i = 0; i < places.size(); i++) {
-            int numTokens = curMarking.getAt(i);            
-            places.get(i).setNumTokens(numTokens);
-        }
-    }
-
     protected double updateTransitionsTime(int activePos,
             ArrayList<Integer> possibles) {
         double shift = times.get(activePos);

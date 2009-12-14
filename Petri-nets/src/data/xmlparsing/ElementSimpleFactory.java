@@ -9,7 +9,6 @@ import data.elements.Arc;
 import data.elements.Element;
 import data.elements.Place;
 import data.elements.Transition;
-
 import exceptions.MissedXmlArgumentException;
 import exceptions.WrongQNameException;
 import exceptions.XmlArgumentException;
@@ -93,7 +92,7 @@ public class ElementSimpleFactory {
                         throw new arcXYSizeException();
                     }
                     String toType;
-                    if (prevElement.getType() == "P") {
+                    if (prevElement instanceof Place) {
                         toType = "T";
                     } else {
                         toType = "P";

@@ -5,9 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import data.Data;
-import data.elements.Element;
 import data.elements.Place;
-import data.elements.Transition;
 
 /**
  * Contains features of the transition of petri-net, Provides methods for
@@ -35,18 +33,6 @@ public class AddingPlaceAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Element addedEl = data.getAddingModeElement();
-        if (addedEl != null) {
-            if (addedEl.getType() == "P") {
-                Place.setCurIndex(Place.getCurIndex() - 1);
-            } else {
-                if (addedEl.getType() == "T") {
-                    Transition.setCurIndex(Transition.getCurIndex() - 1);
-                }
-            }
-
-        }
-
         data.setAddingModeElement(new Place(0, -1, -1, -1));
     }
 

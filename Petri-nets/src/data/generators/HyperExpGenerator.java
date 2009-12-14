@@ -1,90 +1,84 @@
 package data.generators;
 
 import java.util.ArrayList;
-
+// TODO: fix ??????
+/**
+ * Contains methods for transitions time generation when they works by Hyper
+ * expositional (??????) low.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
+ * 
+ */
 public class HyperExpGenerator implements Generator {
-    private ArrayList<Double> lkgValues;
-
-    private ArrayList<Double> values;
-
-    private int curIndex;
+    private Generator lcgGen;
 
     private double lyambda;
 
-    private int g;
+    private double g;
 
     private double b = 0.0;
 
     public HyperExpGenerator() {
         this.lyambda = 25.0;
-        this.g = 2;
-        this.curIndex = 0;
-        this.values = new ArrayList<Double>();
-        
-        double a = Math.pow(13, 11);
-        double c = Math.pow(5, 3);
-        double d = Math.pow(2, 32);
-        double w0 = 6147.0;// (double) new Random().nextInt((int)d);
-        int quantity = 10000;
-        Generator kGen = new LCGenerator(a, c, d, w0);
-        int lkgQuantity = quantity * 2;
-        this.lkgValues = kGen.generateList(lkgQuantity);
+        this.g = 2.0;
+        this.lcgGen = new LCGenerator();
     }
 
-    public HyperExpGenerator(ArrayList<Double> srcvals, double lyambda, int g) {
-        this.lkgValues = srcvals;
-        this.lyambda = lyambda;
+    public HyperExpGenerator(double lyamda, double g) {
+        this.lyambda = lyamda;
         this.g = g;
+        this.lcgGen = new LCGenerator();
+    }
 
-        this.curIndex = 0;
-        this.values = new ArrayList<Double>();
+    public HyperExpGenerator(double lyamda, double g, Generator lcgGen) {
+        this.lyambda = lyamda;
+        this.g = g;
+        this.lcgGen = lcgGen;
     }
 
     @Override
     public ArrayList<Double> generateList(int quantity) {
-        double alfa;
+        ArrayList<Double> list = new ArrayList<Double>();
+
         double phi = (g + 1 - Math.sqrt(g * g - 1.)) / (2. * (g + 2.));
-
-        for (int j = 0; curIndex < quantity; curIndex++, j += 2) { // TODO: it
-            // is bad((
-            if (lkgValues.get(j) <= phi)
+        double alfa;
+        for (int i = 0; i < quantity; i++) {
+            if (lcgGen.generateValue() <= phi) {
                 alfa = 2 * phi * lyambda;
-            else
+            } else {
                 alfa = 2 * (1 - phi) * lyambda;
+            }
 
-            values.add(-Math.log(lkgValues.get(j + 1)) / alfa);
+            list.add(-Math.log(lcgGen.generateValue()) / alfa);
 
-            if (values.get(curIndex) > b) {
-                b = values.get(curIndex);
+            if (list.get(i) > b) {
+                b = list.get(i);
             }
         }
-
-        return values;
+        return list;
     }
 
     @Override
     public Double generateValue() {
-        double alfa;
-        double phi = (g + 1 - Math.sqrt(g * g - 1.)) / (2. * (g + 2.));
+        double res;
 
-        if (lkgValues.get(curIndex * 2) <= phi) {
+        double phi = (g + 1 - Math.sqrt(g * g - 1)) / (2 * (g + 2));
+        double alfa;
+        if (lcgGen.generateValue() <= phi) {
             alfa = 2 * phi * lyambda;
         } else {
             alfa = 2 * (1 - phi) * lyambda;
         }
 
-        values.add(-Math.log(lkgValues.get(curIndex * 2 + 1)) / alfa);
+        res = -Math.log(lcgGen.generateValue()) / alfa;
 
-        if (values.get(curIndex) > b) {
-            b = values.get(curIndex);
+        if (res > b) {
+            b = res;
         }
-
-        Double res = values.get(curIndex);
-        curIndex++;
-
         return res;
     }
 
+    @Override
     public double getB() {
         return b;
     }

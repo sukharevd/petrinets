@@ -8,9 +8,8 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import data.Data;
-
 import actions.menugeneral.ExitingAction;
+import data.Data;
 
 /**
  * This class listens the window closing.
