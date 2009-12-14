@@ -16,7 +16,13 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.DefaultIntervalXYDataset;
 
 import data.Data;
 import data.modeling.EmulationManager;
@@ -38,6 +44,8 @@ public class EmulationTablesDrawer extends JPanel {
 
     private Data data;
 
+    private int curStep;
+
     private JTable statisticTable;
 
     private JTable changingMarkStatisticTable;
@@ -50,7 +58,17 @@ public class EmulationTablesDrawer extends JPanel {
 
     private JScrollPane changingPMarkStatisticScroll;
 
-    ChartPanel panel;
+    DefaultCategoryDataset frequencyDataset;
+    DefaultCategoryDataset timeAvgDataset;
+    DefaultCategoryDataset timeAvgReturnDataset;
+    DefaultCategoryDataset probabilityDataset;
+
+    JFreeChart chart;
+
+    ChartPanel frequenceChartPanel;
+    ChartPanel timeAvgChartPanel;
+    ChartPanel timeAvgReturnChartPanel;
+    ChartPanel probabilityChartPanel;
 
     private EmulationStatisticMaker statistic;
 
@@ -66,6 +84,7 @@ public class EmulationTablesDrawer extends JPanel {
 
         this.data = data;
         this.emulator = emulator;
+        this.curStep = 0;
 
         initialize();
 
@@ -91,38 +110,58 @@ public class EmulationTablesDrawer extends JPanel {
                 changingPMarkStatisticTable);
         changingPMarkStatisticScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(changingPMarkStatisticScroll);
-
-        DefaultPieDataset data1 = new DefaultPieDataset();
-        data1.setValue("Category 1", 43.2);
-        data1.setValue("Category 2", 27.9);
-        data1.setValue("Category 3", 79.5);
-        // create a chart...
-        JFreeChart chart = ChartFactory.createPieChart("Sample Pie Chart",
-                data1, true, // legend?
+        // ----------------------------------------------------
+        JPanel panel;
+        frequencyDataset = new DefaultCategoryDataset();
+        chart = ChartFactory.createBarChart("Frequency", // chart title
+                "Category", // domain axis label
+                "Value", // range axis label
+                frequencyDataset, // data
+                PlotOrientation.VERTICAL, // orientation
+                false, // include legend
                 true, // tooltips?
                 false // URLs?
                 );
-        // create and display a frame...
-        panel = new ChartPanel(chart);
-        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        CategoryPlot plot = chart.getCategoryPlot();
+        CategoryItemRenderer renderer = plot.getRenderer();
+        renderer
+                .setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        renderer.setSeriesItemLabelsVisible(0, Boolean.TRUE);
+        panel = new ChartPanel(chart, false);
         add(panel);
-        panel.setVisible(true);
+        
+        timeAvgDataset = new DefaultCategoryDataset();
+        chart = ChartFactory.createBarChart("Avg Time", // chart title
+                "Category", // domain axis label
+                "Value", // range axis label
+                timeAvgDataset, // data
+                PlotOrientation.VERTICAL, // orientation
+                false, // include legend
+                true, // tooltips?
+                false // URLs?
+                );
+        plot = chart.getCategoryPlot();
+        renderer = plot.getRenderer();
+        renderer
+                .setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        renderer.setSeriesItemLabelsVisible(0, Boolean.TRUE);
+        panel = new ChartPanel(chart, false);
+        add(panel);
     }
 
     public void paint(Graphics g) {
         if (data.getElements().size() != 0) {
             // logTable.updateRows();
             updateTables();
-            panel.repaint();
+            updateGraphs();
         }
-    }
+    }   
 
     protected void updateTables() {
         Object[][] statisticRows;
         Object[] columns;
 
-        statistic = new EmulationStatisticMaker(emulator);
-        statistic.calcTimes();
+        updateStatistic();
 
         statisticRows = statistic.makeEmulationStatistic();
         columns = getEmulationStatisticColumns();
@@ -137,6 +176,15 @@ public class EmulationTablesDrawer extends JPanel {
         statisticRows = statistic.makeChangingProbabilityMarkingsStatistic();
         ((DefaultTableModel) changingPMarkStatisticTable.getModel())
                 .setDataVector(statisticRows, columns);
+
+    }
+
+    protected void updateStatistic() {
+        if ((statistic == null) || (curStep != emulator.getLog().size())) {
+            statistic = new EmulationStatisticMaker(emulator);
+            statistic.calcTimes();
+            curStep = emulator.getLog().size();
+        }
     }
 
     protected Object[] getEmulationStatisticColumns() {
@@ -164,5 +212,32 @@ public class EmulationTablesDrawer extends JPanel {
             columns[i + 1] = "M" + i;
         }
         return columns;
+    }    
+    
+    private void updateGraphs() {
+        updateStatistic();
+        
+        frequencyDataset.clear();
+        String series1 = "M0";
+        for (int i = 0; i < emulator.getTransTable().getListOfMarking().size(); i++) {
+            int val;
+            val = statistic.getStatisticItemAt(i).getFrequency();
+            frequencyDataset.addValue(val, "Frequency1", "M" + (i+1));
+        }
+//        frequencyDataset.addValue(Math.random(), series1, "0");
+//        frequencyDataset.addValue(Math.random(), series1, "1");
+//        frequencyDataset.addValue(3.0, series1, "2");
+//        frequencyDataset.addValue(5.0, series1, "3");
+//        frequencyDataset.addValue(5.0, series1, "4");
+        //frequenceChartPanel.repaint();
+        
+        timeAvgDataset.clear();
+        //String series1 = "M0";
+        timeAvgDataset.addValue(Math.random(), series1, "0");
+        timeAvgDataset.addValue(Math.random(), series1, "1");
+        timeAvgDataset.addValue(3.0, series1, "2");
+        timeAvgDataset.addValue(5.0, series1, "3");
+        timeAvgDataset.addValue(5.0, series1, "4");
     }
+
 }

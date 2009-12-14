@@ -71,6 +71,14 @@ public class EmulationStatisticMaker {
         }
         return index;
     }
+    
+    public EmulationStatisticItem getStatisticItemAt(int index) {
+        return rows.get(index);
+    }
+    
+    public int getStepsQuantity() {
+        return logItems.size();
+    }
 
     public Object[][] makeEmulationStatistic() {
         int numColumns = 6;
