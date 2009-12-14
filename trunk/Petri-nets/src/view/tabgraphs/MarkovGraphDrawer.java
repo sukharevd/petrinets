@@ -5,7 +5,9 @@ package view.tabgraphs;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Polygon;
 
 import javax.swing.JPanel;
@@ -18,6 +20,7 @@ import data.TreeofPetriNet;
 
 /**
  * @author <a href="mailto:jacky@gmail.com">Dzyuban Yuriy</a>
+ * @author <a href="mailto:vixentael@gmail.com">Voitova Anastasi</a>
  * 
  */
 public class MarkovGraphDrawer extends JPanel implements Scalable {
@@ -63,6 +66,16 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
     int LA = 20;
     double scale = 1.0;
 
+    //blue
+//    Color down = new Color(211,76,255);
+//    Color up = new Color(76,190,255); 
+//    Color text = new Color(255,246,0);
+    
+    Color down = new Color(104,173,122);
+    Color up = new Color(197,255,212); 
+    Color oval = new Color(10,125,40);
+    Color line = new Color(7,134,40);
+    
     // int N;
     static TreeConnection[] Z;
 
@@ -93,11 +106,35 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
         super.paint(g);
         count =TreeofPetriNet.RepeatCount;
         dAngle = 360 / count;
+       
         for (i = 0; i < count; i++) {
-            g.setColor(Color.red);
+        	
+        	Graphics2D g2 = (Graphics2D) g;
+            GradientPaint gradient = new GradientPaint((int)(CenterX*scale) + 
+            		(int) (Dist*scale * Math.cos(Angle * DegToRad)),
+            		(int)(CenterY*scale) + 
+            		(int) (Dist*scale * Math.sin(Angle * DegToRad)),
+            		up,
+            		(int)(CenterX*scale) + 
+            			(int) (Dist*scale * Math.cos(Angle * DegToRad)) + 
+            			(int)(d*scale),
+            		(int)(CenterY*scale) + 
+            			(int) (Dist*scale * Math.sin(Angle * DegToRad)) +
+            			(int)(d*scale),
+            		down);
+            
+            g2.setPaint(gradient);
             g.fillOval((int)(CenterX*scale) + (int) (Dist*scale * Math.cos(Angle * DegToRad)),
-                    (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(Angle * DegToRad)), (int)(d*scale),(int) (d*scale));
-            g.setColor(Color.white);
+                    (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(Angle * DegToRad)), 
+                    (int)(d*scale),
+                    (int) (d*scale));
+            g.setColor(oval);
+            g.drawOval((int)(CenterX*scale) + (int) (Dist*scale * Math.cos(Angle * DegToRad)),
+                    (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(Angle * DegToRad)), 
+                    (int)(d*scale),
+                    (int) (d*scale));
+            //text
+            g.setColor(Color.black);
             g.drawString(Integer.toString(i), (int) (CenterX*scale)
                     + (int) (Dist*scale * Math.cos(Angle * DegToRad)) + (int)(r*scale - 5*scale),
                     (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(Angle * DegToRad)) + (int)(r*scale));
@@ -121,7 +158,7 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
                 x2 = (int)(CenterX*scale) + (int) (Dist*scale * Math.cos(A2 * DegToRad)) + (int)(r*scale) - dx2;
                 y2 = (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(A2 * DegToRad)) + (int)(r*scale) - dy2;
                 if (A1 != A2) {
-                    g.setColor(Color.blue);
+                    g.setColor(line);
                     g.drawLine(x2, y2, x1, y1);
                     k = (double) ((double) ((y1 - y2)) / (double) (x1 - x2));
                     s = 1;
@@ -143,7 +180,7 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
                     g.fillPolygon(P);
 
                 } else {
-                    g.setColor(Color.blue);
+                    g.setColor(line);
                     g.drawArc(x2 + (int)(r*scale) + dx2, y2 - (int)(d*scale / 4), (int)(d*scale / 2), (int)(d*scale / 2), 0, 360);
                     g.setColor(Color.black);
                     g.fillOval(x2 + (int)(r*scale) + dx2 - 3, y2 - 3, 6, 6);

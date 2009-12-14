@@ -97,6 +97,7 @@ public class EmulationTablesDrawer extends JPanel {
     private void tablesInitialize() {
         statisticTable = new JTable(new StringTableModel(new Object[0][0],
                 new Object[0]));
+        statisticTable.getTableHeader().setReorderingAllowed(false);
         statisticScroll = new JScrollPane(statisticTable);
         statisticScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(statisticScroll);

@@ -3,11 +3,13 @@
  */
 package view.tabtables;
 
+
 // TODO: make subclasses for every table. Use OOP.
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -15,10 +17,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+
 import data.Data;
 import data.TableManagment;
 import data.elements.Element;
 import data.elements.Transition;
+
 
 /**
  * Some table and set of the method for painting at it.
@@ -33,6 +37,7 @@ public class DescriptiveTableDrawer extends JPanel {
      */
     private static final long serialVersionUID = 1418687695919321969L;
 
+
     /**
      * Table on the current panel.
      */
@@ -41,22 +46,29 @@ public class DescriptiveTableDrawer extends JPanel {
     private JTable markingTable;
     private JTable lyambdaTable;
 
+
     private JScrollPane diScroll;
     private JScrollPane dqScroll;
     private JScrollPane markingScroll;
     private JScrollPane lyambdaScroll;
 
+
     private String[] columns;
+
 
     private Object[][] rows;
 
+
     private int numColumns;
+
 
     private int numRows;
     
     private Data data;
 
+
     private TableManagment tableManager;
+
 
     /**
      * Single constructor of the class, calls parent constructor only.
@@ -64,16 +76,19 @@ public class DescriptiveTableDrawer extends JPanel {
     public DescriptiveTableDrawer(Data data) {
         super();
 
+
         this.data = data;
         
         BoxLayout boxY = new BoxLayout(this,BoxLayout.Y_AXIS);
         setLayout(boxY);
         setAlignmentX(CENTER_ALIGNMENT);
 
+
         diTable = new JTable();
         dqTable = new JTable();
         markingTable = new JTable();
         lyambdaTable = new JTable();
+
 
         diScroll = new JScrollPane(diTable);
         dqScroll = new JScrollPane(dqTable);
@@ -86,18 +101,22 @@ public class DescriptiveTableDrawer extends JPanel {
         addScrollTable(lyambdaScroll, lyambdaTable, "Lyambda");
     }
 
+
     protected void addScrollTable(JScrollPane scroll, JTable table, String name) {
         JLabel l = new JLabel(name);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
         l.setVisible(true);
         add(l);
 
+
         scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(scroll);
+
 
         configureTable(table);
         resizeScrollPane(scroll, table);
     }
+
 
     protected void initializeColumns(Object[] elements) {
         int width = elements.length;
@@ -108,6 +127,7 @@ public class DescriptiveTableDrawer extends JPanel {
         columns[0] = "";
         numColumns = columns.length;
     }
+
 
     protected void initializeRowsAsDouble(double[][] rowsTable, Object[] elements) {
         // TODO: rewrite this method.
@@ -149,15 +169,18 @@ public class DescriptiveTableDrawer extends JPanel {
         table.setRowSelectionAllowed(true);
         table.setFont(new Font("Lucida", 0, 11));
 
+
         int cellHeight = getFont().getSize() + 5;
         table.setRowHeight(cellHeight);
-
+        table.getTableHeader().setReorderingAllowed(false);
         resizeTable(table);
     }
+
 
     protected void resizeTable(JTable table) {
         int cellWidth = 50;
         int cellHeight = getFont().getSize() + 5;
+
 
         int tableWidth = numColumns * cellWidth;
         int tableHeight = numRows * cellHeight;
@@ -167,16 +190,18 @@ public class DescriptiveTableDrawer extends JPanel {
             table.getColumnModel().getColumn(i).setMaxWidth(cellWidth);
         }
 
+
         table.setMaximumSize(new Dimension(tableWidth, tableHeight));
         table.setPreferredSize(new Dimension(tableWidth, tableHeight));
         table.setSize(new Dimension(tableWidth, tableHeight));
     }
 
+
     protected void resizeScrollPane(JScrollPane scroll, JTable table) {
         //int menuAndToolbarHeight = 135;
         //int panelHeight = mainFrame.getHeight() - menuAndToolbarHeight;
         int tableHeight = table.getHeight() + table.getTableHeader().getHeight();
-        int tableWidth = table.getWidth();
+        int tableWidth = table.getWidth()+5;
         
         scroll.setMaximumSize(new Dimension(tableWidth, tableHeight));
         scroll.setPreferredSize(new Dimension(tableWidth, tableHeight));
@@ -193,8 +218,10 @@ public class DescriptiveTableDrawer extends JPanel {
         initializeRows(rowsTable, tranNames);
         
 
+
         DescriptiveTableModel tableModel = new DescriptiveTableModel(rows, columns);
         diTable.setModel(tableModel);
+
 
         resizeTable(diTable);
         resizeScrollPane(diScroll, diTable);
@@ -209,8 +236,10 @@ public class DescriptiveTableDrawer extends JPanel {
         initializeRows(rowsTable, tranNames);
         
 
+
         DescriptiveTableModel tableModel = new DescriptiveTableModel(rows, columns);
         dqTable.setModel(tableModel);
+
 
         resizeTable(dqTable);
         resizeScrollPane(dqScroll, dqTable);
@@ -227,8 +256,10 @@ public class DescriptiveTableDrawer extends JPanel {
         initializeRows(rowsTable, null);
         
 
+
         DescriptiveTableModel tableModel = new DescriptiveTableModel(rows, columns);
         markingTable.setModel(tableModel);
+
 
         resizeTable(markingTable);
         resizeScrollPane(markingScroll, markingTable);
@@ -245,12 +276,15 @@ public class DescriptiveTableDrawer extends JPanel {
         initializeRowsAsDouble(rowsTable, null);
         
 
+
         DescriptiveTableModel tableModel = new DescriptiveTableModel(rows, columns);
         lyambdaTable.setModel(tableModel);
+
 
         resizeTable(lyambdaTable);
         resizeScrollPane(lyambdaScroll, markingTable);
     }
+
 
     /**
      * @param g
@@ -264,6 +298,5 @@ public class DescriptiveTableDrawer extends JPanel {
             paintMarking(g);
             paintLyambda(g);
         }
-    }
-    
+    }   
 }
