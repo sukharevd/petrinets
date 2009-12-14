@@ -127,15 +127,70 @@ public class Arc extends Element {
         ArrayList<Integer> yst = new ArrayList<Integer>();
         String toType = new String(this.toType);
 
+        // TODO: exception:
         if (xsequence.size() != ysequence.size()) {
             System.err.println("Error: Arc X.size not equal Y.size.");
         }
         for (int i = 0; i < xsequence.size(); i++) {
-            xst.set(i, xsequence.get(i) + 2);
-            yst.set(i, ysequence.get(i) + 2);
+            xst.add(i, xsequence.get(i));
+            yst.add(i, ysequence.get(i));
         }
 
         return new Arc(xst, yst, to, toType);
+    }
+
+    public boolean equals(final Object o) {
+        // TODO: Not good-looking code. (see also Place and Transition #equals(...))
+        Arc oArc;
+        try {
+            oArc = (Arc) o;
+        } catch (ClassCastException e) {
+            return false;
+        }
+
+        boolean isEquals = true;
+        int oTo = oArc.getTo();
+
+        String oToType = oArc.getToType();
+        if ((oToType == null) ^ (this.toType == null)) {
+            isEquals = false;
+        } else {
+            if ((oToType != null) && (this.toType != null)) {
+                if ((to != oTo) || (!oToType.equals(toType))) {
+                    isEquals = false;
+                }
+            }
+        }
+
+        if (!isXYSequencesEquals(oArc)) {
+            isEquals = false;
+        }
+
+        return isEquals;
+    }
+
+    protected boolean isXYSequencesEquals(final Arc oArc) {
+        boolean isEquals = true;
+
+        ArrayList<Integer> xst = oArc.getXsequence();
+        ArrayList<Integer> yst = oArc.getYsequence();
+        // TODO: exception:
+        if (xst.size() != yst.size()) {
+            System.err.println("Error: Arc X.size not equal Y.size.");
+        }
+
+        if (xst.size() == xsequence.size()) {
+            for (int i = 0; i < xst.size(); i++) {
+                if ((!xst.get(i).equals(xsequence.get(i))) || (!yst.get(i).equals(ysequence.get(i)))) {
+                    isEquals = false;
+//                    break;
+                }
+            }
+        } else {
+            isEquals = false;
+        }
+
+        return isEquals;
     }
 
     public String toString() {

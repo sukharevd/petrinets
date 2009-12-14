@@ -15,7 +15,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import data.Data;
 import data.elements.Arc;
 import data.elements.Element;
-
 import exceptions.MissedXmlArgumentException;
 import exceptions.WrongQNameException;
 import exceptions.XmlArgumentException;

@@ -10,8 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import data.Data;
-import data.elements.Place;
-import data.elements.Transition;
 import data.modeling.EmulationManager;
 
 
@@ -98,9 +96,6 @@ public class OpeningAction extends AbstractAction {
             if (!path.endsWith(".xml")) {
                 path += ".xml";
             }
-
-            Place.setCurIndex(0);
-            Transition.setCurIndex(0);
 
             data.load(path);
             data.setActiveElement(null);

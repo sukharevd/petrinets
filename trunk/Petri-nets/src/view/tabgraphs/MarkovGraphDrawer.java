@@ -11,7 +11,6 @@ import java.awt.Polygon;
 import javax.swing.JPanel;
 
 import view.Scalable;
-
 import data.Data;
 import data.TableManagment;
 import data.TreeConnection;

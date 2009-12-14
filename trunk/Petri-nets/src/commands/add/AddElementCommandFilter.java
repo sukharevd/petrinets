@@ -6,13 +6,16 @@ package commands.add;
 
 import javax.swing.JOptionPane;
 
+import view.ElementFinder;
+
 import commands.Command;
 import commands.CommandFilter;
 
-import view.ElementFinder;
 import data.Data;
 import data.elements.Arc;
 import data.elements.Element;
+import data.elements.Place;
+import data.elements.Transition;
 
 /**
  * Filters element adding command if it is wrong.
@@ -42,7 +45,7 @@ public class AddElementCommandFilter implements CommandFilter {
     protected boolean isFiltratedPlaceTransition() {
         Element selectedEl = ElementFinder.findElement(mouseX, mouseY, data);
 
-        if ((selectedEl != null) && (selectedEl.getType() != "A")) {
+        if ((selectedEl != null) && (!(selectedEl instanceof Arc))) {
 
             String message = "You cann't add element over other element.";
             String title = "Error of drawing";
@@ -62,7 +65,7 @@ public class AddElementCommandFilter implements CommandFilter {
 
         if (addedArc.getXsequence().size() > 0) {
             if ((selectedEl != null)
-                    && (selectedEl.getType() != "A")) {
+                    && (!(selectedEl instanceof Arc))) {
                 int x1 = addedArc.getXsequence().get(0);
                 int y1 = addedArc.getYsequence().get(0);
                 String s1 = ElementFinder.findElement(x1, y1, data)
@@ -79,7 +82,7 @@ public class AddElementCommandFilter implements CommandFilter {
             }
         } else {
             if ((selectedEl == null)
-                    || (selectedEl.getType() == "A")) {
+                    || (selectedEl instanceof Arc)) {
                 return true;
             }
         }
@@ -91,13 +94,13 @@ public class AddElementCommandFilter implements CommandFilter {
         Element addedElement = data.getAddingModeElement();
         if (addedElement != null) {
 
-            if ((addedElement.getType() == "P")
-                    || (addedElement.getType() == "T")) {
+            if ((addedElement instanceof Place)
+                    || (addedElement instanceof Transition)) {
                 if (isFiltratedPlaceTransition()) {
                     return null;
                 }
             } else {
-                if (addedElement.getType() == "A") {
+                if (addedElement instanceof Arc) {
                     if (isFiltratedArc()) {
                         return null;
                     }

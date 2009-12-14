@@ -66,7 +66,6 @@ public class MoveElementInvoker {
 
         moveItsInputArcs(x, y);
         moveItsOutputArcs(x, y);
-
     }
 
     public void moveElement() {

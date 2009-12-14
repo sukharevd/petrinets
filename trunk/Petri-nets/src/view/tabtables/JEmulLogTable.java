@@ -5,11 +5,12 @@ package view.tabtables;
 
 import javax.swing.JTable;
 
-import data.modeling.EmulatedStatisticMaker;
 import data.modeling.EmulationManager;
-
+// TODO: add this class to project in feature.
 /**
- * @author Admin
+ * Tabular representation of transitions log of emulating, step by step.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * 
  */
 public class JEmulLogTable extends JTable {
@@ -46,11 +47,17 @@ public class JEmulLogTable extends JTable {
     }
 
     public void updateRows() {
+        int maxItemNumber = 50000;
+        if (emulator.getLog().size() > maxItemNumber) {
+            rows = new Object[1][5];
+            stringTableModel.setDataVector(rows, columns);
+            return;
+        }
         rows = emulator.getLog().getObjectTable();
         stringTableModel.setDataVector(rows, columns);
         
-        EmulatedStatisticMaker maker = new EmulatedStatisticMaker(emulator);
-        maker.makeStatistic();
+//        EmulatedStatisticMaker maker = new EmulatedStatisticMaker(emulator);
+//        maker.makeStatistic();
     }
 
 }

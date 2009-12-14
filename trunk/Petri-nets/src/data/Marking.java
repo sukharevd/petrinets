@@ -9,9 +9,6 @@ public class Marking {
 
     private ArrayList<Integer> list;
 
-    // TODO: are they necessary?
-    private ArrayList<Marking> childMarkings;
-
     /**
      * 
      * @param list
@@ -34,14 +31,17 @@ public class Marking {
     }
 
     /**
-     * 
-     * @param list
-     * @param childMarkings
+     * @return the no
      */
-    public Marking(int no, ArrayList<Integer> list, ArrayList<Marking> childMarkings) {
+    public final int getNo() {
+        return no;
+    }
+
+    /**
+     * @param no the no to set
+     */
+    public final void setNo(int no) {
         this.no = no;
-        this.list = list;
-        this.childMarkings = childMarkings;
     }
 
     /**
@@ -56,20 +56,6 @@ public class Marking {
      */
     public final void setList(ArrayList<Integer> list) {
         this.list = list;
-    }
-
-    /**
-     * @return the childMarkings
-     */
-    public final ArrayList<Marking> getChildMarkings() {
-        return childMarkings;
-    }
-
-    /**
-     * @param childMarkings the childMarkings to set
-     */
-    public final void setChildMarkings(ArrayList<Marking> childMarkings) {
-        this.childMarkings = childMarkings;
     }
 
     public Integer[] getIntegerArray() {

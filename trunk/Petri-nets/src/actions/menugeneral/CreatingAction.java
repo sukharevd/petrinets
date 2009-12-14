@@ -7,8 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import data.Data;
-import data.elements.Place;
-import data.elements.Transition;
 import data.modeling.EmulationManager;
 
 /**
@@ -63,9 +61,6 @@ public class CreatingAction extends AbstractAction {
                 return;
             }
         }
-
-        Place.setCurIndex(0);
-        Transition.setCurIndex(0);
 
         data.getElements().clear();
         data.setChanged(false);

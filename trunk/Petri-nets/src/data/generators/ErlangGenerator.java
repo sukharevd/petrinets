@@ -2,79 +2,76 @@ package data.generators;
 
 import java.util.ArrayList;
 
+/**
+ * Contains methods for transitions time generation when they works by Erlang
+ * low.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
+ * 
+ */
 public class ErlangGenerator implements Generator {
-    private ArrayList<Double> lkgValues;
 
-    private ArrayList<Double> values;
+    private Generator lcgGen;
 
-    private int curIndex;
+    private double lyambda;
 
-    private double lyamda;
-
-    private int k;
+    private double k;
 
     private double b = 0.0;
 
     public ErlangGenerator() {
-        this.lyamda = 89.0;
-        this.k = 7;
-        this.curIndex = 0;
-        this.values = new ArrayList<Double>();
-
-        double a = Math.pow(5, 17);
-        double c = Math.pow(3, 3);
-        double d = Math.pow(2, 32);
-        double w0 = 428.0;// (double) new Random().nextInt((int)d);
-        int quantity = 10000; // TODO: 3000?
-
-        Generator kGen = new LCGenerator(a, c, d, w0);
-        int lkgQuantity = (quantity + 1) * k;
-
-        this.lkgValues = kGen.generateList(lkgQuantity);
-
+        this.lyambda = 89.0;
+        this.k = 2.0;
+        this.lcgGen = new LCGenerator();
     }
 
-    public ErlangGenerator(ArrayList<Double> srcvals, double lyamda, int k) {
-        this.lkgValues = srcvals;
-        this.lyamda = lyamda;
+    public ErlangGenerator(double lyamda, double k) {
+        this.lyambda = lyamda;
         this.k = k;
-        this.values = new ArrayList<Double>();
+        this.lcgGen = new LCGenerator();
+    }
+    
+    public ErlangGenerator(double lyamda, double k, Generator lcgGen) {
+        this.lyambda = lyamda;
+        this.k = k;
+        this.lcgGen = lcgGen;
     }
 
     @Override
     public ArrayList<Double> generateList(int quantity) {
+        ArrayList<Double> list = new ArrayList<Double>();
         double sum;
-        for (; curIndex < quantity; curIndex++) {
+
+        for (int i = 0; i < quantity; i++) {
             sum = 0.0;
-            for (int j = curIndex * k + 1; j < (curIndex + 1) * k + 1; j++) {
-                sum += Math.log(lkgValues.get(j));
+            for (int j = 1; j < k + 1; j++) {
+                sum += Math.log(lcgGen.generateValue());
             }
-            values.add(curIndex, sum / (-lyamda * k));
-            if (values.get(curIndex) > b) {
-                b = values.get(curIndex);
+            list.add(i, sum / (-lyambda * k));
+            if (list.get(i) > b) {
+                b = list.get(i);
             }
         }
 
-        return values;
+        return list;
     }
 
     @Override
     public Double generateValue() {
         double sum = 0.0;
-        for (int j = curIndex * k + 1; j < (curIndex + 1) * k + 1; j++) {
-            sum += Math.log(lkgValues.get(j));
-        }
-        values.add(curIndex, sum / (-lyamda * k));
-        if (values.get(curIndex) > b) {
-            b = values.get(curIndex);
-        }
 
-        double res = values.get(curIndex);
-        curIndex++;
+        for (int j = 1; j < k + 1; j++) {
+            sum += Math.log(lcgGen.generateValue());
+        }
+        double res = sum / (-lyambda * k);
+        if (res > b) {
+            b = res;
+        }
 
         return res;
     }
 
+    @Override
     public double getB() {
         return b;
     }

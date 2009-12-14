@@ -2,64 +2,61 @@ package data.generators;
 
 import java.util.ArrayList;
 
-//Ravnomernyi
+/**
+ * Contains methods for generation of transitions time when it works by Uniform
+ * low (Ravnomernyi).
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
+ * 
+ */
 public class UniformGenerator implements Generator {
-    private ArrayList<Double> lkgValues;
 
-    private ArrayList<Double> values;
+    private Generator lcgGen;
 
-    private int curIndex;
+    private double lyambda;
 
-    private double lyamda;
-
-    private double b = 0.0;
+    private double b;
 
     public UniformGenerator() {
-        this.lyamda = 2.0;
-
-        this.curIndex = 0;
-        this.values = new ArrayList<Double>();
-        
-        double a = Math.pow(5, 17);
-        double c = Math.pow(3, 3);
-        double d = Math.pow(2, 32);
-        double w0 = 428.0;
-        int quantity = 10000;
-        
-        Generator kGen = new LCGenerator(a, c, d, w0);
-        this.lkgValues = kGen.generateList(quantity);
-        
+        this.lyambda = 2.0;
+        this.lcgGen = new LCGenerator();
+        this.b = 0.0;
     }
 
-    public UniformGenerator(ArrayList<Double> newvals, double lyamda) {
-        this.lkgValues = newvals;
-        this.lyamda = lyamda;
+    public UniformGenerator(double lyamda) {
+        this.lyambda = lyamda;
+        this.lcgGen = new LCGenerator();
+        this.b = 0.0;
+    }
 
-        this.curIndex = 0;
-        this.values = new ArrayList<Double>();
+    public UniformGenerator(double lyamda, LCGenerator lcgGen) {
+        this.lyambda = lyamda;
+        this.lcgGen = lcgGen;
+        this.b = 0.0;
     }
 
     @Override
     public ArrayList<Double> generateList(int quantity) {
-        for (int curIndex = 0; curIndex < quantity; curIndex++) {
-            values.add(curIndex, (1.0 / lyamda) * lkgValues.get(curIndex) * 2);
-            if (values.get(curIndex) > b) {
-                b = values.get(curIndex);
+        ArrayList<Double> list = new ArrayList<Double>();
+        double last;
+        for (int i = 0; i < quantity; i++) {
+            last = (1.0 / lyambda) * lcgGen.generateValue() * 2;
+            list.add(last);
+            if (last > b) {
+                b = last;
             }
         }
-        return values;
+        return list;
     }
 
     @Override
     public Double generateValue() {
+        double res = (1.0 / lyambda) * lcgGen.generateValue() * 2;
 
-        values.add(curIndex, (1.0 / lyamda) * lkgValues.get(curIndex) * 2);
-        if (values.get(curIndex) > b) {
-            b = values.get(curIndex);
+        if (res > b) {
+            b = res;
         }
 
-        Double res = values.get(curIndex);
-        curIndex++;
         return res;
     }
 

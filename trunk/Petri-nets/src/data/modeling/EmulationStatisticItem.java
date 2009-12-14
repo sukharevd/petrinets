@@ -3,10 +3,14 @@
  */
 package data.modeling;
 
+import java.util.ArrayList;
+
 import data.Marking;
 
 /**
- * @author Admin
+ * Item what is used by EmulationStatisticMaker, counts its statistic values.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * 
  */
 public class EmulationStatisticItem {
@@ -15,31 +19,21 @@ public class EmulationStatisticItem {
 	private double sumTime;
 	private double lastTime;
 	private double firstTime;
+	private ArrayList<Integer> fromMarkings;
 
 	/**
 	 * @param marking
 	 */
-	public EmulationStatisticItem(Marking marking) {
+	public EmulationStatisticItem(Marking marking, int markingsNumber) {
 		this.marking = marking;
 		this.firstTime = -1.0;
 		this.lastTime = -1.0;
+		this.fromMarkings = new ArrayList<Integer>();
+		
+		for (int i = 0; i < markingsNumber; i++) {
+		    this.fromMarkings.add(0);
+        }
 	}
-
-//	/**
-//	 * @param marking
-//	 * @param frequency
-//	 * @param sumTime
-//	 * @param returnTime
-//	 */
-//	public EmulationStatisticRow(Marking marking, int frequency,
-//			double sumTime, double returnTime) {
-//		super();
-//		this.marking = marking;
-//		this.frequency = frequency;
-//		this.sumTime = sumTime;
-//		this.lastTime = returnTime;
-//		this.firstTime = -1.0; //???????????????????????
-//	}
 
 	/**
 	 * @return the marking
@@ -54,8 +48,8 @@ public class EmulationStatisticItem {
 	 * @param sumTime
 	 * @param realTime
 	 */
-	public void addValues(/*int frequency, */double sumTime, double realTime) {
-		this.frequency += 1;
+	public void addValues(double sumTime, double realTime, Marking prevM) {
+		this.frequency += 1; 
 		this.sumTime += sumTime;
 		
 		if (firstTime == -1.0) {
@@ -63,7 +57,10 @@ public class EmulationStatisticItem {
             lastTime = realTime;
         } else {
             this.lastTime = realTime;
-        }		
+        }
+		
+		int no = prevM.getNo();
+		fromMarkings.set(no, fromMarkings.get(no) + 1);
 	}
 	
 	public double getReturnTime() {
@@ -89,4 +86,29 @@ public class EmulationStatisticItem {
         return array;
     }
 
+    public Object[] getChangingObjectArray() {
+        Object[] array = new Object[fromMarkings.size() + 1];
+        array[0] = (String)"M" + marking.getNo();
+        
+        Integer val;
+        for (int i = 0; i < fromMarkings.size(); i++) {
+            val = fromMarkings.get(i);
+            if (val != 0) {
+                array[i + 1] = val;
+            } else {
+                array[i + 1] = null;
+            }
+        }
+        return array;
+    }
+    
+    public Object[] getChangingProbabilityObjectArray() {
+        Object[] array = getChangingObjectArray();
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] instanceof Integer) {
+                array[i] = ((Integer)array[i] / getRepeatFreq(0.2));
+            }
+        }
+        return array;
+    }
 }

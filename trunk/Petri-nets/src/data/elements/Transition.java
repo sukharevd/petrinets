@@ -12,23 +12,23 @@ import data.generators.Generator;
  * 
  */
 public class Transition extends Element {
-    private static int curIndex = 0;
+    //private static int curIndex = 0;
 
     private double lyambda;
 
     private double g;
-    
+
     private double r;
 
     // TODO: somevar
     // TODO: getters/setters
-    // private double somevar; 
-    
+    // private double somevar;
+
     private Generator law;
 
     // TODO: somevar
-    public Transition(double lyambda, double g, double r, /*double somevar,*/ Generator law, int no, int x,
-            int y) {
+    public Transition(double lyambda, double g, double r, /* double somevar, */
+    Generator law, int no, int x, int y) {
         setNo(no);
         setX(x);
         setY(y);
@@ -42,8 +42,6 @@ public class Transition extends Element {
         // TODO: somevar
         // this.somevar = somevar;
         this.law = law;
-
-        curIndex++;
     }
 
     /**
@@ -84,7 +82,8 @@ public class Transition extends Element {
     }
 
     /**
-     * @param r the r to set
+     * @param r
+     *            the r to set
      */
     public final void setR(double r) {
         this.r = r;
@@ -105,40 +104,78 @@ public class Transition extends Element {
         this.law = law;
     }
 
-    // public void draw() {
-    // throw new UnsupportedOperationException();
-    // }
-
-    /**
-     * @return the curIndex
-     */
-    public static int getCurIndex() {
-        return curIndex;
-    }
-
-    /**
-     * @param curIndex
-     *            the curIndex to set
-     */
-    public static void setCurIndex(int curIndex) {
-        Transition.curIndex = curIndex;
-    }
-
     public Object clone() {
-        return new Transition(lyambda, g, r, law, getNo(), getX() + 2,
-                getY() + 2);
+        Transition transition = new Transition(lyambda, g, r, law, getNo(),
+                getX(), getY());
+
+        ArrayList<Arc> outputArcs = new ArrayList<Arc>();
+        
+        for (int i = 0; i < this.getOutputArcs().size(); i++) {
+            outputArcs.add((Arc) this.getOutputArcs().get(i).clone());
+        }
+        
+        transition.setOutputArcs(outputArcs);
+
+        return transition;
     }
-    
+
+    public boolean equals(final Object o) {
+        Transition transition;
+        try {
+            transition = (Transition) o;
+        } catch (ClassCastException e) {
+            return false;
+        }
+        
+        boolean isEquals = true;
+        int oNo = transition.getNo();
+        int oX = transition.getX();
+        int oY = transition.getY();
+        double oLyambda = transition.getLyambda();
+        double oG = transition.getG();
+        double oR = transition.getR();
+        if ((this.getNo() != oNo) || (this.getX() != oX) || (this.getY() != oY)
+                || (this.getLyambda() != oLyambda) || (this.getG() != oG)
+                || (this.getR() != oR)) {
+            isEquals = false;
+        }
+
+        if (!isArcsEqual(transition)) {
+            isEquals = false;
+        }
+
+        return isEquals;
+    }
+
+    // TODO: it is not good idea to crate this function in this class.
+    // Such function is in Place.java also.
+    protected boolean isArcsEqual(final Transition transition) {
+        boolean isEqual = true;
+
+        int length = this.getOutputArcs().size();
+        if (length != transition.getOutputArcs().size()) {
+            isEqual = false;
+        } else {
+            for (int i = 0; i < length; i++) {
+                if (!this.getOutputArcs().get(i).equals(
+                        transition.getOutputArcs().get(i))) {
+                    isEqual = false;
+                }
+            }
+        }
+        return isEqual;
+    }
+
     public String getTitle() {
         String transType;
-        
+
         // if transition is instant it is marked as "M"
         if (this.lyambda == 0) {
             transType = "M";
         } else {
             transType = "T";
         }
-        
+
         return transType + getNo();
     }
 

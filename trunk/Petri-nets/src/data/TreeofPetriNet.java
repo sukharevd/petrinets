@@ -13,120 +13,139 @@ import data.modeling.TransitionsTableRow;
  *
  */
 /**
- * Class for alalysis destinations of marks 
+ * Class for alalysis destinations of marks
  */
 public class TreeofPetriNet {
     /**
      * max number of repeated marks
      */
-	final int Size = 8000;
-    
-	/**
-	 * max number of tree connections
-	 */
+    final int Size = 8000;
+
+    /**
+     * max number of tree connections
+     */
     final int Inside = 8000;
+
     final int limit = 5;
+
     /**
      * number of positions
      */
     int Np;
+
     /**
      * number of transitions
      */
     int Nt;
+
     /**
      * Matrix entrance-transitions
      */
     int[][] DI;
+
     /**
      * Matrix of exit-transitions
      */
     int[][] DQ;
+
     /**
      * 1- moment transition(Holds type of transitions)
      */
     int[] TypeCrossing;
+
     /**
      * Start Mark
      */
     int[] M0;
+
     /**
      * Holds Last Moment Crossing
      */
     int[] LastMCrossing;
+
     /**
      * Holds Last Crossing
      */
     int LastCross;
+
     /**
      * Size of repeated Marks.
      */
     public static int RepeatCount;
+
     /**
      * List of repeated Marks
      */
     int[][] RepeatList;
+
     /**
      * Current Mark
      */
     int[] Curr;
+
     /**
      * Current Mark 1
      */
     int[] Curr1;
+
     /**
      * Previous Mark
      */
     int[] Prev;
+
     /**
      * Number of Previous Mark
      */
     int PrevNum;
+
     /**
      * Number of List position
      */
     public static int Number;
-    
+
     private TransitionsTable transTable;
-    
+
     private Data data;
-    
-    
+
     /**
-	 * @return the crossTable
-	 */
-	public TransitionsTable getTransTable() {
-		return transTable;
-	}
-//	private ArrayList<String> typeT= new ArrayList<String>();
-//    private ArrayList<Integer> numTypeT= new ArrayList<Integer>();
+     * @return the crossTable
+     */
+    public TransitionsTable getTransTable() {
+        return transTable;
+    }
+
+    // private ArrayList<String> typeT= new ArrayList<String>();
+    // private ArrayList<Integer> numTypeT= new ArrayList<Integer>();
     private ArrayList<Transition> workedT = new ArrayList<Transition>();
+
     /**
      * for Graph of Markov
      */
     TreeConnection[] Z;
-    
+
     /**
      * for Graph of destinations
      */
     TreeConnection[] Z1;
+
     /**
      * Number of branch of the tree
      */
     int Level = 1;
-    
+
     /**
      * Number of yarus of the tree
      */
-    int Yarus =0;
-    
+    int Yarus = 0;
+
     /**
      * String that holds all triggered moment transitions
      */
-    String momentSequance ="";
+    String momentSequance = "";
 
     /**
      * Constructor
+     * 
      * @param np
      * @param nt
      * @param di
@@ -146,22 +165,22 @@ public class TreeofPetriNet {
         saveArray(M0, m0);
         TypeCrossing = new int[Nt];
         saveArray(TypeCrossing, typecrossing);
-        
+
         this.transTable = new TransitionsTable();
         this.data = data;
     }
-    
-    private void getVuhodNumber(TreeConnection[] Z1, int Num2){
-    	for (int j = 0; j < Number-3; j++) {
-			if ((Z1[j].getNameVhod())==Num2){
-				Z1[Number-2].addVuhod(j);
-				return;
-			}
-		}
-    	if (Number>=3)
-    	Z1[Number-2].addVuhod(Z1[Number-3].getElementVhod(0));
+
+    private void getVuhodNumber(TreeConnection[] Z1, int Num2) {
+        for (int j = 0; j < Number - 3; j++) {
+            if ((Z1[j].getNameVhod()) == Num2) {
+                Z1[Number - 2].addVuhod(j);
+                return;
+            }
+        }
+        if (Number >= 3)
+            Z1[Number - 2].addVuhod(Z1[Number - 3].getElementVhod(0));
     }
-   
+
     private boolean IsCrossingEnabled(int[] M, int T) {
         int i;
         for (i = 0; i < Np; i++)
@@ -178,7 +197,6 @@ public class TreeofPetriNet {
         return true;
     }
 
-    
     private int[] RunCrossing(int[] M, int[] C) {
         int i, j, temp;
         int[] Res = new int[Np];
@@ -190,11 +208,14 @@ public class TreeofPetriNet {
                 temp = temp + C[j] * (DQ[j][i] - DI[j][i]);
             Res[i] = Res[i] + temp;
         }
-        
+
         return Res;
     }
-//---------------------------------------------------------
-    private  int[] RunMomentCrossing(int[] M) {
+
+    // ---------------------------------------------------------
+    // TODO: Here is braking when transition without arcs or element with
+    // incorrect number. Correct this method please.
+    private int[] RunMomentCrossing(int[] M) {
         int i;
         int[] Res = new int[Np];
         boolean flag = true;
@@ -203,32 +224,32 @@ public class TreeofPetriNet {
         for (i = 0; i < Np; i++)
             Res[i] = M[i];
 
-        while (flag){
-        	flag=false;
-        for (i = 0; i < Nt; i++) {
-            if (TypeCrossing[i] == 1)
-                if (IsCrossingEnabled(Res, i)) {
-                    C[i] = 1;
-                    momentSequance=momentSequance+"m"+(i+1);
-                    
-                    workedT.add(data.getTransitionWithNo(i + 1));
-//                    typeT.add("m");
-//                    numTypeT.add(i+1);
-                    flag = true;
-                } else
+        while (flag) {
+            flag = false;
+            for (i = 0; i < Nt; i++) {
+                if (TypeCrossing[i] == 1)
+                    if (IsCrossingEnabled(Res, i)) {
+                        C[i] = 1;
+                        momentSequance = momentSequance + "m" + (i + 1);
+
+                        workedT.add(data.getTransitionWithNo(i + 1));
+                        // typeT.add("m");
+                        // numTypeT.add(i+1);
+                        flag = true;
+                    } else
+                        C[i] = 0;
+                else
                     C[i] = 0;
-            else
-                C[i] = 0;
-        }
-        if (flag)
-            Res = RunCrossing(Res, C);
-        for (i = 0; i < Nt; i++)
-            LastMCrossing[i] = C[i];
+            }
+            if (flag)
+                Res = RunCrossing(Res, C);
+            for (i = 0; i < Nt; i++)
+                LastMCrossing[i] = C[i];
         }
         return Res;
     }
 
-    private  boolean Equal(int[] A, int[] B) {
+    private boolean Equal(int[] A, int[] B) {
         int i;
         for (i = 0; i < A.length; i++)
             if (A[i] != B[i])
@@ -236,7 +257,7 @@ public class TreeofPetriNet {
         return true;
     }
 
-    private  int GetMarkerRepeat(int[] M) {
+    private int GetMarkerRepeat(int[] M) {
         int i;
         for (i = 0; i < RepeatCount; i++)
             if (Equal(M, RepeatList[i]))
@@ -244,53 +265,52 @@ public class TreeofPetriNet {
         return -1;
     }
 
-//    private String getStringValue(int[] M, int N) {
-//        int i;
-//        String Marker = "";
-//        for (i = 0; i < N; i++)
-//            Marker = Marker.concat(Integer.toString(M[i]));
-//        return Marker;
-//    }
+    // private String getStringValue(int[] M, int N) {
+    // int i;
+    // String Marker = "";
+    // for (i = 0; i < N; i++)
+    // Marker = Marker.concat(Integer.toString(M[i]));
+    // return Marker;
+    // }
 
-    private  void WriteMarker(int branch, int nextMNo, int[] nextM, int prevMNo,
+    private void WriteMarker(int branch, int nextMNo, int[] nextM, int prevMNo,
             int[] prevM, MarkType markType, int level) {
 
         int no = Number;
         Marking prevMarking = new Marking(prevMNo, prevM);
         Marking nextMarking = new Marking(nextMNo, nextM);
         ArrayList<Transition> workedTrans = workedT;
-        
-        
-        TransitionsTableRow curRow= new TransitionsTableRow(no, branch, level, prevMarking, nextMarking, workedTrans, markType);
+
+        TransitionsTableRow curRow = new TransitionsTableRow(no, branch, level,
+                prevMarking, nextMarking, workedTrans, markType);
         transTable.add(curRow);
-        
+
         // Logging:
-//        System.out.print(no + "  ");
-//        System.out.print(branch + "  ");
-//        System.out.print(prevMarking.toString() + "   ");
-//        System.out.print(nextMarking.toString() + "   ");
-//        System.out.print(MarkType.toString(markType) + "   ");
-//        System.out.println(level);
-//        int i;
-//        String S = "";
-//        if (RepeatCount != 0) {
-//            S = "";
-//            if (LastCross != 0)
-//            for (i = 0; i < Nt; i++)
-//                if (LastMCrossing[i] == 1)
-//                    S = S + " m" + Integer.toString(i);
-//            System.out.print(momentSequance + " ");
-//        }
-        
-        
+        // System.out.print(no + "  ");
+        // System.out.print(branch + "  ");
+        // System.out.print(prevMarking.toString() + "   ");
+        // System.out.print(nextMarking.toString() + "   ");
+        // System.out.print(MarkType.toString(markType) + "   ");
+        // System.out.println(level);
+        // int i;
+        // String S = "";
+        // if (RepeatCount != 0) {
+        // S = "";
+        // if (LastCross != 0)
+        // for (i = 0; i < Nt; i++)
+        // if (LastMCrossing[i] == 1)
+        // S = S + " m" + Integer.toString(i);
+        // System.out.print(momentSequance + " ");
+        // }
+
         workedT = new ArrayList<Transition>();
         Number++;
         if (RepeatCount >= 0) {
             Z1[Number - 2].addNameVhod(nextMNo);
             Z1[Number - 2].addNameVuhod(prevMNo);
-            Z1[Number-2].addVhod(Number-2);
-            if((Number-2)==0){
-            	Z1[Number - 2].addVuhod(Number-2);
+            Z1[Number - 2].addVhod(Number - 2);
+            if ((Number - 2) == 0) {
+                Z1[Number - 2].addVuhod(Number - 2);
             }
             getVuhodNumber(Z1, prevMNo);
             if (nextMNo < prevMNo)
@@ -319,10 +339,11 @@ public class TreeofPetriNet {
 
     /**
      * Saves B into A
+     * 
      * @param A
      * @param B
      */
-    public  void saveArray(int[] A, int[] B) {
+    public void saveArray(int[] A, int[] B) {
         int i;
         for (i = 0; i < A.length; i++)
             A[i] = B[i];
@@ -330,6 +351,7 @@ public class TreeofPetriNet {
 
     /**
      * Saves B into A
+     * 
      * @param A
      * @param B
      */
@@ -339,68 +361,74 @@ public class TreeofPetriNet {
             for (j = 0; j < A[i].length; j++)
                 A[i][j] = B[i][j];
     }
-    public void Limit(int [] Curr){
-    	for (int i = 0; i < Curr.length; i++) {
-			if (Curr[i]>limit)
-				Curr[i]=limit;
-		}
+
+    public void Limit(int[] Curr) {
+        for (int i = 0; i < Curr.length; i++) {
+            if (Curr[i] > limit)
+                Curr[i] = limit;
+        }
     }
+
     /**
      * Recursive procedure for making Tree
+     * 
      * @param Curr2
      * @param Prev1
      * @param PrevNum1
      * @param yarus1
      */
-    private  void Next(int[] Curr2, int[] Prev1,int PrevNum1, int yarus1) {
+    private void Next(int[] Curr2, int[] Prev1, int PrevNum1, int yarus1) {
         int i, temp;
-        int yarus= yarus1;
+        int yarus = yarus1;
         int[] SaveCurr = new int[Np];
         int[] Curr = new int[Np];
-        int[] Prev=new int[Np];
-        int PrevNum=PrevNum1;
-        saveArray(Curr,Curr2);
-        saveArray(Prev,Prev1);
-        if (RepeatCount == 0){
-        	temp=GetMarkerRepeat(Prev);
+        int[] Prev = new int[Np];
+        int PrevNum = PrevNum1;
+        saveArray(Curr, Curr2);
+        saveArray(Prev, Prev1);
+        if (RepeatCount == 0) {
+            temp = GetMarkerRepeat(Prev);
+        } else {
+            Limit(Curr);
+            temp = GetMarkerRepeat(Curr);
         }
-        else {
-        Limit(Curr);
-        temp = GetMarkerRepeat(Curr);}
         if (temp != -1) {
-            WriteMarker(Level, temp, Curr, PrevNum, Prev, MarkType.REPEATED, yarus);
-            momentSequance="";
+            WriteMarker(Level, temp, Curr, PrevNum, Prev, MarkType.REPEATED,
+                    yarus);
+            momentSequance = "";
             Level++;
             return;
         }
 
         if (IsMarkerImpasse(Curr)) {
             RepeatList[RepeatCount] = Curr;
-            WriteMarker(Level, RepeatCount, Curr, PrevNum, Prev, MarkType.DEADLOCK, yarus);
+            WriteMarker(Level, RepeatCount, Curr, PrevNum, Prev,
+                    MarkType.DEADLOCK, yarus);
             RepeatCount++;
             Level++;
-            momentSequance="";
+            momentSequance = "";
             return;
         }
-        if (RepeatCount == 0){
-        	RepeatList[RepeatCount] = M0;
+        if (RepeatCount == 0) {
+            RepeatList[RepeatCount] = M0;
+        } else {
+            RepeatList[RepeatCount] = Curr;
         }
-        else {
-        RepeatList[RepeatCount] = Curr;}
-        if ((RepeatCount == 0) ||(RepeatCount == 1)){
-            if  (RepeatCount == 0){
+        if ((RepeatCount == 0) || (RepeatCount == 1)) {
+            if (RepeatCount == 0) {
                 WriteMarker(0, 0, Prev, 0, Prev, MarkType.ROOT, 0);
             }
-            if(RepeatCount == 1){
-            	WriteMarker(Level, RepeatCount, Curr, PrevNum, Curr1, MarkType.INTERNAL, yarus);
-            	momentSequance="";
+            if (RepeatCount == 1) {
+                WriteMarker(Level, RepeatCount, Curr, PrevNum, Curr1,
+                        MarkType.INTERNAL, yarus);
+                momentSequance = "";
             }
+        } else {
+            WriteMarker(Level, RepeatCount, Curr, PrevNum, Prev,
+                    MarkType.INTERNAL, yarus);
+            momentSequance = "";
         }
-        else {
-        	WriteMarker(Level, RepeatCount, Curr, PrevNum, Prev, MarkType.INTERNAL,yarus);
-        	momentSequance="";
-        }
-            Prev = Curr;
+        Prev = Curr;
         PrevNum = RepeatCount;
         RepeatCount++;
         yarus++;
@@ -408,21 +436,24 @@ public class TreeofPetriNet {
             if (IsCrossingEnabled(Curr, i)) {
                 saveArray(SaveCurr, Curr);
                 Curr = RunCrossing(Curr, GetCrossingByNumber(i));
-                LastCross = i+1;
-                momentSequance = momentSequance + " t" + Integer.toString(LastCross);
-                //typeT.add("t");
+                LastCross = i + 1;
+                momentSequance = momentSequance + " t"
+                        + Integer.toString(LastCross);
+                // typeT.add("t");
                 workedT.add(data.getTransitionWithNo(LastCross));
-                
+
                 Curr = RunMomentCrossing(Curr);
-                Next(Curr,Prev,PrevNum,yarus);
+                Next(Curr, Prev, PrevNum, yarus);
                 saveArray(Curr, SaveCurr);
             }
         }
 
     }
+
     /**
      * 
-     * @param ZZ -information for building tree of Markov
+     * @param ZZ
+     *            -information for building tree of Markov
      * @return information for building tree of destinations
      */
     public TreeConnection[] WriteResult(int numb) {
@@ -434,7 +465,7 @@ public class TreeofPetriNet {
         Z = new TreeConnection[Inside];
         Z1 = new TreeConnection[Inside];
         int i;
-        for (i = 0; i < Inside; i++){
+        for (i = 0; i < Inside; i++) {
             Z[i] = new TreeConnection();
             Z1[i] = new TreeConnection();
         }
@@ -445,9 +476,11 @@ public class TreeofPetriNet {
         saveArray(Curr, M0);
         Curr = RunMomentCrossing(Curr);
         Level = 1;
-        Next(Curr,Prev,PrevNum,Yarus);
-        if (numb==1){
-        return Z1;
-        } else{return Z;}
-    }  
+        Next(Curr, Prev, PrevNum, Yarus);
+        if (numb == 1) {
+            return Z1;
+        } else {
+            return Z;
+        }
+    }
 }
