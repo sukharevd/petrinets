@@ -183,9 +183,18 @@ public class TreeofPetriNet {
 
     private boolean IsCrossingEnabled(int[] M, int T) {
         int i;
-        for (i = 0; i < Np; i++)
-            if (M[i] < DI[T][i])
+        for (i = 0; i < Np; i++){
+        	int fq=0;
+        	int fi=0;
+        	for (int j = 0; j < Np; j++) {
+				if(DQ[T][j]!=0)
+					fq=1;
+				if (DI[T][j]!=0)
+					fi=1;
+			}
+            if ((M[i] < DI[T][i])||(fq==0)||(fi==0))
                 return false;
+        }
         return true;
     }
 
@@ -213,8 +222,6 @@ public class TreeofPetriNet {
     }
 
     // ---------------------------------------------------------
-    // TODO: Here is braking when transition without arcs or element with
-    // incorrect number. Correct this method please.
     private int[] RunMomentCrossing(int[] M) {
         int i;
         int[] Res = new int[Np];
