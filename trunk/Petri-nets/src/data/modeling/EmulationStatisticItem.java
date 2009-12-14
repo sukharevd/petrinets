@@ -36,6 +36,48 @@ public class EmulationStatisticItem {
 	}
 
 	/**
+     * @return the frequency
+     */
+    public final int getFrequency() {
+        return frequency;
+    }
+
+    /**
+     * @param frequency the frequency to set
+     */
+    public final void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
+    /**
+     * @return the sumTime
+     */
+    public final double getSumTime() {
+        return sumTime;
+    }
+
+    /**
+     * @param sumTime the sumTime to set
+     */
+    public final void setSumTime(double sumTime) {
+        this.sumTime = sumTime;
+    }
+
+    /**
+     * @return the fromMarkings
+     */
+    public final ArrayList<Integer> getFromMarkings() {
+        return fromMarkings;
+    }
+
+    /**
+     * @param fromMarkings the fromMarkings to set
+     */
+    public final void setFromMarkings(ArrayList<Integer> fromMarkings) {
+        this.fromMarkings = fromMarkings;
+    }
+
+    /**
 	 * @return the marking
 	 */
 	public final Marking getMarking() {
@@ -106,7 +148,7 @@ public class EmulationStatisticItem {
         Object[] array = getChangingObjectArray();
         for (int i = 0; i < array.length; i++) {
             if (array[i] instanceof Integer) {
-                array[i] = ((Integer)array[i] / getRepeatFreq(0.2));
+                array[i] = ((Integer)array[i] / getRepeatFreq(0.01));
             }
         }
         return array;
