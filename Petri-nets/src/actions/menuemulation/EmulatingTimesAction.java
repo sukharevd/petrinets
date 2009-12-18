@@ -1,25 +1,29 @@
 /**
  * 
  */
-package actions.menugeneral;
+package actions.menuemulation;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 
+import actions.Questioner;
+
 import data.Data;
 import data.Marking;
 import data.modeling.EmulationManager;
+import data.modeling.EmulationStatisticMaker;
 
 /**
- * Action, which is occurred when user clicks "Emulate 10K steps" component, it
- * calls methods for emulating 10 000 steps of current petri-net.
+ * Action, which is occurred when user clicks "Emulate while time" component, it
+ * calls methods for emulating current petri-net while current time is less time
+ * which is set by user.
  * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * 
  */
-public class Emulating10KStepsAction extends AbstractAction {
+public class EmulatingTimesAction extends AbstractAction {
 
     /**
      * 
@@ -32,7 +36,7 @@ public class Emulating10KStepsAction extends AbstractAction {
 
     private Data data;
 
-    public Emulating10KStepsAction(EmulationManager emulator, Data data,
+    public EmulatingTimesAction(EmulationManager emulator, Data data,
             JFrame mainFrame) {
         this.emulator = emulator;
         this.mainFrame = mainFrame;
@@ -51,11 +55,33 @@ public class Emulating10KStepsAction extends AbstractAction {
             emulator.setData(data);
         }
 
-        int numberOfSteps = 10000;
-        for (int i = 0; i < numberOfSteps; i++) {
+        double finishTime = askTimeOfEmulation();
+        EmulationStatisticMaker statistic = new EmulationStatisticMaker(
+                emulator);
+        statistic.calcTimes();
+        while (statistic.getSumTime() < finishTime) {
             emulator.nextStep();
+            statistic.calcTimes();
         }
+
         mainFrame.repaint();
+    }
+
+    protected double askTimeOfEmulation() {
+        Double timeOfEmulation;
+
+        String title = "Input value";
+        String message = "Time of emulation (in seconds):";
+        String initialSelectionValue = "100.0";
+        timeOfEmulation = Questioner.askDouble(mainFrame, title, message,
+                initialSelectionValue, null);
+
+        // if was canceled
+        if (timeOfEmulation == null) {
+            timeOfEmulation = 0.0;
+        }
+
+        return timeOfEmulation;
     }
 
     protected boolean areEqualWithoutMarking() {

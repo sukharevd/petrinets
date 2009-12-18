@@ -22,14 +22,14 @@ public class PoissonGenerator implements Generator {
         this.b = 0.0;
     }
 
-    public PoissonGenerator(double lyamda) {
-        this.lyambda = lyamda;
+    public PoissonGenerator(double lyambda) {
+        this.lyambda = lyambda;
         this.lcgGen = new LCGenerator();
         this.b = 0.0;
     }
 
-    public PoissonGenerator(double lyamda, LCGenerator lcgGen) {
-        this.lyambda = lyamda;
+    public PoissonGenerator(double lyambda, LCGenerator lcgGen) {
+        this.lyambda = lyambda;
         this.lcgGen = lcgGen;
         this.b = 0.0;
     }

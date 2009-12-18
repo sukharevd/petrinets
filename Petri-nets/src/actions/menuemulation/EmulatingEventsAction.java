@@ -1,25 +1,27 @@
 /**
  * 
  */
-package actions.menugeneral;
+package actions.menuemulation;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 
+import actions.Questioner;
+
 import data.Data;
 import data.Marking;
 import data.modeling.EmulationManager;
 
 /**
- * Action, which is occurred when user clicks "Emulate a step" component, it calls
- * methods for emulating one step of current petri-net.
+ * Action, which is occurred when user clicks "Emulate N events" component, it
+ * calls methods for emulating N events of current petri-net.
  * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * 
  */
-public class EmulatingStepAction extends AbstractAction {
+public class EmulatingEventsAction extends AbstractAction {
 
     /**
      * 
@@ -32,7 +34,7 @@ public class EmulatingStepAction extends AbstractAction {
 
     private Data data;
 
-    public EmulatingStepAction(EmulationManager emulator, Data data,
+    public EmulatingEventsAction(EmulationManager emulator, Data data,
             JFrame mainFrame) {
         this.emulator = emulator;
         this.mainFrame = mainFrame;
@@ -49,12 +51,33 @@ public class EmulatingStepAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         if (!areEqualWithoutMarking()) {
             emulator.setData(data);
-        }        
+        }
 
-        emulator.nextStep();
+        int numberOfSteps = askNumberOfSteps();
+
+        for (int i = 0; i < numberOfSteps; i++) {
+            emulator.nextStep();
+        }
         mainFrame.repaint();
     }
-    
+
+    protected int askNumberOfSteps() {
+        Integer numberOfSteps = 0;
+
+        String title = "Input value";
+        String message = "Number of steps:";
+        String initialSelectionValue = "10000";
+        numberOfSteps = Questioner.askInt(mainFrame, title, message,
+                initialSelectionValue, null);
+
+        // if was canceled
+        if (numberOfSteps == null) {
+            numberOfSteps = 0;
+        }
+
+        return numberOfSteps;
+    }
+
     protected boolean areEqualWithoutMarking() {
         boolean isEquals;
 

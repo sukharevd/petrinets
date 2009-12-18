@@ -108,7 +108,6 @@ public class DescriptiveTableDrawer extends JPanel {
         l.setVisible(true);
         add(l);
 
-
         scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(scroll);
 
