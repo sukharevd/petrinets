@@ -51,6 +51,7 @@ public class EmulationStatisticMaker {
     }
 
     public void calcTimes() {
+        sumTime = 0.0;
         for (int i = 0; i < logItems.size(); i++) {
             int index = getIndexOfMarking(markings, logItems.get(i)
                     .getNextMarking());

@@ -23,14 +23,14 @@ public class UniformGenerator implements Generator {
         this.b = 0.0;
     }
 
-    public UniformGenerator(double lyamda) {
-        this.lyambda = lyamda;
+    public UniformGenerator(double lyambda) {
+        this.lyambda = lyambda;
         this.lcgGen = new LCGenerator();
         this.b = 0.0;
     }
 
-    public UniformGenerator(double lyamda, LCGenerator lcgGen) {
-        this.lyambda = lyamda;
+    public UniformGenerator(double lyambda, LCGenerator lcgGen) {
+        this.lyambda = lyambda;
         this.lcgGen = lcgGen;
         this.b = 0.0;
     }

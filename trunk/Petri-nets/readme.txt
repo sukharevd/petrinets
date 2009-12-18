@@ -14,5 +14,8 @@ TortoiseSVN:
 Ant:
     http://ant.apache.org/bindownload.cgi
     
+JFreeChart:
+    http://www.jfree.org/jfreechart/download.html
+    
 Netviewer meet:
     http://www.netviewer.net/

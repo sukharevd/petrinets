@@ -91,18 +91,21 @@ public class EmulationTablesDrawer extends JPanel {
 
         changingMarkStatisticTable = new JTable(new StringTableModel(
                 new Object[0][0], new Object[0]));
+        changingMarkStatisticTable.getTableHeader().setReorderingAllowed(false);
         scroll = new JScrollPane(changingMarkStatisticTable);
         scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(scroll);
 
         changingPMarkStatisticTable = new JTable(new StringTableModel(
                 new Object[0][0], new Object[0]));
+        changingPMarkStatisticTable.getTableHeader().setReorderingAllowed(false);
         scroll = new JScrollPane(changingPMarkStatisticTable);
         scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(scroll);
 
         summaryTable = new JTable(new StringTableModel(new Object[0][0],
                 new Object[0]));
+        summaryTable.getTableHeader().setReorderingAllowed(false);
         scroll = new JScrollPane(summaryTable);
         scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(scroll);

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package actions.menugeneral;
+package actions.menuemulation;
 
 import java.awt.event.ActionEvent;
 

@@ -33,15 +33,16 @@ import actions.menuadd.AddingArcAction;
 import actions.menuadd.AddingImmediateTransitionAction;
 import actions.menuadd.AddingPlaceAction;
 import actions.menuadd.AddingTimeTransitionAction;
+import actions.menuemulation.EmulatingEventsAction;
+import actions.menuemulation.EmulatingEventAction;
+import actions.menuemulation.EmulatingTimesAction;
+import actions.menuemulation.ResetingEmulationAction;
 import actions.menugeneral.AboutingAction;
 import actions.menugeneral.CreatingAction;
-import actions.menugeneral.Emulating10KStepsAction;
-import actions.menugeneral.EmulatingStepAction;
 import actions.menugeneral.ExitingAction;
 import actions.menugeneral.ExportingAction;
 import actions.menugeneral.HelpingAction;
 import actions.menugeneral.OpeningAction;
-import actions.menugeneral.ResetingEmulationAction;
 import actions.menugeneral.SavingAction;
 import actions.menugeneral.ScalingPanelAction;
 import actions.menuundo.RedoAction;
@@ -304,13 +305,13 @@ public class AppFrame extends JFrame {
         JMenuItem oneKStep = new JMenuItem();
         JMenuItem reset = new JMenuItem();
         // TODO: add hot keys:
-        oneStep.setAction(new EmulatingStepAction(emulator, data, this));
+        oneStep.setAction(new EmulatingEventAction(emulator, data, this));
         oneStep.setText("One Step");
         oneStep.setMnemonic(KeyEvent.VK_1);
         oneStep.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,
                 ActionEvent.CTRL_MASK));
 
-        oneKStep.setAction(new Emulating10KStepsAction(emulator, data, this));
+        oneKStep.setAction(new EmulatingEventsAction(emulator, data, this));
         oneKStep.setText("10K Steps");
         oneKStep.setMnemonic(KeyEvent.VK_K);
         oneKStep.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K,
@@ -439,14 +440,18 @@ public class AppFrame extends JFrame {
 
         toolBar.addSeparator();
 
-        button = makeToolBarButton("emul124", new EmulatingStepAction(emulator,
-                data, this), "Emulate 1 step", "Emulate (1)");
+        button = makeToolBarButton("emul124", new EmulatingEventAction(emulator,
+                data, this), "Emulate 1 event", "Emulate (1)");
         toolBar.add(button);
 
-        button = makeToolBarButton("emul10k24", new Emulating10KStepsAction(
-                emulator, data, this), "Emulate 10 000 steps", "Emulate (10K)");
+        button = makeToolBarButton("emuln24", new EmulatingEventsAction(
+                emulator, data, this), "Emulate N events", "Emulate (N)");
         toolBar.add(button);
-
+        
+        button = makeToolBarButton("emult24", new EmulatingTimesAction(
+                emulator, data, this), "Emulate while time", "Emulate (T)");
+        toolBar.add(button);
+        
         button = makeToolBarButton("reset24", new ResetingEmulationAction(
                 emulator, data, this), "Reset emulation", "Reset");
         toolBar.add(button);
@@ -507,6 +512,21 @@ public class AppFrame extends JFrame {
         setTitle("Petri nets Builder");
         setSize(fWidth, fHeight);
         setMinimumSize(new Dimension(fWidth, fHeight));
+//        try {
+//            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+//        } catch (ClassNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (InstantiationException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (UnsupportedLookAndFeelException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
         initializeTabs();
         initializeMenuBar();

@@ -3,46 +3,66 @@
  */
 package data.generators;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Admin
- *
+ * 
  */
 public class GeneratorsPool {
     private LCGenerator lcg;
-    private PoissonGenerator poisson;
-    private HyperExpGenerator hyper;
-    private UniformGenerator uniform;
-    private ErlangGenerator erlang;
-    
+
+    private Map<Double, PoissonGenerator> poisson;
+
+    private Map<Double, HyperExpGenerator> hyper;
+
+    private Map<Double, UniformGenerator> uniform;
+
+    private Map<Double, ErlangGenerator> erlang;
+
     public GeneratorsPool() {
         lcg = new LCGenerator();
-        poisson = new PoissonGenerator();
-        hyper = new HyperExpGenerator();
-        uniform = new UniformGenerator();
-        erlang = new ErlangGenerator();        
+        poisson = new HashMap<Double, PoissonGenerator>();
+        hyper = new HashMap<Double, HyperExpGenerator>();
+        uniform = new HashMap<Double, UniformGenerator>();
+        erlang = new HashMap<Double, ErlangGenerator>();
     }
-    
-    public Generator chooseGenerator(final Double g) {
+
+    public Generator chooseGenerator(final Double g, final Double lyambda) {
         Generator generator = null;
         if (g == 1.0) {
-            generator = poisson;
+            // generator = poisson;
+            if (!poisson.containsKey(lyambda)) {
+                poisson.put(lyambda, new PoissonGenerator(lyambda));
+            }
+            generator = poisson.get(lyambda);
         } else {
-            if ((g >= 0.33)&&(g <= 0.34)) {
-                generator = uniform;
+            if ((g >= 0.33) && (g <= 0.34)) {
+                if (!uniform.containsKey(lyambda)) {
+                    uniform.put(lyambda, new UniformGenerator(lyambda));
+                }
+                generator = uniform.get(lyambda);
             } else {
                 if (g > 1.0) {
-                    generator = hyper;
+                    if (!hyper.containsKey(lyambda)) {
+                        hyper.put(lyambda, new HyperExpGenerator(lyambda, g));
+                    }
+                    generator = hyper.get(lyambda);
                 } else {
                     if (g < 1.0) {
-                        generator = erlang;
+                        if (!erlang.containsKey(lyambda)) {
+                            erlang.put(lyambda, new ErlangGenerator(lyambda, 1.0/g));
+                        }
+                        generator = erlang.get(lyambda);
                     }
                 }
             }
         }
-        
+
         return generator;
     }
-    
+
     public Generator getLCG() {
         return lcg;
     }

@@ -108,8 +108,14 @@ public class EmulationManager {
         for (int i = 0; i < transitions.size(); i++) {
             Transition transition = transitions.get(i);
             Double g = transition.getG();
-            Generator generator = generatorsPool.chooseGenerator(g);
-            times.add(generator.generateValue());
+            Double lyambda = transition.getLyambda();
+            if (lyambda > 0.0) {
+                Generator generator = generatorsPool.chooseGenerator(g, lyambda);
+                times.add(generator.generateValue());
+            } else {
+                times.add(0.0);
+            }
+            
         }
     }
 
@@ -303,7 +309,7 @@ public class EmulationManager {
         Marking prevMarking = curMarking;
         curMarking = transTable.selectAllWithTransPrevMarking(active,
                 curMarking).get(0).getNextMarking();
-        data.changeDataMarking(curMarking);////////////////////////////////////////////////////////
+        data.changeDataMarking(curMarking);
 
         // Step4: Reset time for active.
         double time = updateTransitionsTime(activePos, possibles);
@@ -365,8 +371,9 @@ public class EmulationManager {
      */
     protected void generateTimeForTransition(Transition active) {
         Double g = active.getG();
+        Double lyambda = active.getLyambda();
         int position = transitions.indexOf(active);
-        Generator generator = generatorsPool.chooseGenerator(g);
+        Generator generator = generatorsPool.chooseGenerator(g, lyambda);
         times.set(position, generator.generateValue());
     }
 
