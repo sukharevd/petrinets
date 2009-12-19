@@ -301,21 +301,28 @@ public class AppFrame extends JFrame {
         // --------> Emulation Menu <-----------
         // -------------------------------------
 
-        JMenuItem oneStep = new JMenuItem();
-        JMenuItem oneKStep = new JMenuItem();
+        JMenuItem oneEvent = new JMenuItem();
+        JMenuItem nEvents = new JMenuItem();
+        JMenuItem timeTEvents = new JMenuItem();
         JMenuItem reset = new JMenuItem();
-        // TODO: add hot keys:
-        oneStep.setAction(new EmulatingEventAction(emulator, data, this));
-        oneStep.setText("One Step");
-        oneStep.setMnemonic(KeyEvent.VK_1);
-        oneStep.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,
+
+        oneEvent.setAction(new EmulatingEventAction(emulator, data, this));
+        oneEvent.setText("One Event");
+        oneEvent.setMnemonic(KeyEvent.VK_1);
+        oneEvent.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,
                 ActionEvent.CTRL_MASK));
 
-        oneKStep.setAction(new EmulatingEventsAction(emulator, data, this));
-        oneKStep.setText("10K Steps");
-        oneKStep.setMnemonic(KeyEvent.VK_K);
-        oneKStep.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K,
-                ActionEvent.CTRL_MASK));
+        nEvents.setAction(new EmulatingEventsAction(emulator, data, this));
+        nEvents.setText("While N Events");
+        nEvents.setMnemonic(KeyEvent.VK_N);
+        nEvents.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,
+                ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        
+        timeTEvents.setAction(new EmulatingEventsAction(emulator, data, this));
+        timeTEvents.setText("While T Time");
+        timeTEvents.setMnemonic(KeyEvent.VK_T);
+        timeTEvents.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
+                ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
 
         reset.setAction(new ResetingEmulationAction(emulator, data, this));
         reset.setText("Reset");
@@ -323,8 +330,9 @@ public class AppFrame extends JFrame {
         reset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
                 ActionEvent.CTRL_MASK));
 
-        emulation.add(oneStep);
-        emulation.add(oneKStep);
+        emulation.add(oneEvent);
+        emulation.add(nEvents);
+        emulation.add(timeTEvents);
         emulation.addSeparator();
         emulation.add(reset);
 

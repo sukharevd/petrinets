@@ -5,9 +5,11 @@ package actions;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-// TODO: com
+
 /**
- * @author Admin
+ * Questioner, which asks user about some parameters by massage with text field.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * 
  */
 public class Questioner {
@@ -35,7 +37,7 @@ public class Questioner {
 
         return number;
     }
-    
+
     public static Double askDouble(JFrame mainFrame, String title,
             String message, String initialSelectionValue, Object[] selections) {
         Double number = null;

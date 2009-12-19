@@ -46,6 +46,8 @@ public class EmulationTablesDrawer extends JPanel {
 
     private int curStep;
 
+    private JTable logTable;
+
     private JTable statisticTable;
 
     private JTable changingMarkStatisticTable;
@@ -61,6 +63,8 @@ public class EmulationTablesDrawer extends JPanel {
     private DefaultCategoryDataset timeAvgReturnDataset;
 
     private DefaultCategoryDataset probabilityDataset;
+    
+    private Object[][] logItems;
 
     /**
      * @param data
@@ -79,8 +83,15 @@ public class EmulationTablesDrawer extends JPanel {
         graphsInitialize();
     }
 
-    private void tablesInitialize() {
+    protected void tablesInitialize() {
         JScrollPane scroll;
+
+        logTable = new JTable(new StringTableModel(new Object[0][0],
+                new Object[0]));
+        logTable.getTableHeader().setReorderingAllowed(false);
+        scroll = new JScrollPane(logTable);
+        scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(scroll);
 
         statisticTable = new JTable(new StringTableModel(new Object[0][0],
                 new Object[0]));
@@ -98,7 +109,8 @@ public class EmulationTablesDrawer extends JPanel {
 
         changingPMarkStatisticTable = new JTable(new StringTableModel(
                 new Object[0][0], new Object[0]));
-        changingPMarkStatisticTable.getTableHeader().setReorderingAllowed(false);
+        changingPMarkStatisticTable.getTableHeader()
+                .setReorderingAllowed(false);
         scroll = new JScrollPane(changingPMarkStatisticTable);
         scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(scroll);
@@ -197,32 +209,44 @@ public class EmulationTablesDrawer extends JPanel {
     }
 
     protected void updateTables() {
-        Object[][] statisticRows;
+        Object[][] rows;
         Object[] columns;
 
         updateStatistic();
 
-        statisticRows = statistic.makeEmulationStatistic();
+        int maxItemNumber = 50000;
+        if (emulator.getLog().size() > maxItemNumber) {
+            logItems = new Object[1][5];
+        } else {
+            if ((logItems == null) || (curStep != logItems.length)) {
+                logItems = emulator.getLog().getObjectTable();
+            }            
+        }
+        rows = logItems;
+        columns = getLogColumns();
+        ((DefaultTableModel) logTable.getModel()).setDataVector(rows, columns);
+
+        rows = statistic.makeEmulationStatistic();
         columns = getEmulationStatisticColumns();
-        ((DefaultTableModel) statisticTable.getModel()).setDataVector(
-                statisticRows, columns);
+        ((DefaultTableModel) statisticTable.getModel()).setDataVector(rows,
+                columns);
 
-        statisticRows = statistic.makeChangingMarkingsStatistic();
-        columns = getChangingMarkingsStatisticColumns(statisticRows);
+        rows = statistic.makeChangingMarkingsStatistic();
+        columns = getChangingMarkingsStatisticColumns(rows);
         ((DefaultTableModel) changingMarkStatisticTable.getModel())
-                .setDataVector(statisticRows, columns);
+                .setDataVector(rows, columns);
 
-        statisticRows = statistic.makeChangingProbabilityMarkingsStatistic();
+        rows = statistic.makeChangingProbabilityMarkingsStatistic();
         ((DefaultTableModel) changingPMarkStatisticTable.getModel())
-                .setDataVector(statisticRows, columns);
+                .setDataVector(rows, columns);
 
-        statisticRows = new Object[1][3];
-        statisticRows[0][0] = emulator.getData().getMarking().toString();
-        statisticRows[0][1] = statistic.getStepsQuantity();
-        statisticRows[0][2] = statistic.getSumTime();
+        rows = new Object[1][3];
+        rows[0][0] = emulator.getData().getMarking().toString();
+        rows[0][1] = statistic.getStepsQuantity();
+        rows[0][2] = statistic.getSumTime();
         columns = getResumeColumns();
-        ((DefaultTableModel) summaryTable.getModel()).setDataVector(
-                statisticRows, columns);
+        ((DefaultTableModel) summaryTable.getModel()).setDataVector(rows,
+                columns);
 
     }
 
@@ -232,6 +256,16 @@ public class EmulationTablesDrawer extends JPanel {
             statistic.calcTimes();
             curStep = emulator.getLog().size();
         }
+    }
+
+    protected Object[] getLogColumns() {
+        Object[] columns = new String[5];
+        columns[0] = "Time";
+        columns[1] = "Prev.Marking";
+        columns[2] = "Next Marking";
+        columns[3] = "Active Tran";
+        columns[4] = "Started Trans";
+        return columns;
     }
 
     protected Object[] getEmulationStatisticColumns() {
@@ -269,7 +303,7 @@ public class EmulationTablesDrawer extends JPanel {
         return columns;
     }
 
-    private void updateGraphs() {
+    protected void updateGraphs() {
         updateStatistic();
 
         frequencyDataset.clear();
@@ -278,7 +312,7 @@ public class EmulationTablesDrawer extends JPanel {
         probabilityDataset.clear();
         String series1 = "M0";
         for (int i = 0; i < emulator.getTransTable().getListOfMarking().size(); i++) {
-            String descriptive = "M" + (i + 1);
+            String descriptive = "M" + i;
             int freq = statistic.getStatisticItemAt(i).getFrequency();
             double sumTime = statistic.getStatisticItemAt(i).getSumTime();
             double sumReturnTime = statistic.getStatisticItemAt(i)
