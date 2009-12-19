@@ -37,7 +37,7 @@ public final class DrawerKeyListener implements KeyListener {
     public void keyPressed(KeyEvent e) {
 
         if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-            invoker.activateSelectElementDeleting();
+            invoker.activateSelectedElementDeleting();
         }
 
     }

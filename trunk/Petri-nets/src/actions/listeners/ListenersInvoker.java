@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import actions.Questioner;
+
 import view.ElementFinder;
 import view.FrameSettings;
 import view.tabdrawer.ElementDrawer;
@@ -32,7 +34,7 @@ import data.elements.Transition;
 /**
  * This class invokes acts which are used by listeners, includes methods for
  * adding, deleting, moving and changing values of Elements.
- *
+ * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * 
  */
@@ -61,29 +63,29 @@ public class ListenersInvoker {
 
             // TODO: refactor with arrays:
             String title;
-            String message;
-            String initialSelectionValue;
-            String resStr;
+            // String message;
+            // String initialSelectionValue;
+            // String resStr;
             if (element instanceof Place) {
-                int res;
+                Integer res;
                 while (true) {
                     try {
                         title = "Changing place values";
-                        message = "Number of token:";
-                        initialSelectionValue = ((Integer) ((Place) element)
+                        String message = "Number of token:";
+                        String initialSelectionValue = ((Integer) ((Place) element)
                                 .getNumTokens()).toString();
-                        resStr = (String) JOptionPane.showInputDialog(
-                                mainFrame, message, title,
-                                JOptionPane.PLAIN_MESSAGE, null, null,
-                                initialSelectionValue);
-                        if (resStr == null) {
+                        
+                        res = Questioner.askInt(mainFrame, title, message,
+                                initialSelectionValue, null);
+                        if (res == null) {
                             break;
                         }
-                        res = Integer.valueOf(resStr);
+                        
                         ChangePlaceValuesCommand command = new ChangePlaceValuesCommand(
                                 (Place) element, res);
                         data.getCommandStack().add(command);
                         command.execute();
+                        data.setChanged(true);
                         break;
                     } catch (NumberFormatException e) {
                         JOptionPane.showMessageDialog(mainFrame,
@@ -94,52 +96,44 @@ public class ListenersInvoker {
                 }
             } else {
                 if (element instanceof Transition) {
-                    double lyambda;
-                    double g;
-                    double r;
+                    Double lyambda;
+                    Double g;
+                    Double r;
                     while (true) {
                         try {
                             title = "Changing transition values";
-                            message = "Lyambda:";
-                            initialSelectionValue = ((Double) ((Transition) element)
+                            String message = "Lyambda:";
+                            String initialSelectionValue = ((Double) ((Transition) element)
                                     .getLyambda()).toString();
-                            resStr = (String) JOptionPane.showInputDialog(
-                                    mainFrame, message, title,
-                                    JOptionPane.PLAIN_MESSAGE, null, null,
-                                    initialSelectionValue);
-                            if (resStr == null) {
+                            lyambda = Questioner.askDouble(mainFrame, title,
+                                    message, initialSelectionValue, null);
+                            if (lyambda == null) {
                                 break;
                             }
-                            lyambda = Double.valueOf(resStr);
-
+                            
                             message = "g:";
                             initialSelectionValue = ((Double) ((Transition) element)
                                     .getG()).toString();
-                            resStr = (String) JOptionPane.showInputDialog(
-                                    mainFrame, message, title,
-                                    JOptionPane.PLAIN_MESSAGE, null, null,
-                                    initialSelectionValue);
-                            if (resStr == null) {
+                            g = Questioner.askDouble(mainFrame, title,
+                                    message, initialSelectionValue, null);
+                            if (g == null) {
                                 break;
                             }
-                            g = Double.valueOf(resStr);
-                            
+
                             message = "r:";
                             initialSelectionValue = ((Double) ((Transition) element)
                                     .getR()).toString();
-                            resStr = (String) JOptionPane.showInputDialog(
-                                    mainFrame, message, title,
-                                    JOptionPane.PLAIN_MESSAGE, null, null,
-                                    initialSelectionValue);
-                            if (resStr == null) {
+                            r = Questioner.askDouble(mainFrame, title,
+                                    message, initialSelectionValue, null);
+                            if (r == null) {
                                 break;
                             }
-                            r = Double.valueOf(resStr);
 
                             ChangeTransitionValuesCommand command = new ChangeTransitionValuesCommand(
                                     (Transition) element, lyambda, g, r);
                             data.getCommandStack().add(command);
                             command.execute();
+                            data.setChanged(true);
                             break;
                         } catch (NumberFormatException e) {
                             JOptionPane.showMessageDialog(mainFrame,
@@ -248,7 +242,7 @@ public class ListenersInvoker {
         elementDrawer.revalidate();
     }
 
-    public void activateSelectElementDeleting() {
+    public void activateSelectedElementDeleting() {
         Element selElement = data.getActiveElement();
 
         if (selElement != null) {
@@ -257,6 +251,7 @@ public class ListenersInvoker {
                     data);
             data.getCommandStack().add(command);
             command.execute();
+            data.setChanged(true);
             mainFrame.repaint();
         }
     }
