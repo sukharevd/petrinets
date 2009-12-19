@@ -4,26 +4,36 @@
 
 <!-- ...................... PROPERTIES ............................. -->
 	<property name="project.name" value="petrinets" />
-    <!--<property name="jdk.path" value=
-                       "D:\Program Files\Java\jdk1.6.0_13\bin" />    -->
 
 	<property name="app.author" value="Ecuna, Jacky, H.D.F" />
 	<property name="app.company" value="IO-71" />
 
 	<property name="sourceDir" value="src" />
+    <property name="libDir" value="lib" />
 	<property name="outputDir" value="bin" />
 	<property name="distDir"   value="dist" />
 	<property name="resDir"   value="${outputDir}/view/res" />
+    <property name="libOutDir"   value="${distDir}/lib" />
 	<property name="helpfile.path"   value="doc/UserGuide.htm" />
 	
 
 	<property name="jar.fullname" value="${project.name}.jar" />
 	<property name="jar.mainClass" value="${project.name}.Main" />
+    <property name="jar.1" value="${libDir}/jcommon-1.0.16.jar" />
+    <property name="jar.2" value="${libDir}/jfreechart-1.0.13.jar" />
+    <property name="jar.classPath" value="${jar.1} ${jar.2}" />
 
 	<property name="jar.keyalias" value="tempAlias" />
 	<property name="jar.aliaspw" value="012345" />
 	<property name="jar.keystore" value="${basedir}/bin/tempKey.store" />
 	<property name="jar.storepw" value="123456" />
+    
+    <path id="jar.classpath">
+       <fileset dir="${libDir}">
+       <include name="*.jar"/>
+    </fileset>
+</path>
+
 
 <!-- ...................... TARGETS ................................ -->
 
@@ -41,18 +51,25 @@
 		<copy todir="${resDir}">
 		    <fileset dir="./res" />
 		</copy>
-		<copy file="${helpfile.path}" todir="${distDir}"/>
+        
+        <copy todir="${libOutDir}">
+		    <fileset dir="./lib" />
+		</copy>
+		
+        <copy file="${helpfile.path}" todir="${distDir}"/>
 	</target>
 
 <!-- ...................... Compiling project from sources ......... -->
 	<target name="compile" depends="create">
 		<javac srcdir="${sourceDir}" 
-			   destdir="${outputDir}"
+			   destdir="${outputDir}"               
         debug="true"
         deprecation="false"
         optimize="true"
         target="1.5"
-        source="1.5"/>
+        source="1.5">
+        <classpath refid="jar.classpath"/>
+        </javac>
 	</target>
 
 <!-- ...................... Creating JAR-file from .classes......... -->
@@ -63,6 +80,7 @@
 				<attribute name="Company" value="${app.company}"/>
 				<attribute name="Built-By" value="${user.name}"/>
 				<attribute name="Main-Class" value="${jar.mainClass}"/>
+                <attribute name="Class-Path" value="${jar.classPath}"/>
 			</manifest>
 		</jar>
 	</target>
