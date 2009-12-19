@@ -64,7 +64,7 @@ public class EmulationManager {
      * @param data
      */
     public EmulationManager(Data data) {
-        this.data = (Data)data.clone();
+        this.data = (Data) data.clone();
 
         initializeAll();
     }
@@ -78,9 +78,9 @@ public class EmulationManager {
             this.curMarking = transTable.selectRoot().getPrevMarking();
         }
         this.transitions = data.getTransitions();
-        this.collisions = generateCollisions();
-        generateTimes();
-        generateStatuses();
+        this.collisions = initializeCollisions();
+        initializeTimes();
+        initializeStatuses();
         updateTransitionsStatus();
     }
 
@@ -98,28 +98,19 @@ public class EmulationManager {
                 myTable.getAllT().size(), myTable.getMatrixDi(), myTable
                         .getMatrixDq(), myTable.getMarkirovka(), typecrossing,
                 data);
-        
+
         mytree.WriteResult(0);
         return mytree.getTransTable();
     }
 
-    protected void generateTimes() {
+    protected void initializeTimes() {
         times = new ArrayList<Double>();
         for (int i = 0; i < transitions.size(); i++) {
-            Transition transition = transitions.get(i);
-            Double g = transition.getG();
-            Double lyambda = transition.getLyambda();
-            if (lyambda > 0.0) {
-                Generator generator = generatorsPool.chooseGenerator(g, lyambda);
-                times.add(generator.generateValue());
-            } else {
-                times.add(0.0);
-            }
-            
+            times.add(0.0);
         }
     }
 
-    protected ArrayList<ArrayList<Integer>> generateCollisions() {
+    protected ArrayList<ArrayList<Integer>> initializeCollisions() {
         ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
         list.add(new ArrayList<Integer>());
         int curIndex = 0;
@@ -149,7 +140,7 @@ public class EmulationManager {
         return list;
     }
 
-    protected void generateStatuses() {
+    protected void initializeStatuses() {
         statuses = new ArrayList<Boolean>();
         for (int i = 0; i < transitions.size(); i++) {
             statuses.add(i, false);
@@ -183,8 +174,8 @@ public class EmulationManager {
      *            the data to set
      */
     public final void setData(Data data) {
-        Data clone = (Data)data.clone();
-        
+        Data clone = (Data) data.clone();
+
         ArrayList<Element> elements = clone.getElements();
         this.data.setElements(elements);
 
@@ -298,8 +289,8 @@ public class EmulationManager {
         ArrayList<Transition> possibleTrans = getPossiblesTrans(possibles);
         if (possibles.size() == 0) {
             JOptionPane.showMessageDialog(null,
-                    "Emulation is in deadlock, it was stoped.",
-                    "Deadlock", JOptionPane.WARNING_MESSAGE);
+                    "Emulation is in deadlock, it was stoped.", "Deadlock",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
         // Step2: select active transition.
@@ -353,7 +344,7 @@ public class EmulationManager {
         int active = min;
         return transitions.get(active);
     }
-    
+
     protected double updateTransitionsTime(int activePos,
             ArrayList<Integer> possibles) {
         double shift = times.get(activePos);
@@ -369,17 +360,43 @@ public class EmulationManager {
      * 
      * @param transition
      */
-    protected void generateTimeForTransition(Transition active) {
-        Double g = active.getG();
-        Double lyambda = active.getLyambda();
-        int position = transitions.indexOf(active);
-        Generator generator = generatorsPool.chooseGenerator(g, lyambda);
-        times.set(position, generator.generateValue());
+    protected void generateTimeForTransition(Transition transition) {
+        Double g = transition.getG();
+        Double lyambda = transition.getLyambda();
+        int position = transitions.indexOf(transition);
+
+        if (lyambda > 0.0) {
+            Generator generator = generatorsPool.chooseGenerator(g, lyambda);
+            times.set(position, generator.generateValue());
+        } else {
+            // generating time for imm.transition
+            throw new RuntimeException();
+        }
+    }
+
+    protected void updateTimes() {
+        for (int i = 0; i < transitions.size(); i++) {
+            if ((times.get(i) == 0.0) && (statuses.get(i) == true)) {
+                Transition transition = transitions.get(i);
+                Double g = transition.getG();
+                Double lyambda = transition.getLyambda();
+                if (lyambda > 0.0) {
+                    Generator generator = generatorsPool.chooseGenerator(g,
+                            lyambda);
+                    times.set(i, generator.generateValue());
+                } else {
+                    // generating time for imm.transition
+                    throw new RuntimeException();
+                }
+            }
+
+        }
     }
 
     public void nextStep() {
         if ((transTable != null) && (transTable.count() != 0)) {
             updateTransitionsStatus();
+            updateTimes();
             updateActiveTransition();
         }
     }

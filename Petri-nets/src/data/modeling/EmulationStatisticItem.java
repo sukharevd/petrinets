@@ -146,11 +146,21 @@ public class EmulationStatisticItem {
     
     public Object[] getChangingProbabilityObjectArray() {
         Object[] array = getChangingObjectArray();
+        double sum = 0.0;
         for (int i = 0; i < array.length; i++) {
+            
             if (array[i] instanceof Integer) {
                 array[i] = ((Integer)array[i] / getRepeatFreq(0.01));
+                sum += (Double) array[i];
             }
         }
+        
+        double atDiagonal = 0.0;
+        if ((array[marking.getNo()+1] instanceof Double)) {
+            atDiagonal = (Double) array[marking.getNo()+1];
+        }
+        array[marking.getNo()+1] = 1.0 - (sum - atDiagonal);
+        
         return array;
     }
 }
