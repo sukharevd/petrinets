@@ -375,6 +375,12 @@ public class EmulationManager {
      */
     protected void generateTimeForTransition(Transition transition) {
         Double g = transition.getG();
+        if (g == 0.0) {
+            JOptionPane.showMessageDialog(null,
+                    transition.getTitle() + " has g = 0, it will be set in g = 1.0", "Deadlock",
+                    JOptionPane.WARNING_MESSAGE);
+            g = 1.0;
+        }
         Double lyambda = transition.getLyambda();
         int position = transitions.indexOf(transition);
 
@@ -391,16 +397,7 @@ public class EmulationManager {
         for (int i = 0; i < transitions.size(); i++) {
             if ((times.get(i) == 0.0) && (statuses.get(i) == true)) {
                 Transition transition = transitions.get(i);
-                Double g = transition.getG();
-                Double lyambda = transition.getLyambda();
-                if (lyambda > 0.0) {
-                    Generator generator = generatorsPool.chooseGenerator(g,
-                            lyambda);
-                    times.set(i, generator.generateValue());
-                } else {
-                    // generating time for imm.transition
-                    throw new RuntimeException();
-                }
+                generateTimeForTransition(transition);
             }
 
         }
@@ -413,9 +410,9 @@ public class EmulationManager {
             updateActiveTransition();
         }
     }
-
-    public void prevStep() {
-        throw new UnsupportedOperationException();
-    }
+//
+//    public void prevStep() {
+//        throw new UnsupportedOperationException();
+//    }
 
 }
