@@ -62,6 +62,9 @@ public class EmulatingTimesAction extends AbstractAction {
         while (statistic.getSumTime() < finishTime) {
             emulator.nextStep();
             statistic.calcTimes();
+            if (emulator.isInDeadlock()) {
+                break;
+            }
         }
 
         mainFrame.repaint();
