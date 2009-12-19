@@ -517,7 +517,7 @@ public class AppFrame extends JFrame {
     }
 
     public void createAndShowGUI() {
-        setTitle("Petri nets Builder");
+        setTitle("Petri nets Emulator");
         setSize(fWidth, fHeight);
         setMinimumSize(new Dimension(fWidth, fHeight));
 //        try {
