@@ -301,6 +301,7 @@ public class EmulationManager {
         curMarking = transTable.selectAllWithTransPrevMarking(active,
                 curMarking).get(0).getNextMarking();
         data.changeDataMarking(curMarking);
+        data.setActiveElement(active);
 
         // Step4: Reset time for active.
         double time = updateTransitionsTime(activePos, possibles);
