@@ -48,6 +48,8 @@ public class EmulationManager {
 
     private GeneratorsPool generatorsPool;
 
+    private boolean isInDeadlock;
+
     /**
      * 
      * @param transTable
@@ -55,6 +57,7 @@ public class EmulationManager {
      */
     public EmulationManager() {
         this.data = new Data(new ArrayList<Element>());
+
         initializeAll();
     }
 
@@ -70,6 +73,7 @@ public class EmulationManager {
     }
 
     protected void initializeAll() {
+        this.isInDeadlock = false;
         this.generatorsPool = new GeneratorsPool();
         this.log = new EmulatedTransitionsLog();
         this.transTable = generateTransTable();
@@ -197,6 +201,13 @@ public class EmulationManager {
         this.log = log;
     }
 
+    /**
+     * @return the isInDeadlock
+     */
+    public final boolean isInDeadlock() {
+        return isInDeadlock;
+    }
+
     protected void updateTransitionsStatus() {
         for (int i = 0; i < transitions.size(); i++) {
             statuses.set(i, false);
@@ -291,6 +302,7 @@ public class EmulationManager {
             JOptionPane.showMessageDialog(null,
                     "Emulation is in deadlock, it was stoped.", "Deadlock",
                     JOptionPane.WARNING_MESSAGE);
+            isInDeadlock = true;
             return;
         }
         // Step2: select active transition.

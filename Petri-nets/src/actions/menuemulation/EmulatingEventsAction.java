@@ -57,6 +57,9 @@ public class EmulatingEventsAction extends AbstractAction {
 
         for (int i = 0; i < numberOfSteps; i++) {
             emulator.nextStep();
+            if (emulator.isInDeadlock()) {
+                break;
+            }
         }
         mainFrame.repaint();
     }
