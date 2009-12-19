@@ -88,6 +88,7 @@ public class DeleteElementInvoker {
             deleteElementWithArcs();
         }
         data.setActiveElement(null);
+        data.setChanged(true);
     }
 
     public void undoDeleteElement() {
@@ -97,6 +98,7 @@ public class DeleteElementInvoker {
         } else {
             recoverElementWithArcs();
         }
+        data.setChanged(true);
     }
 
 }
