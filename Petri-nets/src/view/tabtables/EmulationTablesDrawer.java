@@ -253,7 +253,7 @@ public class EmulationTablesDrawer extends JPanel {
     protected void updateStatistic() {
         if ((statistic == null) || (curStep != emulator.getLog().size())) {
             statistic = new EmulationStatisticMaker(emulator);
-            statistic.calcTimes();
+            statistic.calculateStatistic();
             curStep = emulator.getLog().size();
         }
     }

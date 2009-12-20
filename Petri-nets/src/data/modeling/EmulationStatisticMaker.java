@@ -25,6 +25,8 @@ public class EmulationStatisticMaker {
 
     private double sumTime = 0.0;
 
+    private double delta = 0.01;
+
     /**
      * 
      */
@@ -50,16 +52,47 @@ public class EmulationStatisticMaker {
         }
     }
 
-    public void calcTimes() {
+    public void calculateStatistic() {
         sumTime = 0.0;
         for (int i = 0; i < logItems.size(); i++) {
             int index = getIndexOfMarking(markings, logItems.get(i)
-                    .getNextMarking());
+                    .getPrevMarking());
             double time = logItems.get(i).getTime();
-            Marking prevMarking = logItems.get(i).getPrevMarking();
-            rows.get(index).addValues(time, sumTime, prevMarking);
+            Marking nextMarking = logItems.get(i).getNextMarking();
+            rows.get(index).addValues(time, sumTime, nextMarking);
             sumTime += time;
         }
+
+        calculateDeltaT();
+    }
+
+    protected void calculateDeltaT() {
+        int sum = 0;
+        ArrayList<Double> deltaT = new ArrayList<Double>();
+        for (int i = 0; i < rows.size(); i++) {
+            sum = 0;
+            for (int j = 0; j < rows.get(i).getToMarkings().size(); j++) {
+                if (i != j) {
+                sum += rows.get(i).getToMarkings().get(j);
+                }
+            }
+            double tsum = rows.get(i).getSumTime();
+            if (tsum != 0) {
+                deltaT.add(tsum / sum);
+            }
+        }
+        
+        double tmin = Double.MAX_VALUE; 
+        for (int i = 0; i < deltaT.size(); i++) {
+            if (tmin > deltaT.get(i)) {
+                tmin = deltaT.get(i);
+            }
+        }
+        if (tmin == Double.MIN_VALUE) {
+            tmin = 1.0; // any number
+        }
+        
+        delta = 0.9 * tmin;
     }
 
     protected int getIndexOfMarking(ArrayList<Marking> markings, Marking marking) {
@@ -72,11 +105,11 @@ public class EmulationStatisticMaker {
         }
         return index;
     }
-    
+
     public EmulationStatisticItem getStatisticItemAt(int index) {
         return rows.get(index);
     }
-    
+
     public int getStepsQuantity() {
         return logItems.size();
     }
@@ -88,9 +121,15 @@ public class EmulationStatisticMaker {
         return sumTime;
     }
 
+    // /**
+    // * @return the delta
+    // */
+    // public final double getDelta() {
+    // return delta;
+    // }
+
     public Object[][] makeEmulationStatistic() {
         int numColumns = 6;
-        double delta = 0.01;
 
         Object[][] matrix = new Object[markings.size()][numColumns];
 
@@ -124,7 +163,7 @@ public class EmulationStatisticMaker {
         Object[][] matrix = new Object[length][length + 1];
         Object[] array;
         for (int i = 0; i < length; i++) {
-            array = rows.get(i).getChangingProbabilityObjectArray();
+            array = rows.get(i).getChangingProbabilityObjectArray(delta);
             for (int j = 0; j < matrix[0].length; j++) {
                 matrix[i][j] = array[j];
             }
