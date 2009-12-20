@@ -58,10 +58,10 @@ public class EmulatingTimesAction extends AbstractAction {
         double finishTime = askTimeOfEmulation();
         EmulationStatisticMaker statistic = new EmulationStatisticMaker(
                 emulator);
-        statistic.calcTimes();
+        statistic.calculateStatistic();
         while (statistic.getSumTime() < finishTime) {
             emulator.nextStep();
-            statistic.calcTimes();
+            statistic.calculateStatistic();
             if (emulator.isInDeadlock()) {
                 break;
             }

@@ -19,7 +19,7 @@ public class EmulationStatisticItem {
 	private double sumTime;
 	private double lastTime;
 	private double firstTime;
-	private ArrayList<Integer> fromMarkings;
+	private ArrayList<Integer> toMarkings;
 
 	/**
 	 * @param marking
@@ -28,10 +28,10 @@ public class EmulationStatisticItem {
 		this.marking = marking;
 		this.firstTime = -1.0;
 		this.lastTime = -1.0;
-		this.fromMarkings = new ArrayList<Integer>();
+		this.toMarkings = new ArrayList<Integer>();
 		
 		for (int i = 0; i < markingsNumber; i++) {
-		    this.fromMarkings.add(0);
+		    this.toMarkings.add(0);
         }
 	}
 
@@ -66,15 +66,15 @@ public class EmulationStatisticItem {
     /**
      * @return the fromMarkings
      */
-    public final ArrayList<Integer> getFromMarkings() {
-        return fromMarkings;
+    public final ArrayList<Integer> getToMarkings() {
+        return toMarkings;
     }
 
     /**
      * @param fromMarkings the fromMarkings to set
      */
-    public final void setFromMarkings(ArrayList<Integer> fromMarkings) {
-        this.fromMarkings = fromMarkings;
+    public final void setToMarkings(ArrayList<Integer> fromMarkings) {
+        this.toMarkings = fromMarkings;
     }
 
     /**
@@ -90,8 +90,8 @@ public class EmulationStatisticItem {
 	 * @param sumTime
 	 * @param realTime
 	 */
-	public void addValues(double sumTime, double realTime, Marking prevM) {
-		this.frequency += 1; 
+	public void addValues(double sumTime, double realTime, Marking nextM) {
+		this.frequency += 1;
 		this.sumTime += sumTime;
 		
 		if (firstTime == -1.0) {
@@ -101,8 +101,8 @@ public class EmulationStatisticItem {
             this.lastTime = realTime;
         }
 		
-		int no = prevM.getNo();
-		fromMarkings.set(no, fromMarkings.get(no) + 1);
+		int no = nextM.getNo();
+		toMarkings.set(no, toMarkings.get(no) + 1);
 	}
 	
 	public double getReturnTime() {
@@ -129,12 +129,12 @@ public class EmulationStatisticItem {
     }
 
     public Object[] getChangingObjectArray() {
-        Object[] array = new Object[fromMarkings.size() + 1];
+        Object[] array = new Object[toMarkings.size() + 1];
         array[0] = (String)"M" + marking.getNo();
         
         Integer val;
-        for (int i = 0; i < fromMarkings.size(); i++) {
-            val = fromMarkings.get(i);
+        for (int i = 0; i < toMarkings.size(); i++) {
+            val = toMarkings.get(i);
             if (val != 0) {
                 array[i + 1] = val;
             } else {
@@ -144,13 +144,13 @@ public class EmulationStatisticItem {
         return array;
     }
     
-    public Object[] getChangingProbabilityObjectArray() {
+    public Object[] getChangingProbabilityObjectArray(double delta) {
         Object[] array = getChangingObjectArray();
         double sum = 0.0;
         for (int i = 0; i < array.length; i++) {
             
             if (array[i] instanceof Integer) {
-                array[i] = ((Integer)array[i] / getRepeatFreq(0.01));
+                array[i] = ((Integer)array[i] / getRepeatFreq(delta));
                 sum += (Double) array[i];
             }
         }

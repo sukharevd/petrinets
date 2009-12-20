@@ -487,7 +487,7 @@ public class AppFrame extends JFrame {
 
         elementDrawer = new ElementDrawer(data, this);
         reachabiblityGraph = new ReachabilityGraphDrawer(data);
-        markGraph = new MarkovGraphDrawer(data);
+        markGraph = new MarkovGraphDrawer(data, emulator);
         DescriptiveTableDrawer descrTable = new DescriptiveTableDrawer(data);
         TransitionsTableDrawer transTable = new TransitionsTableDrawer(data,
                 this);

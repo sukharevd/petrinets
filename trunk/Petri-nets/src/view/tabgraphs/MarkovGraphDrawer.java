@@ -9,14 +9,19 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
 import javax.swing.JPanel;
+
 
 import view.Scalable;
 import data.Data;
 import data.TableManagment;
 import data.TreeConnection;
 import data.TreeofPetriNet;
+import data.modeling.EmulationManager;
+import data.modeling.EmulationStatisticMaker;
 
 /**
  * @author <a href="mailto:jacky@gmail.com">Dzyuban Yuriy</a>
@@ -40,9 +45,11 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
      */
 
     private Data data;
-
-    public MarkovGraphDrawer(Data data) {
+    EmulationManager emulator;
+    NumberFormat f = NumberFormat.getInstance(Locale.getDefault());
+    public MarkovGraphDrawer(Data data,EmulationManager emulator) {
         this.data = data;
+        this.emulator=emulator;
 
         
     }
@@ -71,15 +78,18 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
 //    Color up = new Color(76,190,255); 
 //    Color text = new Color(255,246,0);
     
+    
     Color down = new Color(104,173,122);
     Color up = new Color(197,255,212); 
     Color oval = new Color(10,125,40);
     Color line = new Color(7,134,40);
     
-    // int N;
     static TreeConnection[] Z;
 
     public void paint(Graphics g) {
+    	EmulationStatisticMaker statistic = new EmulationStatisticMaker(emulator);
+    	statistic.calculateStatistic();
+    	f.setMaximumFractionDigits(6);
     	LA=(int)(LA);
         TableManagment myTable = new TableManagment(this.data);
         int[] typecrossing = new int[myTable.getAllT().size()];
@@ -106,7 +116,44 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
         super.paint(g);
         count =TreeofPetriNet.RepeatCount;
         dAngle = 360 / count;
-       
+        int size=0;
+        for (i = 0; i < count; i++) {
+            for (j = 0; j < Z[i].getColVhod(); j++) {
+                if (size<Z[i].getElementVhod(j))
+                	size=Z[i].getElementVhod(j); // na4alo
+            }
+            }
+        size=size+1;
+        System.out.println("size"+size);
+        //statistic.calculateStatistic();
+        //Double[][] matr = new Double[size][size];
+        double[][] res = null;
+        Object[][] matrix= statistic.makeChangingProbabilityMarkingsStatistic();
+        int length = matrix.length;
+        if (length > 0) {
+            res = new double[matrix.length][matrix[0].length - 1];
+            for ( i = 0; i < matrix.length; i++) {
+                for ( j = 1; j < matrix[0].length; j++) {
+                    if (matrix[i][j] != null) {
+                        res[i][j-1] = (Double) matrix[i][j];
+                    } else {
+                        res[i][j-1] = 0.0;
+                    }
+                    
+                    if (res[i][j-1] > 0){
+				res[i][j-1]=new BigDecimal(res[i][j-1]).setScale(5,BigDecimal.ROUND_HALF_UP).doubleValue();
+                    }
+                    System.out.print(res[i][j-1]+ "    ");
+                }
+                System.out.println();
+                
+                
+        
+            }
+        }
+
+        
+        
         for (i = 0; i < count; i++) {
         	
         	Graphics2D g2 = (Graphics2D) g;
@@ -148,7 +195,8 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
             for (j = 0; j < Z[i].getColVhod(); j++) {
                 A2 = dAngle * Z[i].getElementVuhod(j); // konec
                 A1 = dAngle * Z[i].getElementVhod(j); // na4alo
-
+               // System.out.println(Z[i].getElementVuhod(j));
+               // System.out.println(Z[i].getElementVhod(j));
                 dx1 = (int) (r*scale * Math.cos(A1 * DegToRad));
                 dy1 = (int) (r*scale * Math.sin(A1 * DegToRad));
                 dx2 = (int) (r*scale * Math.cos(A2 * DegToRad));
@@ -178,7 +226,16 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
 
                     g.setColor(Color.black);
                     g.fillPolygon(P);
-
+                    int Y=0;
+                    int X=0;
+                    X=(int)((x2+x1)/2);
+                    X=(int)((x2+X)/2);
+                    Y=(int)((y2+y1)/2);
+                    Y=(int)((y2+Y)/2);
+                    if (statistic.getSumTime()>0){
+                    String ss=""+res[Z[i].getElementVuhod(j)][Z[i].getElementVhod(j)];
+                    g.drawString((ss), X, Y);
+                    }
                 } else {
                     g.setColor(line);
                     g.drawArc(x2 + (int)(r*scale) + dx2, y2 - (int)(d*scale / 4), (int)(d*scale / 2), (int)(d*scale / 2), 0, 360);
@@ -187,6 +244,35 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
                 }
             }
         }
+        
+        if (statistic.getSumTime()>0){
+        	for (i = 0; i < count; i++) {
+                for (j = 0; j < Z[i].getColVhod(); j++) {
+                	 A2 = dAngle * Z[i].getElementVuhod(j); // konec
+                     A1 = dAngle * Z[i].getElementVhod(j); // na4alo
+                    // System.out.println(Z[i].getElementVuhod(j));
+                    // System.out.println(Z[i].getElementVhod(j));
+                     dx1 = (int) (r*scale * Math.cos(A1 * DegToRad));
+                     dy1 = (int) (r*scale * Math.sin(A1 * DegToRad));
+                     //dx2 = (int) (r*scale * Math.cos(A2 * DegToRad));
+                     //dy2 = (int) (r*scale * Math.sin(A2 * DegToRad));
+                     x1 = (int)(CenterX*scale) + (int) (Dist*scale * Math.cos(A1 * DegToRad)) + (int)(r*scale) - dx1;
+                     y1 = (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(A1 * DegToRad)) + (int)(r*scale) - dy1;
+                     //x2 = (int)(CenterX*scale) + (int) (Dist*scale * Math.cos(A2 * DegToRad)) + (int)(r*scale) - dx2;
+                     //y2 = (int)(CenterY*scale) + (int) (Dist*scale * Math.sin(A2 * DegToRad)) + (int)(r*scale) - dy2;
+                    // if (Z[i].getElementVuhod(j)==Z[i].getElementVhod(j)){
+                    	 g.setColor(line);
+                         g.drawArc(x1 + (int)(r*scale) + dx1, y1 - (int)(d*scale / 4), (int)(d*scale / 2), (int)(d*scale / 2), 0, 360);
+                         g.setColor(Color.black);
+                         g.fillOval(x1 + (int)(r*scale) + dx1 - 3, y1 - 3, 6, 6);
+                         if (statistic.getSumTime()>0)
+                         {String ss=""+res[Z[i].getElementVhod(j)][Z[i].getElementVhod(j)];
+                         g.drawString((ss), x1 + (int)(r*scale) + dx1, y1 - (int)(d*scale / 4));
+                         } 
+                     }
+                 }
+                }
+        //}
         this.setPreferredSize(new Dimension((int)(WIDTH*scale),(int)(HEIGTH*scale)));
         this.revalidate();
     }
