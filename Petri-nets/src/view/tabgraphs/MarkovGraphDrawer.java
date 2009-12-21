@@ -115,6 +115,7 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
 
         super.paint(g);
         count =TreeofPetriNet.RepeatCount;
+        if(count!=0){
         dAngle = 360 / count;
         int size=0;
         for (i = 0; i < count; i++) {
@@ -275,6 +276,7 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
         //}
         this.setPreferredSize(new Dimension((int)(WIDTH*scale),(int)(HEIGTH*scale)));
         this.revalidate();
+    }
     }
 
 	@Override
