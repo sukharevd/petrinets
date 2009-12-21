@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import data.Marking;
 import data.elements.Transition;
 
+
+/**
+ * Transition table item of a Petri net.
+ *
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
+ * @author Jacky
+ *
+ */
 public class TransitionsTableRow {
 
 	private int no;
@@ -157,27 +165,28 @@ public class TransitionsTableRow {
 
 
     public Object[] getObjectArray() {
-		Object[] array = new Object[7];
-		
-		array[0] = (Integer)no;
-        array[1] = (Integer)branch;
+        Object[] array = new Object[7];
+
+        array[0] = (Integer) no;
+        array[1] = (Integer) branch;
         array[2] = prevMarking;
-        String s = ""; 
+        String s = "";
         if (workedTransitions.size() != 0) {
-        for (int j = 0; j <workedTransitions.size() ; j++) {
-            // TODO: change toString() -> toXML() for Elements.
-            if(workedTransitions.get(j) != null)
-           s += workedTransitions.get(j).getTitle();
-       }}
+            for (int j = 0; j < workedTransitions.size(); j++) {
+                if (workedTransitions.get(j) != null)
+                    s += workedTransitions.get(j).getTitle();
+            }
+        }
         array[3] = s;
         array[4] = nextMarking;
         array[5] = markType;
-        array[6] = (Integer)level;
-		return array;
-	}
+        array[6] = (Integer) level;
+        return array;
+    }
 
-	public String toString() {
-		throw new UnsupportedOperationException();
-	}
+    public String toString() {
+        // TODO: realize me.
+        throw new UnsupportedOperationException();
+    }
 
 }

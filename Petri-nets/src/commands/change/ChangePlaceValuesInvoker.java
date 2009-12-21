@@ -22,7 +22,6 @@ public class ChangePlaceValuesInvoker {
     /**
      * @param place
      * @param numToken
-     * @param data
      */
     public ChangePlaceValuesInvoker(Place place, int numToken) {
         super();

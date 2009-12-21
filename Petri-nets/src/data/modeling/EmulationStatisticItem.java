@@ -84,11 +84,11 @@ public class EmulationStatisticItem {
 		return marking;
 	}
 
+	
 	/**
-	 * @param marking
-	 * @param frequency
 	 * @param sumTime
 	 * @param realTime
+	 * @param nextM
 	 */
 	public void addValues(double sumTime, double realTime, Marking nextM) {
 		this.frequency += 1;

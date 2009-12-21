@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import data.Marking;
 import data.elements.Transition;
 
+/**
+ * Transition table of a Petri net.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
+ * 
+ */
 public class TransitionsTable {
 
     private ArrayList<TransitionsTableRow> rows;
@@ -66,22 +72,6 @@ public class TransitionsTable {
     public int count() {
         return rows.size();
     }
-
-    // /**
-    // *
-    // */
-    // public Marking SelectRootMarking() {
-    // Marking marking = null;
-    //        
-    // for (int i = 0; i < rows.size(); i++) {
-    // TransitionsTableRow row = rows.get(i);
-    // if (row.getMarkType() == MarkType.ROOT) {
-    // marking = row.getPrevMarking();
-    // }
-    // }
-    //        
-    // return marking;
-    // }
 
     /**
      * 

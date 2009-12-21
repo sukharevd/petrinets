@@ -5,6 +5,13 @@ import java.awt.event.AdjustmentListener;
 
 import javax.swing.JFrame;
 
+/**
+ * This class listens the scroll motions, it performs repainting of a scrolled
+ * component.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
+ * 
+ */
 public class DrawerAdjustmentListener implements AdjustmentListener {
 
     private JFrame frame;

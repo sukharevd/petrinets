@@ -19,9 +19,8 @@ public class ChangePlaceValuesCommand implements Command {
     private ChangePlaceValuesInvoker invoker;
 
     /**
-     * @param x
-     * @param y
-     * @param addedElement
+     * @param place
+     * @param numToken
      */
     public ChangePlaceValuesCommand(Place place, int numToken) {
         this.invoker = new ChangePlaceValuesInvoker(place, numToken);

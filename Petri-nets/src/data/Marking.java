@@ -1,10 +1,15 @@
-// TODO: test this code.
 package data;
 
 import java.util.ArrayList;
 
+/**
+ * Marking of Petri net.
+ * 
+ * @author <a href="mailto:h_d_f@mail.ru">Voitova Anastasiia</a>
+ * 
+ */
 public class Marking {
-    
+
     private int no;
 
     private ArrayList<Integer> list;
@@ -17,7 +22,7 @@ public class Marking {
         this.no = no;
         this.list = list;
     }
-    
+
     /**
      * 
      * @param array
@@ -38,7 +43,8 @@ public class Marking {
     }
 
     /**
-     * @param no the no to set
+     * @param no
+     *            the no to set
      */
     public final void setNo(int no) {
         this.no = no;
@@ -52,15 +58,15 @@ public class Marking {
     }
 
     /**
-     * @param list the list to set
+     * @param list
+     *            the list to set
      */
     public final void setList(ArrayList<Integer> list) {
         this.list = list;
     }
 
     public Integer[] getIntegerArray() {
-        // TODO: check:
-        return (Integer[])list.toArray();
+        return (Integer[]) list.toArray();
     }
 
     /**
@@ -79,21 +85,21 @@ public class Marking {
     public void setAt(int index, Integer value) {
         list.set(index, value);
     }
-    
+
     public boolean equals(Marking m) {
         boolean is_equals = false;
         int sum = 0;
-        
+
         if (this.list.size() == m.list.size()) {
             for (int i = 0; i < this.list.size(); i++) {
-                sum +=  Math.abs(this.list.get(i) - m.list.get(i));
+                sum += Math.abs(this.list.get(i) - m.list.get(i));
             }
         }
-        
+
         if (sum == 0) {
             is_equals = true;
         }
-        
+
         return is_equals;
     }
 
@@ -101,12 +107,12 @@ public class Marking {
         if (list.size() == 0) {
             return "";
         }
-        
+
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append("M");
         strBuilder.append(no);
         strBuilder.append("(");
-        
+
         strBuilder.append(list.get(0));
         for (int i = 1; i < list.size(); i++) {
             strBuilder.append(",");
