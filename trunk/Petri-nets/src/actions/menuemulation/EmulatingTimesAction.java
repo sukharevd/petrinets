@@ -4,6 +4,7 @@
 package actions.menuemulation;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
@@ -12,6 +13,7 @@ import actions.Questioner;
 
 import data.Data;
 import data.Marking;
+import data.modeling.EmulatedTransitionsLogItem;
 import data.modeling.EmulationManager;
 import data.modeling.EmulationStatisticMaker;
 
@@ -57,11 +59,16 @@ public class EmulatingTimesAction extends AbstractAction {
 
         double finishTime = askTimeOfEmulation();
         EmulationStatisticMaker statistic = new EmulationStatisticMaker(
-                emulator);
+                emulator);        
         statistic.calculateStatistic();
-        while (statistic.getSumTime() < finishTime) {
+        
+        double time = statistic.getSumTime();
+        while (time < finishTime) {
             emulator.nextStep();
-            statistic.calculateStatistic();
+            
+            ArrayList<EmulatedTransitionsLogItem> rows = emulator.getLog().getRows();
+            time += rows.get(rows.size()-1).getTime();
+            
             if (emulator.isInDeadlock()) {
                 break;
             }
