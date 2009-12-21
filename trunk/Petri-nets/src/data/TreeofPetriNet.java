@@ -235,7 +235,7 @@ public class TreeofPetriNet {
             flag = false;
             for (i = 0; i < Nt; i++) {
                 if (TypeCrossing[i] == 1)
-                    if (IsCrossingEnabled(Res, i)) {
+                    if (IsCrossingEnabled(Res, i)&&(flag==false)) {
                         C[i] = 1;
                         momentSequance = momentSequance + "m" + (i + 1);
 
@@ -393,6 +393,11 @@ public class TreeofPetriNet {
         int PrevNum = PrevNum1;
         saveArray(Curr, Curr2);
         saveArray(Prev, Prev1);
+        if (Np==0){
+        	WriteMarker(Level, RepeatCount, Curr, PrevNum, Prev,
+                    MarkType.DEADLOCK, yarus);
+        	return;
+        }
         if (RepeatCount == 0) {
             temp = GetMarkerRepeat(Prev);
         } else {
@@ -414,6 +419,7 @@ public class TreeofPetriNet {
             RepeatCount++;
             Level++;
             momentSequance = "";
+            //System.out.println(Np);
             return;
         }
         if (RepeatCount == 0) {
@@ -448,7 +454,7 @@ public class TreeofPetriNet {
                         + Integer.toString(LastCross);
                 // typeT.add("t");
                 workedT.add(data.getTransitionWithNo(LastCross));
-
+                if(Np!=0)
                 Curr = RunMomentCrossing(Curr);
                 Next(Curr, Prev, PrevNum, yarus);
                 saveArray(Curr, SaveCurr);
@@ -481,6 +487,7 @@ public class TreeofPetriNet {
         saveArray(Prev, M0);
         saveArray(Curr1, M0);
         saveArray(Curr, M0);
+        if(Np!=0)
         Curr = RunMomentCrossing(Curr);
         Level = 1;
         Next(Curr, Prev, PrevNum, Yarus);
