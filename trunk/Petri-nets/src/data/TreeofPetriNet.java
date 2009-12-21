@@ -8,12 +8,9 @@ import data.modeling.TransitionsTable;
 import data.modeling.TransitionsTableRow;
 
 /**
+ * Class for analysis destinations of marks
  * 
  * @author Jacky
- *
- */
-/**
- * Class for alalysis destinations of marks
  */
 public class TreeofPetriNet {
     /**

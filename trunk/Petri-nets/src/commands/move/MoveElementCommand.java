@@ -21,7 +21,7 @@ public class MoveElementCommand implements Command {
     /**
      * @param x
      * @param y
-     * @param addedElement
+     * @param selElement
      */
     public MoveElementCommand(int x, int y, Element selElement) {
         this.invoker = new MoveElementInvoker(x, y, selElement);

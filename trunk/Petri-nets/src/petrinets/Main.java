@@ -13,7 +13,6 @@ import data.modeling.EmulationManager;
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * @author <a href="mailto:ydzyuban@gmail.com">Dzyuban Yuriy</a>
  * @author <a href="mailto:vixentael@gmail.com">Voitova Anastasiia</a>
- * @author <a href="mailto:love14@mail.ru">Kustch Kristina</a>
  * 
  */
 public final class Main {

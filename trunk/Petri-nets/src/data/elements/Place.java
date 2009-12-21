@@ -43,17 +43,17 @@ public class Place extends Element {
         Place place = new Place(numTokens, getNo(), getX(), getY());
 
         ArrayList<Arc> outputArcs = new ArrayList<Arc>();
-//        ArrayList<Arc> inputArcs = new ArrayList<Arc>();
+        // ArrayList<Arc> inputArcs = new ArrayList<Arc>();
         for (int i = 0; i < this.getOutputArcs().size(); i++) {
             outputArcs.add((Arc) this.getOutputArcs().get(i).clone());
         }
-//        for (int i = 0; i < this.getInputArcs().size(); i++) {
-//            inputArcs.add((Arc) this.getInputArcs().get(i).clone());
-//        }
+        // for (int i = 0; i < this.getInputArcs().size(); i++) {
+        // inputArcs.add((Arc) this.getInputArcs().get(i).clone());
+        // }
 
         place.setOutputArcs(outputArcs);
-//        place.setInputArcs(inputArcs);
-// TODO: delete comments.
+        // place.setInputArcs(inputArcs);
+        // TODO: delete comments.
         return place;
     }
 
@@ -99,6 +99,7 @@ public class Place extends Element {
         return isEqual;
     }
 
+    // TODO: change toString() -> toXML() for Elements.
     public String toString() {
         StringBuilder sb = new StringBuilder("    <Place no=\"");
         sb.append(getNo());

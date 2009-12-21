@@ -28,9 +28,9 @@ public class MoveElementInvoker {
     private Element selElement;
 
     /**
-     * @param x
-     * @param y
-     * @param addedElement
+     * @param xNew
+     * @param yNew
+     * @param selElement
      */
     public MoveElementInvoker(int xNew, int yNew, Element selElement) {
         this.xNew = xNew;

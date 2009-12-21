@@ -20,9 +20,8 @@ public class DeleteElementCommand implements Command {
     private DeleteElementInvoker invoker;
 
     /**
-     * @param x
-     * @param y
-     * @param addedElement
+     * @param deletedElement
+     * @param data
      */
     public DeleteElementCommand(final Element deletedElement, final Data data) {
         this.invoker = new DeleteElementInvoker(deletedElement, data);

@@ -52,8 +52,6 @@ public class EmulationManager {
 
     /**
      * 
-     * @param transTable
-     * @param data
      */
     public EmulationManager() {
         this.data = new Data(new ArrayList<Element>());
@@ -62,8 +60,6 @@ public class EmulationManager {
     }
 
     /**
-     * 
-     * @param transTable
      * @param data
      */
     public EmulationManager(Data data) {

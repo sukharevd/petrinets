@@ -39,7 +39,7 @@ public class ExportingAction extends AbstractAction {
     private TableManagment tm;
 
     /**
-     * @param tm
+     * @param data
      * @param mainFrame
      */
     public ExportingAction(Data data, JFrame mainFrame) {
