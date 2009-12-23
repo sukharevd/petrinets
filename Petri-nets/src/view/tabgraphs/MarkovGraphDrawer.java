@@ -120,36 +120,34 @@ public class MarkovGraphDrawer extends JPanel implements Scalable {
         int size=0;
         for (i = 0; i < count; i++) {
             for (j = 0; j < Z[i].getColVhod(); j++) {
-                if (size<Z[i].getElementVhod(j))
-                	size=Z[i].getElementVhod(j); // na4alo
+                if (size < Z[i].getElementVhod(j))
+                    size = Z[i].getElementVhod(j); // na4alo
             }
-            }
-        size=size+1;
-        System.out.println("size"+size);
-        //statistic.calculateStatistic();
-        //Double[][] matr = new Double[size][size];
+        }
+        // size=size+1;
+        // System.out.println("size"+size);
+
         double[][] res = null;
         Object[][] matrix= statistic.makeChangingProbabilityMarkingsStatistic();
         int length = matrix.length;
         if (length > 0) {
             res = new double[matrix.length][matrix[0].length - 1];
-            for ( i = 0; i < matrix.length; i++) {
-                for ( j = 1; j < matrix[0].length; j++) {
+            for (i = 0; i < matrix.length; i++) {
+                for (j = 1; j < matrix[0].length; j++) {
                     if (matrix[i][j] != null) {
-                        res[i][j-1] = (Double) matrix[i][j];
+                        res[i][j - 1] = (Double) matrix[i][j];
                     } else {
-                        res[i][j-1] = 0.0;
+                        res[i][j - 1] = 0.0;
                     }
-                    
-                    if (res[i][j-1] > 0){
-				res[i][j-1]=new BigDecimal(res[i][j-1]).setScale(5,BigDecimal.ROUND_HALF_UP).doubleValue();
+
+                    if (res[i][j - 1] > 0) {
+                        res[i][j - 1] = new BigDecimal(res[i][j - 1]).setScale(
+                                5, BigDecimal.ROUND_HALF_UP).doubleValue();
                     }
-                    System.out.print(res[i][j-1]+ "    ");
+                    // System.out.print(res[i][j-1]+ "    ");
                 }
-                System.out.println();
-                
-                
-        
+                // System.out.println();
+
             }
         }
 
