@@ -63,7 +63,7 @@ public class EmulationTablesDrawer extends JPanel {
     private DefaultCategoryDataset timeAvgReturnDataset;
 
     private DefaultCategoryDataset probabilityDataset;
-    
+
     private Object[][] logItems;
 
     /**
@@ -220,13 +220,14 @@ public class EmulationTablesDrawer extends JPanel {
         } else {
             if ((logItems == null) || (curStep != logItems.length)) {
                 logItems = emulator.getLog().getObjectTable();
-            }            
+            }
         }
         rows = logItems;
         columns = getLogColumns();
         ((DefaultTableModel) logTable.getModel()).setDataVector(rows, columns);
 
         rows = statistic.makeEmulationStatistic();
+        rows = formatDoubles(rows);
         columns = getEmulationStatisticColumns();
         ((DefaultTableModel) statisticTable.getModel()).setDataVector(rows,
                 columns);
@@ -237,6 +238,7 @@ public class EmulationTablesDrawer extends JPanel {
                 .setDataVector(rows, columns);
 
         rows = statistic.makeChangingProbabilityMarkingsStatistic();
+        rows = formatDoubles(rows);
         ((DefaultTableModel) changingPMarkStatisticTable.getModel())
                 .setDataVector(rows, columns);
 
@@ -310,6 +312,7 @@ public class EmulationTablesDrawer extends JPanel {
         timeAvgDataset.clear();
         timeAvgReturnDataset.clear();
         probabilityDataset.clear();
+        // TODO: change string:
         String series1 = "M0";
         for (int i = 0; i < emulator.getTransTable().getListOfMarking().size(); i++) {
             String descriptive = "M" + i;
@@ -319,11 +322,24 @@ public class EmulationTablesDrawer extends JPanel {
                     .getReturnTime();
             double probability = statistic.getStatisticItemAt(i)
                     .getProbability(statistic.getSumTime());
+            // TODO: change string:
             frequencyDataset.addValue(freq, "Frequency1", descriptive);
             timeAvgDataset.addValue(sumTime / (freq - 1), series1, descriptive);
             timeAvgReturnDataset.addValue(sumReturnTime / freq, series1,
                     descriptive);
             probabilityDataset.addValue(probability, series1, descriptive);
         }
+    }
+
+    protected Object[][] formatDoubles(Object[][] array) {
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[0].length; j++) {
+                if ((array[i][j] instanceof Double)
+                        /*&& ((Double) array[i][j] < 1.0)*/) {
+                    array[i][j] = String.format("%.2g", (Double) array[i][j]);
+                }
+            }
+        }
+        return array;
     }
 }
