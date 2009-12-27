@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!-- 
+/*
     Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia.
     
     This file is part of Petri nets Emulator.
@@ -17,28 +15,21 @@
     
     You should have received a copy of the GNU General Public License
     along with Petri nets Emulator. If not, see <http://www.gnu.org/licenses/>.
- -->
- 
-<project name="Diagram" default="create" basedir=".">
+*/
 
-	<property name="project.name" value="petri_nets" />
+package data.exceptions;
 
-	<property name="outputDir" value="bin" />
-	<property name="resDir"   value="${outputDir}/view/res" />
-	
+/**
+ * Exception when wrong QNameException while parsing.
+ * 
+ * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
+ * 
+ */
+public class WrongQNameException extends Exception {
 
-<!-- ...................... Clearing project folder ................
-	<target name="clear">
-		<delete dir="${outputDir}" />
-	</target> -->
+    /**
+     * JDK 1.1 serialVersionUID.
+     */
+    private static final long serialVersionUID = -5571591699692256985L;
 
-<!-- ...................... Creating project folders ............... -->
-	<target name="create">
-		<mkdir dir="${outputDir}"/>
-		
-		<copy todir="${resDir}">
-		    <fileset dir="./res" />
-		</copy>
-	</target>
-
-</project>
+}
