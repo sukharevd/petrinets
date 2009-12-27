@@ -1,3 +1,22 @@
+/*
+    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia.
+    
+    This file is part of Petri nets Emulator.
+    
+    Petri nets Emulator is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    Petri nets Emulator is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with Petri nets Emulator. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package actions.menugeneral;
 
 import java.awt.event.ActionEvent;
@@ -34,7 +53,7 @@ public class AboutingAction extends AbstractAction implements Cloneable {
      * Invoked when an action occurs.
      */
     public void actionPerformed(final ActionEvent e) {
-        JOptionPane.showMessageDialog(mainFrame, "Petri nets builder\n"
+        JOptionPane.showMessageDialog(mainFrame, "Petri nets Emulator\n"
                 + "Copyright (C) 2009,\n" + "Sukharev [Ecuna] Dmitriy\n"
                 + "Dzyuban [Jacky] Yuriy\n" + "Voitova [HdF] Anastasiia,\n"
                 + "Kushtch Kristina", "About", JOptionPane.INFORMATION_MESSAGE);

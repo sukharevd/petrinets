@@ -1,3 +1,22 @@
+/*
+    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia.
+    
+    This file is part of Petri nets Emulator.
+    
+    Petri nets Emulator is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    Petri nets Emulator is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with Petri nets Emulator. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package data.xmlparsing;
 
 import java.util.ArrayList;
@@ -9,10 +28,10 @@ import data.elements.Arc;
 import data.elements.Element;
 import data.elements.Place;
 import data.elements.Transition;
-import exceptions.MissedXmlArgumentException;
-import exceptions.WrongQNameException;
-import exceptions.XmlArgumentException;
-import exceptions.arcXYSizeException;
+import data.exceptions.MissedXmlArgumentException;
+import data.exceptions.WrongQNameException;
+import data.exceptions.XmlArgumentException;
+import data.exceptions.ArcXYSizeException;
 
 /**
  * Generate new Element from XML file tag.
@@ -29,7 +48,7 @@ public class ElementSimpleFactory {
 
     public Element createElement(java.lang.String localName,
             java.lang.String qName, Attributes attrs, Element prevElement)
-            throws XmlArgumentException, arcXYSizeException,
+            throws XmlArgumentException, ArcXYSizeException,
             WrongQNameException, MissedXmlArgumentException {
 
         Properties pr = new java.util.Properties();
@@ -89,7 +108,7 @@ public class ElementSimpleFactory {
                         }
                     }
                     if (xseq.size() != yseq.size()) {
-                        throw new arcXYSizeException();
+                        throw new ArcXYSizeException();
                     }
                     String toType;
                     if (prevElement instanceof Place) {
