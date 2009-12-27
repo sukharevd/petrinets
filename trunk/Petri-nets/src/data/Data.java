@@ -1,3 +1,22 @@
+/*
+    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia.
+    
+    This file is part of Petri nets Emulator.
+    
+    Petri nets Emulator is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    Petri nets Emulator is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with Petri nets Emulator. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package data;
 
 import java.io.FileNotFoundException;
@@ -13,8 +32,8 @@ import data.elements.Arc;
 import data.elements.Element;
 import data.elements.Place;
 import data.elements.Transition;
+import data.exceptions.ArcConnectionException;
 import data.xmlparsing.ElementXmlParser;
-import exceptions.arcConnectionException;
 
 /**
  * Main data storage of the application, It contains all visible Elements,
@@ -31,14 +50,30 @@ public class Data {
      */
     private boolean changed = false;
 
+    /**
+     * Elements of current Petri-net.
+     */
     private ArrayList<Element> elements;
 
+    /**
+     * Element, which is added by user at the edit area.
+     */
     private Element addingModeElement = null;
-
+    
+    /**
+     * Element, which is selected by user at the edit area.
+     */
     private Element activeElement = null;
 
+    /**
+     * Stack of the commands for realizing Undo/Redo operations.
+     */
     private CommandStack commandStack = null;
 
+    /**
+     * Constructor of {@link Data}.
+     * @param elements new elements
+     */
     public Data(ArrayList<Element> elements) {
         this.elements = elements;
         this.setCommandStack(new CommandStack());
@@ -127,6 +162,9 @@ public class Data {
         elements.remove(element);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
     @Override
     public Object clone() {
         ArrayList<Element> e = new ArrayList<Element>();
@@ -139,6 +177,9 @@ public class Data {
         return clone;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(final Object o) {
         boolean isEquals = true;
@@ -184,6 +225,9 @@ public class Data {
         return isEquals;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -244,7 +288,7 @@ public class Data {
                 }
             }
             return true;
-        } catch (arcConnectionException e) {
+        } catch (ArcConnectionException e) {
             JOptionPane.showMessageDialog(null,
                     "At least one arc has incorrect connection.",
                     "Error of connection", JOptionPane.ERROR_MESSAGE);
@@ -255,9 +299,9 @@ public class Data {
     /**
      * @return true if place connect with transition (& not with nothing) and if
      *         arc connected with element with no == to.
-     * @throws arcConnectionException
+     * @throws ArcConnectionException
      */
-    protected boolean checkArc(final Arc arc) throws arcConnectionException {
+    protected boolean checkArc(final Arc arc) throws ArcConnectionException {
         int x = arc.getXsequence().get(0);
         int y = arc.getYsequence().get(0);
         int x2 = arc.getXsequence().get(arc.getXsequence().size() - 1);
@@ -281,15 +325,15 @@ public class Data {
         }
 
         if ((t == null) || (t2 == null)) {
-            throw new arcConnectionException();
+            throw new ArcConnectionException();
         }
 
         if (t == t2) {
-            throw new arcConnectionException();
+            throw new ArcConnectionException();
         }
 
         if (no2 != arc.getTo()) {
-            throw new arcConnectionException();
+            throw new ArcConnectionException();
         }
 
         return true;
@@ -304,7 +348,7 @@ public class Data {
 
                 try {
                     checkArc(elements.get(k).getOutputArcs().get(i));
-                } catch (arcConnectionException e) {
+                } catch (ArcConnectionException e) {
                     System.err.println("Wrong arc to" + to + " connection.");
                 }
 

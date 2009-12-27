@@ -1,3 +1,22 @@
+/*
+    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia.
+    
+    This file is part of Petri nets Emulator.
+    
+    Petri nets Emulator is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    Petri nets Emulator is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with Petri nets Emulator. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package data.modeling;
 
 import java.util.ArrayList;
@@ -7,7 +26,6 @@ import javax.swing.JOptionPane;
 import data.Data;
 import data.Marking;
 import data.TableManagment;
-import data.TreeofPetriNet;
 import data.elements.Arc;
 import data.elements.Element;
 import data.elements.Place;
@@ -34,24 +52,49 @@ public class EmulationManager {
      */
     private ArrayList<Boolean> statuses;
 
+    /**
+     * {@link ArrayList} of {@link ArrayList}s, which contains the numbers of
+     * {@link Transition}s, which are in collision.
+     */
     private ArrayList<ArrayList<Integer>> collisions;
 
+    /**
+     * Current {@link Marking} of emulation process.
+     */
     private Marking curMarking;
 
+    /**
+     * Reachability table of the current Petri net.
+     */
     private TransitionsTable transTable;
 
+    /**
+     * {@link Data} object of current Petri net.
+     */
     private Data data;
 
+    /**
+     * {@link ArrayList} of {@link Transition}s of current Petri net.
+     */
     private ArrayList<Transition> transitions;
 
-    private EmulatedTransitionsLog log;
+    /**
+     * Emulation log of current Petri net.
+     */
+    private EmulationLog log;
 
+    /**
+     * Pull of different kinds of {@link Generator}s
+     */
     private GeneratorsPool generatorsPool;
 
+    /**
+     * Status of deadlocked of the current step of emulation.
+     */
     private boolean isInDeadlock;
 
     /**
-     * 
+     * Constructor of {@link EmulationManager}.
      */
     public EmulationManager() {
         this.data = new Data(new ArrayList<Element>());
@@ -60,7 +103,10 @@ public class EmulationManager {
     }
 
     /**
+     * Constructor of {@link EmulationManager}.
+     * 
      * @param data
+     *            new data
      */
     public EmulationManager(Data data) {
         this.data = (Data) data.clone();
@@ -68,10 +114,13 @@ public class EmulationManager {
         initializeAll();
     }
 
+    /**
+     * Sets the initial values of the {@link EmulationManager} objects.
+     */
     protected void initializeAll() {
         this.isInDeadlock = false;
         this.generatorsPool = new GeneratorsPool();
-        this.log = new EmulatedTransitionsLog();
+        this.log = new EmulationLog();
         this.transTable = generateTransTable();
         this.curMarking = null;
         if (transTable.count() > 1) {
@@ -84,6 +133,9 @@ public class EmulationManager {
         updateTransitionsStatus();
     }
 
+    /**
+     * Generates the {@link TransitionsTable} of current Petri net.
+     */
     protected TransitionsTable generateTransTable() {
         TableManagment myTable = new TableManagment(data);
         int[] typecrossing = new int[myTable.getAllT().size()];
@@ -103,6 +155,9 @@ public class EmulationManager {
         return mytree.getTransTable();
     }
 
+    /**
+     * Sets zero values for times field.
+     */
     protected void initializeTimes() {
         times = new ArrayList<Double>();
         for (int i = 0; i < transitions.size(); i++) {
@@ -110,6 +165,11 @@ public class EmulationManager {
         }
     }
 
+    /**
+     * Initialize collisions array field for current Petri net.
+     * 
+     * @return collisions array field for current Petri net
+     */
     protected ArrayList<ArrayList<Integer>> initializeCollisions() {
         ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
         list.add(new ArrayList<Integer>());
@@ -140,6 +200,10 @@ public class EmulationManager {
         return list;
     }
 
+    /**
+     * Initializes statuses for current Petri net, which are true if transition
+     * has enough tokens for triggering and false if not.
+     */
     protected void initializeStatuses() {
         statuses = new ArrayList<Boolean>();
         for (int i = 0; i < transitions.size(); i++) {
@@ -185,7 +249,7 @@ public class EmulationManager {
     /**
      * @return the log
      */
-    public final EmulatedTransitionsLog getLog() {
+    public final EmulationLog getLog() {
         return log;
     }
 
@@ -193,7 +257,7 @@ public class EmulationManager {
      * @param log
      *            the log to set
      */
-    public final void setLog(EmulatedTransitionsLog log) {
+    public final void setLog(EmulationLog log) {
         this.log = log;
     }
 
@@ -316,9 +380,9 @@ public class EmulationManager {
         generateTimeForTransition(active);
 
         // Step5: Logging
-        EmulatedTransitionsLogItem item;
-        item = new EmulatedTransitionsLogItem(time, prevMarking, curMarking,
-                active, possibleTrans);
+        EmulationLogItem item;
+        item = new EmulationLogItem(time, prevMarking, curMarking, active,
+                possibleTrans);
         log.add(item);
     }
 
@@ -372,8 +436,8 @@ public class EmulationManager {
     protected void generateTimeForTransition(Transition transition) {
         Double g = transition.getG();
         if (g == 0.0) {
-            JOptionPane.showMessageDialog(null,
-                    transition.getTitle() + " has g = 0, it will be set in g = 1.0", "Deadlock",
+            JOptionPane.showMessageDialog(null, transition.getTitle()
+                    + " has g = 0, it will be set in g = 1.0", "Deadlock",
                     JOptionPane.WARNING_MESSAGE);
             g = 1.0;
         }
@@ -384,7 +448,7 @@ public class EmulationManager {
             Generator generator = generatorsPool.chooseGenerator(g, lyambda);
             times.set(position, generator.generateValue());
         } else {
-            // generating time for imm.transition
+            // TODO: generating time for imm.transition
             throw new RuntimeException();
         }
     }
@@ -406,9 +470,9 @@ public class EmulationManager {
             updateActiveTransition();
         }
     }
-//
-//    public void prevStep() {
-//        throw new UnsupportedOperationException();
-//    }
+    //
+    // public void prevStep() {
+    // throw new UnsupportedOperationException();
+    // }
 
 }

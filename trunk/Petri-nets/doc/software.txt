@@ -17,5 +17,8 @@ Ant:
 JFreeChart:
     http://www.jfree.org/jfreechart/download.html
     
+ArgoUML v.0.28.1:
+    http://argouml-downloads.tigris.org/
+    
 Netviewer meet:
     http://www.netviewer.net/
