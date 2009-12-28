@@ -361,11 +361,18 @@ public class AppFrame extends JFrame {
 
         JMenuItem chelp = new JMenuItem();
         JMenuItem about = new JMenuItem();
-
+        JMenuItem license = new JMenuItem();
+        
         chelp.setAction(new HelpingAction(this));
         chelp.setText("Context Help...");
         chelp.setMnemonic(KeyEvent.VK_F1);
         chelp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+        
+        license.setAction(new LicenseAction());
+        license.setText("License Notice...");
+        license.setMnemonic(KeyEvent.VK_F1);
+        license.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1,
+                ActionEvent.CTRL_MASK));
 
         about.setAction(new AboutingAction(this));
         about.setText("About...");
@@ -374,6 +381,7 @@ public class AppFrame extends JFrame {
                 ActionEvent.CTRL_MASK));
         
         help.add(chelp);
+        help.add(license);
         help.add(about);
 
         bar = new JMenuBar();
