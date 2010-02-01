@@ -15,7 +15,7 @@
     
     You should have received a copy of the GNU General Public License
     along with Petri nets Emulator. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package actions.menugeneral;
 
@@ -54,9 +54,9 @@ public class AboutingAction extends AbstractAction implements Cloneable {
      */
     public void actionPerformed(final ActionEvent e) {
         JOptionPane.showMessageDialog(mainFrame, "Petri nets Emulator\n"
-                + "Copyright (C) 2009,\n" + "Sukharev [Ecuna] Dmitriy\n"
-                + "Dzyuban [Jacky] Yuriy\n" + "Voitova [HdF] Anastasiia,\n"
-                + "Kushtch Kristina", "About", JOptionPane.INFORMATION_MESSAGE);
+                + "Copyright (C) 2009, 2010 Sukharev Dmitriy, "
+                + "Dzyuban Yuriy, Voitova Anastasiia", "About",
+                JOptionPane.INFORMATION_MESSAGE);
         // TODO: change names.
     }
 
