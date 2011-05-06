@@ -535,7 +535,7 @@ public class AppFrame extends JFrame {
         tabPane.add("Editing", drawingPanel);
         tabPane.add("Descriptive Tables", descrTablePanel);
         tabPane.add("Markov Graph", markovGraphPanel);
-        tabPane.add("Reachabiblity Graph", reachabiblityGraphPanel);
+        tabPane.add("Reachability Graph", reachabiblityGraphPanel);
         tabPane.add("Transitions Table", transTablePanel);
         tabPane.add("Emulation Table", emulTablePanel);
         tabPane.add("Emulating", emulatingPanel);
