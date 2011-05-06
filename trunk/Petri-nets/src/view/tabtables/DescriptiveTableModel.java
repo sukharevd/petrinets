@@ -54,7 +54,7 @@ public class DescriptiveTableModel extends DefaultTableModel {
      * 
      * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public Class getColumnClass(final int columnIndex) {
         if (columnIndex == 0) {

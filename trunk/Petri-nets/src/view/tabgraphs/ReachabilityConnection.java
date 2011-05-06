@@ -150,7 +150,7 @@ public class ReachabilityConnection {
 	}
     //drawing graph
 	public void draw(Graphics g) {
-		r = (int) (r * scale);
+		r = (int) (r * scale);                        // TODO: O_o wtfg??? int r = ... must be!!!
 		for (int i = 0; i < x.length; i++) {
 			int fromX = (int) (x[z[i].getElementVuhod(0)] * scale);
 			int fromY = (int) (y[z[i].getElementVuhod(0)] * scale);
@@ -160,7 +160,7 @@ public class ReachabilityConnection {
 		}
 		for (int i = 0; i < x.length; i++) {
 			// green
-			if (type[i] == MarkType.ROOT) {
+			if (type[i] == MarkType.ROOT) {          // TODO: make if-else construction!!!
 				gr1 = new Color(97, 254, 137);
 				gr2 = new Color(76, 159, 98);
 			}
