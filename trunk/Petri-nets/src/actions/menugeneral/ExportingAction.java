@@ -1,5 +1,5 @@
 /*
-    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia.
+    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Vixen Tael.
     
     This file is part of Petri nets Emulator.
     
@@ -43,7 +43,7 @@ import data.TableManagment;
  * Action, which is occurred when user clicks "Export..." component, it saves
  * current chart as image file to a disk.
  *
- * @author <a href="mailto:vixentael@gmail.com">Voitova Anastasiia</a>
+ * @author <a href="mailto:vixentael@gmail.com">Vixen Tael</a>
  *
  */
 public class ExportingAction extends AbstractAction {
