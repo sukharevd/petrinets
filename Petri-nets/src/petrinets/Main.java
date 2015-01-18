@@ -1,5 +1,5 @@
 /*
-    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia.
+    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Vixen Tael.
     
     This file is part of Petri nets Emulator.
     
@@ -31,7 +31,7 @@ import data.modeling.EmulationManager;
  * 
  * @author <a href="mailto:sukharevd@gmail.com">Sukharev Dmitriy</a>
  * @author <a href="mailto:ydzyuban@gmail.com">Dzyuban Yuriy</a>
- * @author <a href="mailto:vixentael@gmail.com">Voitova Anastasiia</a>
+ * @author <a href="mailto:vixentael@gmail.com">Vixen Tael</a>
  * 
  */
 public final class Main {

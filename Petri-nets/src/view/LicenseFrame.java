@@ -1,5 +1,5 @@
 /*
-    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia.
+    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Vixen Tael.
     
     This file is part of Petri nets Emulator.
     
@@ -44,7 +44,7 @@ public class LicenseFrame extends JFrame {
     private static final long serialVersionUID = 126837745324198669L;
 
     private String license = "    Petri nets Emulator\n"
-    + "    Copyright (C) 2009 Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia\n"
+    + "    Copyright (C) 2009 Sukharev Dmitriy, Dzyuban Yuriy, Vixen Tael\n"
     + "\n"
     + "    This program is free software: you can redistribute it and/or modify\n"
     + "    it under the terms of the GNU General Public License as published by\n"

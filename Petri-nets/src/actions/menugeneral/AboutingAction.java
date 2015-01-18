@@ -1,5 +1,5 @@
 /*
-    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia.
+    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Vixen Tael.
     
     This file is part of Petri nets Emulator.
     
@@ -55,7 +55,7 @@ public class AboutingAction extends AbstractAction implements Cloneable {
     public void actionPerformed(final ActionEvent e) {
         JOptionPane.showMessageDialog(mainFrame, "Petri nets Emulator\n"
                 + "Copyright (C) 2009, 2010 Sukharev Dmitriy, "
-                + "Dzyuban Yuriy, Voitova Anastasiia", "About",
+                + "Dzyuban Yuriy, Vixen Tael", "About",
                 JOptionPane.INFORMATION_MESSAGE);
         // TODO: change names.
     }

@@ -1,5 +1,5 @@
 /*
-    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Voitova Anastasiia.
+    Copyright (C)  2009  Sukharev Dmitriy, Dzyuban Yuriy, Vixen Tael.
     
     This file is part of Petri nets Emulator.
     
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Marking of Petri net.
  * 
- * @author <a href="mailto:h_d_f@mail.ru">Voitova Anastasiia</a>
+ * @author <a href="mailto:h_d_f@mail.ru">Vixen Tael</a>
  * 
  */
 public class Marking {
