@@ -1,0 +1,2 @@
+Petri nets Emulator is an open source project under GNU Public License. It is developed by several students of NTUU "KPI" and is written on Java.
+This desktop application is used for editing and emulating Petri nets. It has graphical interface and may be used for data analysis, diagnosis etc. You can find more information about Petri-nets in Wikipedia article about Petri-nets. You can download source code of project on the Downloads page.
